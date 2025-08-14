@@ -1,0 +1,1 @@
+export const getNominatimUrl = (area) => `https://nominatim.openstreetmap.org/search?q=${area}+mumbai&format=json&limit=1`;
