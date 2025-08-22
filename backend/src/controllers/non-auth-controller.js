@@ -12,8 +12,9 @@ export const Login = TryCatchBlocker(
     async function (req, res) {
         let {email,password} = req.body;
         console.log(email, password, 'email and password in login controller');
-        const checkUser = await getData(users, { email });
-        if (!checkUser?.length) return sendResponse(req, res, { status: "failed", message: "User already exists", code: 409 });
+        const checkUser = await getData('users', { query : {email} });
+
+        if (!checkUser?.length) return sendResponse(req, res, { status: "failed", message: "User already exists", code: 409, success: false });
         sendResponse(req, res, { data: checkUser, message: 'Succesfully login users' })
     }
 ); 

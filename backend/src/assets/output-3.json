@@ -1,0 +1,946 @@
+[
+    {
+        "business_status": "OPERATIONAL",
+        "geometry": {
+            "location": {
+                "lat": 19.108542,
+                "lng": 72.89343
+            },
+            "viewport": {
+                "northeast": {
+                    "lat": 19.10989312989272,
+                    "lng": 72.89477992989274
+                },
+                "southwest": {
+                    "lat": 19.10719347010728,
+                    "lng": 72.89208027010729
+                }
+            }
+        },
+        "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/worship_islam-71.png",
+        "icon_background_color": "#7B9EB0",
+        "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/worship_islam_pinlet",
+        "name": "Jamiyat Ahle Hadees Masjid",
+        "photos": [
+            {
+                "height": 4160,
+                "html_attributions": [
+                    "<a href=\"https://maps.google.com/maps/contrib/112718740331151475509\">ansari gufran</a>"
+                ],
+                "photo_reference": "ATKogpeGTByqZ0BcWs-oCq1ztmPQHVYbKTd-PM_oyeRRGUQpLanG2teiYBRYV1xlKP9yopvTq8Ixj9xAfbAhwxdWahgnpywFuHZz2-ORtN0Zn5pnYlONCdhNzp_I6jh77LOdkoDdXNfT2RjNDZ7oROGuGnFHNLThCZ4VLWPcKGcXlSOfFdk8T79cCtUDLG0ybuCdPI6W4AqkmIROK4F7lfxlYLfSyyLWtr7oPTs-44DHhFrmcKbellLBrzgFw4itO-2be3fjWLV8-nO10c1tNOcYGa9rjBG1qRWedNqdpHEk9pvlFV-FooLUWvCV7ps4SDKAL4nRVKvxsJxjgSOo6kHatLTeRi6pzKK2ay3-N1tBkBRIf0DoF1xmg2ouEkPOstIuBOCVr2xBkfG0aGfRmCyr9W9-uhSCSiKAZ3yslR89-yBuYQNZEI8qEdS9UDsjNTZ5u-dByRm2IXmvA2Fh05vWtQGHs5-9wmO7OTqsfNmqx_y2hcPn1gtVvoJiUYkMIzlPRDluzLYWUaEZTn2t3QhHJWXfYXz5Z11VcY03wzIFzIm_1eENytis8RHHycEtBTJ3pxU_1Q",
+                "width": 3120
+            }
+        ],
+        "place_id": "ChIJ03BjpHTI5zsRQeJWVfksHN4",
+        "rating": 4.4,
+        "reference": "ChIJ03BjpHTI5zsRQeJWVfksHN4",
+        "scope": "GOOGLE",
+        "types": [
+            "mosque",
+            "place_of_worship",
+            "point_of_interest",
+            "establishment"
+        ],
+        "user_ratings_total": 62,
+        "vicinity": "4V5V+C97, Alwin Nagar, Yadav Nagar, Chandivali, Powai, Mumbai"
+    },
+    {
+        "business_status": "OPERATIONAL",
+        "geometry": {
+            "location": {
+                "lat": 19.0992925,
+                "lng": 72.88833629999999
+            },
+            "viewport": {
+                "northeast": {
+                    "lat": 19.10064237989272,
+                    "lng": 72.88968837989272
+                },
+                "southwest": {
+                    "lat": 19.09794272010728,
+                    "lng": 72.88698872010728
+                }
+            }
+        },
+        "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/worship_islam-71.png",
+        "icon_background_color": "#7B9EB0",
+        "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/worship_islam_pinlet",
+        "name": "Masjid Darul Huda (Ahle Hadees)",
+        "photos": [
+            {
+                "height": 1872,
+                "html_attributions": [
+                    "<a href=\"https://maps.google.com/maps/contrib/100058304842983450418\">Md barkat Ali</a>"
+                ],
+                "photo_reference": "ATKogpe0vV4NvVY4yCzGJWGLQzCvNbE0ciC72btY_GQnYUBjaeURp2PxsiIZ_HIBJUoVJD3EadkygoOpx4Stm9xxGKZSgj28P3p6k6Q3Jv_ra2ZbGX6J24C-JRfiMz3wWFyLWeNwFCNK8MnnAfC4BoDUEjihigxhR4GCxDGjnyIsM6kVcRvGsrRWvM0tuby_V8ST-9R6i05tqE9n7Kjr4mG6jQDYZwep_DwddlV729RTvZas-TZ0vBJa4IJ5KFT8Gbg69HePKJGdrYuCZ0IwaAZmwe4zMehDUyMfd-n5I4Wlmny7m6JFmYRq793MW7DFH9EkAYPLcYsjD6yb7EFm6sMD2X4jFX4cBNA7Qsf7h5UgPUIpUyTnqKbg2-Bp92w71Di8JHCLZzKgddTl9rISB_LYc112BKDjY6OwmwJcmPlpaIyh0NOC65XqLvt0dtm7yMcI2_NPezUnAI5kEZjC8lN70roRRMUKTExJf-FOzYccjzdyv2BOw_UjMu_NH_fGn38490W_4bbHUAScMrWHO9VRaWEAAhKMosobiEpHBuNwZf6qUdn0GSKIzJwzHR95MuqaDwao3jNN",
+                "width": 4032
+            }
+        ],
+        "place_id": "ChIJE8YBCXDI5zsRT61urScSJJQ",
+        "plus_code": {
+            "compound_code": "3VXQ+P8 Mumbai, Maharashtra",
+            "global_code": "7JFJ3VXQ+P8"
+        },
+        "rating": 4.8,
+        "reference": "ChIJE8YBCXDI5zsRT61urScSJJQ",
+        "scope": "GOOGLE",
+        "types": [
+            "mosque",
+            "place_of_worship",
+            "point_of_interest",
+            "establishment"
+        ],
+        "user_ratings_total": 96,
+        "vicinity": "C.S.T. No. 362/A, Serve No. 34 Hissa No. 1, Mohali Village, Nehal Compound, Lokmanya Tilak Nagar, Saki Naka, Mumbai"
+    },
+    {
+        "business_status": "OPERATIONAL",
+        "geometry": {
+            "location": {
+                "lat": 19.0738727,
+                "lng": 72.8763651
+            },
+            "viewport": {
+                "northeast": {
+                    "lat": 19.07528097989272,
+                    "lng": 72.87773412989273
+                },
+                "southwest": {
+                    "lat": 19.07258132010728,
+                    "lng": 72.87503447010728
+                }
+            }
+        },
+        "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/worship_islam-71.png",
+        "icon_background_color": "#7B9EB0",
+        "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/worship_islam_pinlet",
+        "name": "Masjid E Jamia Tur Rishad ahle hadees Masjid",
+        "photos": [
+            {
+                "height": 1836,
+                "html_attributions": [
+                    "<a href=\"https://maps.google.com/maps/contrib/115168793417199358285\">A Google User</a>"
+                ],
+                "photo_reference": "ATKogpemLfgK4i2pz60fbIvcfgyiQAYoFl9UGFqmioFPDDh6-9M73NXKN4iZ51LG_mYODh_3SBepQ6rdBfqYHbFWHs8s9qpUAOUmy0_2xdIoLhH9s9ajdxsnz1Swd5BgKOdlAVfiYw07Hq1HT0v9Jt4oR-zKXmKLjmbT1fTV5KWwfWjj8U8FVab_Q8JgKANdV_THa4Z_o4SPwLpaOuhxCI6hQET8f5WgA_qYdQn5sclKqriA39xm3aW7agNkVNDfi6lvyUahj52_4jk12Dk6PaCUDrWx6PxNYLY0taiNbibWsetp7Uh2MAPLcqyqg5aZq-D_BVi35OowT1tftyDOM1ExWJkEjVp2zlAj185czyMmw5hxP-U_j4BjiJnt4AKoey6QBA44TA_dmIaJRwTX0g1pI54WYph8PTzKTw0aR61VRuLix-FoV-DLsX5gluS5itrW_om_0OzyvQfiT2_FjYAn7lTs-ktqST3Jqfl1Vt_xBxdezjTYuvPCkH83lVutEMpPCAPkA3ACQ7FXnbz3qxjx0Vr-LSzswiZeu7FXAWJ_-4jc1rPNhUoywFZ0LaCnQ2M0KOL8y2Pv",
+                "width": 3264
+            }
+        ],
+        "place_id": "ChIJIaIVXI3I5zsRDJCbc9dxchU",
+        "rating": 4.9,
+        "reference": "ChIJIaIVXI3I5zsRDJCbc9dxchU",
+        "scope": "GOOGLE",
+        "types": [
+            "mosque",
+            "place_of_worship",
+            "point_of_interest",
+            "establishment"
+        ],
+        "user_ratings_total": 15,
+        "vicinity": "3VFG+HG5, Ambedkar Nagar, Kurla West, Kurla, Mumbai"
+    },
+    {
+        "business_status": "OPERATIONAL",
+        "geometry": {
+            "location": {
+                "lat": 19.0631703,
+                "lng": 72.8565636
+            },
+            "viewport": {
+                "northeast": {
+                    "lat": 19.06453637989272,
+                    "lng": 72.85794477989273
+                },
+                "southwest": {
+                    "lat": 19.06183672010728,
+                    "lng": 72.85524512010728
+                }
+            }
+        },
+        "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/worship_islam-71.png",
+        "icon_background_color": "#7B9EB0",
+        "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/worship_islam_pinlet",
+        "name": "Masjid Rahmania,Ahle Hadees",
+        "photos": [
+            {
+                "height": 1840,
+                "html_attributions": [
+                    "<a href=\"https://maps.google.com/maps/contrib/112064861494083935144\">noor Shaikh</a>"
+                ],
+                "photo_reference": "ATKogpf3uAfHZVuhcVDr_2x13PYF1-YUdW3kAtfdXBY5pz3MY4QXzI_nj-01jjZ04QOtQhIQSG4uon6uHV3a35j8JJ4iBWrdAhmo-daqDV_lO6CG9mDrXrEU1tzdYjHNkrjuoPENE0xNf9EUOmVMWEKFKbKyWCqbltg39pCy3kKjoGSnMAqBUf6pUKtjIFgf8vwprQuqLINYMKyG85rMppeU7mBZ4bISFxqZdYi_45D3gkF0vBhPQjA3d4HdnsrUWdFJoSKTFtoJefDJ-55oYkoR9geEwX9u27UboESpw3j7oQ9dBligODTN3g1rRU5-HuXls5iJV0W1z4AbucEpmO4HQcPVmD9f73-PAsiIB6f_8-SBr46W0SJtRz9pRJnqLPgaD3AFzPjfIuJ760txvHIphH_TFKpse43rcKxWFLytlY23Tij2F_1mxDl1cbeiRrfK9FqmwrpH9PZhAx8yMVF96ouo5hAeHrJQICK204KNQ1ipWwqOyTOAAXwaVyS6iXcawmzU7FS6GqtULa2VDNYOUl2AsAEhz1TR_gKGnx65WdmyI-AImPGbjRBTYiRFwWOWcfqJ9wIL",
+                "width": 4000
+            }
+        ],
+        "place_id": "ChIJ9UORJ-HI5zsROwL6N_iTYdw",
+        "plus_code": {
+            "compound_code": "3V74+7J Mumbai, Maharashtra",
+            "global_code": "7JFJ3V74+7J"
+        },
+        "rating": 4.6,
+        "reference": "ChIJ9UORJ-HI5zsROwL6N_iTYdw",
+        "scope": "GOOGLE",
+        "types": [
+            "mosque",
+            "place_of_worship",
+            "point_of_interest",
+            "establishment"
+        ],
+        "user_ratings_total": 46,
+        "vicinity": "2, G Block BKC, Patthar Nagar, Bharat Nagar, Bandra East, Mumbai"
+    },
+    {
+        "business_status": "OPERATIONAL",
+        "geometry": {
+            "location": {
+                "lat": 19.0437166,
+                "lng": 72.84729729999999
+            },
+            "viewport": {
+                "northeast": {
+                    "lat": 19.04501167989272,
+                    "lng": 72.84865267989272
+                },
+                "southwest": {
+                    "lat": 19.04231202010728,
+                    "lng": 72.84595302010727
+                }
+            }
+        },
+        "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/worship_islam-71.png",
+        "icon_background_color": "#7B9EB0",
+        "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/worship_islam_pinlet",
+        "name": "Masjid Muhammadi Ahle-hadees & Madrasa Islamia",
+        "photos": [
+            {
+                "height": 3456,
+                "html_attributions": [
+                    "<a href=\"https://maps.google.com/maps/contrib/100305261110407178218\">SHAKIL MOMIN</a>"
+                ],
+                "photo_reference": "ATKogpeBTjdZEB-JDLltOwDuS8evH9T3L4q03tNmrCH4PUI0jGU0E_kcihCO8JExcteLNe5kZryS9wO1_6LbakdnRJZZm5xuutNTXqidCKLcYtf2NZv8CbrdccEwUSIgS9XHp_nU7WUh2mafWYuk2AciQGQGqku4Q7twdC7tj45lZbm3VYf_Xc0IfLebnESdv_4N7FuHwYoageAg99Yw9h3HyIJkHD8xqDjEklidiYW5heAWE5UfVza8rT8Ok8o8JkzKPBFOYtKsziP6v5zrcYA7_VSFwRecpfaDTYfndPkNKTYLyLcDWJqnHeBV7H-rSUtSQ6GT1lSNlK87Iq8wCRA5brxwWeMG6le-OTq7gI305LEL3IPcwd4vknnMuKbgEc2uaFhZgnYTXe8ARnH-ovV78ZpJ_VowfP_m5zb7xx2hGrlJrlkSd2pBQUX_52kTY7ZAsjU7u5ehjZsFgAAHh-EhtBfqw0xRSeNAdNEUbj8hOMq_rwdCYxxXubkLSKlh_8NeWPa-vvU6NwBm8c0fVOPSO5QGZxdd7TXXzMKkIHYaE-izZk84LCruAdyWgfxK8dqG7Bq1aByY",
+                "width": 4608
+            }
+        ],
+        "place_id": "ChIJsf18FinJ5zsRAXjFf94Issw",
+        "plus_code": {
+            "compound_code": "2RVW+FW Mumbai, Maharashtra",
+            "global_code": "7JFJ2RVW+FW"
+        },
+        "rating": 4.3,
+        "reference": "ChIJsf18FinJ5zsRAXjFf94Issw",
+        "scope": "GOOGLE",
+        "types": [
+            "mosque",
+            "place_of_worship",
+            "point_of_interest",
+            "establishment"
+        ],
+        "user_ratings_total": 69,
+        "vicinity": "Jaleel Compound Ahl-e-hadees masjid, Dharavi Main Rd, Navrang Compound, Dharavi, Mumbai"
+    },
+    {
+        "business_status": "OPERATIONAL",
+        "geometry": {
+            "location": {
+                "lat": 19.056396,
+                "lng": 72.84394700000001
+            },
+            "viewport": {
+                "northeast": {
+                    "lat": 19.05770702989272,
+                    "lng": 72.84532877989272
+                },
+                "southwest": {
+                    "lat": 19.05500737010728,
+                    "lng": 72.84262912010729
+                }
+            }
+        },
+        "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/worship_islam-71.png",
+        "icon_background_color": "#7B9EB0",
+        "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/worship_islam_pinlet",
+        "name": "Daar-E-Arqam Ahle Hadis Masjid",
+        "opening_hours": {
+            "open_now": true
+        },
+        "photos": [
+            {
+                "height": 4624,
+                "html_attributions": [
+                    "<a href=\"https://maps.google.com/maps/contrib/110372763116268865838\">A Google User</a>"
+                ],
+                "photo_reference": "ATKogpePz_xh3AkPJpc3PJPSBHiH2fYWHRmEqjwWfh7X0xOvx_7FwMP8bfgtEN1MEQ0fX0N6a1mAqii3Dss8hUSr2-eWCrcjDssVBTeg2wyWWt0B9t-Bj2CrcqIN792k7n1kHRPyA8hnILAE9ubEo-HgrfrJiUIjsprKjv4dP6XS4YvnsGB_tNy_8cCQdzBZgLw09NJxkd2xq4D6zNMl46k2omAP_BDwZAMety4rbEd7ofAVEsClnKMeZWgVKavpup3LBc7cn1PB77-FfsWP4n5ITH7QQpe6n_4mi1gdjnGqUelbvsjuz8hn5TBAjB5T5vVx0ozCKzJ8uFrelP-I7osQhtda_VBM-OUg3ceASV58NjS9EVtv94v5ik-KMUmJDzuk0ysVOojTp42ZNPwf-4DpVTPdOOirQoszZfsyEEB-7mkGxN9yHd5yPewjyqMumdvTpg0Z1uEZcGrS3jMHcbC5eoj-qvyUiFNSaP1ywUs-N2vKesyl_6vymuiq3cvjIavyO9ToeLQqYsXBJ9S_YeU1eIMkOO1c3sLuSUPAqlWXlRpjCzCfor5mNuextKIdLygDPSpBDg",
+                "width": 3472
+            }
+        ],
+        "place_id": "ChIJa7lfSSLJ5zsRLse9ZbSzrLo",
+        "plus_code": {
+            "compound_code": "3R4V+HH Mumbai, Maharashtra",
+            "global_code": "7JFJ3R4V+HH"
+        },
+        "rating": 4.6,
+        "reference": "ChIJa7lfSSLJ5zsRLse9ZbSzrLo",
+        "scope": "GOOGLE",
+        "types": [
+            "mosque",
+            "place_of_worship",
+            "point_of_interest",
+            "establishment"
+        ],
+        "user_ratings_total": 28,
+        "vicinity": "Transis Camp, near Bandra Court, Bairam nagar, Bandra East, Mumbai"
+    },
+    {
+        "business_status": "OPERATIONAL",
+        "geometry": {
+            "location": {
+                "lat": 19.0784711,
+                "lng": 72.8747874
+            },
+            "viewport": {
+                "northeast": {
+                    "lat": 19.07984992989272,
+                    "lng": 72.87609022989271
+                },
+                "southwest": {
+                    "lat": 19.07715027010727,
+                    "lng": 72.87339057010726
+                }
+            }
+        },
+        "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/worship_islam-71.png",
+        "icon_background_color": "#7B9EB0",
+        "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/worship_islam_pinlet",
+        "name": "Ahle hadees masjid (Masjid e umar)",
+        "photos": [
+            {
+                "height": 4032,
+                "html_attributions": [
+                    "<a href=\"https://maps.google.com/maps/contrib/108219090896666564936\">A Google User</a>"
+                ],
+                "photo_reference": "ATKogpfxV9Zm0v_2aTURuFw0Ep-JOqjWiVj_lMSoKu0XQuy__4R76JLiaYECigd3FWHVDbMOnY46GbpMaGalhvM6tS9bNjJ5ZYwVyI4GblEcHDLXGlXNxen5JvKynf2NtXD6vnwhXcUInpNHhczI38caJ5fJw2M5mnt9KVsJ_aLhDrDDLknhhkkCyKM4PwvVNYAGGrzOqXUn7CDudSVzybQUQDWHSadWR-8Mr1Hd7J5ZCpyXYUhJ9KD9AhlfHDIraAWpqI79LZ9UGy40KsCopeTLur5Tg7GF5F-fTL838oyGlrEJs63HFAiHh7d-f2NRT9jVFnIVPpvn5clQZRd3vMpEOdXaqLzQhTIdgLuZMh6SG-rwgdH-xuUAPUdbWuJ5t8BIVPg7sfYOMHisthnk22iVcGqEvmeOL-iITAF-uJB7poW0JUHTdYjM6CKgBKOOQtxD5YiV9Lx0v-Qb_av7OJvNYdHVropiFJDOl3uzILhqejCPiHxzIzToNEu48N9H8MJHwHHJxzZExHXkVuhaUBaf-FwSilo0oimmVGj_e7Vj8hTFXUSy7W0u9UY26yGpbOe9RufASylj",
+                "width": 1816
+            }
+        ],
+        "place_id": "ChIJMVEt6obJ5zsR4po4j5QZNoM",
+        "rating": 5,
+        "reference": "ChIJMVEt6obJ5zsR4po4j5QZNoM",
+        "scope": "GOOGLE",
+        "types": [
+            "mosque",
+            "place_of_worship",
+            "point_of_interest",
+            "establishment"
+        ],
+        "user_ratings_total": 3,
+        "vicinity": "3VHF+CV5, Kolivery Village, Shastri Nagar, Kalina, Kurla, Mumbai"
+    },
+    {
+        "business_status": "OPERATIONAL",
+        "geometry": {
+            "location": {
+                "lat": 19.0626537,
+                "lng": 72.90491519999999
+            },
+            "viewport": {
+                "northeast": {
+                    "lat": 19.06410607989272,
+                    "lng": 72.90629507989273
+                },
+                "southwest": {
+                    "lat": 19.06140642010728,
+                    "lng": 72.90359542010728
+                }
+            }
+        },
+        "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/worship_islam-71.png",
+        "icon_background_color": "#7B9EB0",
+        "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/worship_islam_pinlet",
+        "name": "Masjid And Madarsa Ahlehadees",
+        "photos": [
+            {
+                "height": 2628,
+                "html_attributions": [
+                    "<a href=\"https://maps.google.com/maps/contrib/100773836125326466824\">ismail khatri</a>"
+                ],
+                "photo_reference": "ATKogpdj9ozixoIhlIskkzRhhdDql_Ro-RIz2mUNGpPbJQEIpgFzKpIuyIpsftzGKVW_m4THgVZvhtjQlx5Lvk21Zsq8-N7PGXmpAaNpjZjoCXBHru1zystGLon8Cuj8bA7orRcYpufu6FB9lVtYFiLK1-ifj1hhvk-E3ESWwVzZYrT1_s4KLfEjv_laSQCUdBAs1YLcED9g5PgvMoju3vtv-9dPuBBBkfm81nMr6DhXyasDX_nyM1sNyyMEewEyr40p2GRR-ClqcUfGxNgivR7MtGLpOtHCl0DgPB6d16znQXpJkR65vmCX5jyN80U5CL9it0W8MLLFzIPsE887J8WeuLiO_UePu8o2im_UFpyBy_P56AuylFiPZJRJ1R2bOSyiz8ySQpg97_NMQzdCCleUEqBqrvUzQUl_Vc-7a1A_cxcz8C-LvlfbqL39YZyVLTyQ4PyNllZGOlMTq3bQO-_FkBHBwpbMBM1Pr3ifKcrnE7L_axScIakYpSgTt7ovOwbcnTS4nk7K1TxZ3wfRdEBCXzjizwk98t-UPnEL3YVWuQsLeJqkPN55I6ceouQUiuRLFF97uUT2",
+                "width": 4672
+            }
+        ],
+        "place_id": "ChIJdfn7zBjG5zsRa69BjTr7szw",
+        "plus_code": {
+            "compound_code": "3W73+3X Mumbai, Maharashtra",
+            "global_code": "7JFJ3W73+3X"
+        },
+        "rating": 4.8,
+        "reference": "ChIJdfn7zBjG5zsRa69BjTr7szw",
+        "scope": "GOOGLE",
+        "types": [
+            "mosque",
+            "place_of_worship",
+            "point_of_interest",
+            "establishment"
+        ],
+        "user_ratings_total": 36,
+        "vicinity": "Muhammadi Chawl, P. L. Lokhande Marg, Chembur West, Rahul Nagar, Chembur, Mumbai"
+    },
+    {
+        "business_status": "OPERATIONAL",
+        "geometry": {
+            "location": {
+                "lat": 19.058402,
+                "lng": 72.8758163
+            },
+            "viewport": {
+                "northeast": {
+                    "lat": 19.05969922989272,
+                    "lng": 72.87789425
+                },
+                "southwest": {
+                    "lat": 19.05699957010728,
+                    "lng": 72.87512364999999
+                }
+            }
+        },
+        "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/worship_islam-71.png",
+        "icon_background_color": "#7B9EB0",
+        "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/worship_islam_pinlet",
+        "name": "Ahle Hadees Masjid Quresh Nagar",
+        "photos": [
+            {
+                "height": 8000,
+                "html_attributions": [
+                    "<a href=\"https://maps.google.com/maps/contrib/104578517927079158313\">MUSHTAQUE SAMI</a>"
+                ],
+                "photo_reference": "ATKogpfzBD5-sziW-i5wVFHlLZ8zW_nmszhSWB1W7sQS3f0FTfY_b5bwKHAky29LOizyrPCnuAQha7SSHw832xT1z84I48hHt1iuLAgv3NNqcsqlCHcPwTcKR1bN-CxCBdiHIdviztbMeyBF0snfokUhDbbRNh-x-ybuPhzHFRMbimwAEHEZ5DXYax72IAGvOJQgGwhd5_4BzGX8EfdeMLvs9U-T2aLyVBrcJJEKLZDG2x4XKqTVrSdaCLf_tS6cF-LWWEoWJuMyIgLNGt2rwWYhOw9yLpSfPmu6cjwvawmF59RIHcYdFiw7rhmVlJU3RCpO_yFyvbXbeP8Hj5sjohGP6EMvGAizzT_uc6BXd0mezPUhsHnb8KSqek2hFQxPTQqu84-GN_ORQQDbffp40saw9IBNm4JpladW7djZdnzBsczHA2hkbPuufDdMkZrxUZnlvEIIoo_VXHqyldYx7AnEVIumolisZ-zPAarz3EfpBLY68DN4QSXSh5ynYSp49u3vvTYSj4lJ_9p252qDjY0ih8pbqCZLpkcle-Yb5o7zwb7GodSEtky0ydGyiDJMr7ynMlZkdaw0",
+                "width": 6000
+            }
+        ],
+        "place_id": "ChIJ18OcFCPJ5zsR24VGgeCl1lM",
+        "rating": 4.3,
+        "reference": "ChIJ18OcFCPJ5zsR24VGgeCl1lM",
+        "scope": "GOOGLE",
+        "types": [
+            "mosque",
+            "place_of_worship",
+            "point_of_interest",
+            "establishment"
+        ],
+        "user_ratings_total": 14,
+        "vicinity": "3V5G+988, Prem Nagar, Qureshi Nagar, Kurla, Mumbai"
+    },
+    {
+        "business_status": "OPERATIONAL",
+        "geometry": {
+            "location": {
+                "lat": 19.0274361,
+                "lng": 72.8741636
+            },
+            "viewport": {
+                "northeast": {
+                    "lat": 19.02876332989272,
+                    "lng": 72.87545267989272
+                },
+                "southwest": {
+                    "lat": 19.02606367010728,
+                    "lng": 72.87275302010728
+                }
+            }
+        },
+        "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/worship_islam-71.png",
+        "icon_background_color": "#7B9EB0",
+        "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/worship_islam_pinlet",
+        "name": "Jama Masjid Ahle Hadees Wa Madrasa Salafia Darul Uloom",
+        "photos": [
+            {
+                "height": 3000,
+                "html_attributions": [
+                    "<a href=\"https://maps.google.com/maps/contrib/109078443942938622892\">Shaikh Rafiullah</a>"
+                ],
+                "photo_reference": "ATKogpfsi9gwzCx8KHmvIJEhLu-fEQDx0p8QcWgJ_VjhaTN8qgYjJNw226e5uyKF2l4cwi8rbf9vrZ18WAmXFfPp-VRMpVD1MSv14pBBcwNYU4jSEsQ0BMdhMMAoXK4hnC5Mwwu9jemwLlesk0vrA_WTJ1sXxnyph2-JSDtM2kXmdO5xr0AQLZkv1zD649bJYX2svjAXr5GNbnEguEYdieufctFkSYiPP_p7jvyBxmn48PLtAwhhAQh5eKjsDROkrczufgbAwn1XAqFplmiz52ABT7uuePyRG0pJiv2dJqyEvo4rMjI7k2WW0IQWYt7kEOGh2MWh9VL0poz_3akAs0ACuggES8UqQofRgs5lUp0lNYUmEVZ5G5DoD69F1BfeTHcGdPTOkEBs1xVt_r-qhVy49fTFoi2T8pep1A1UWdmrZGl4B4o-LX5JG8lV8GfQhZf9JOe1y7imBX_yHNfck3Mm_bf3XaBS6sW_V4k4PXbSySmV58FKeIMVRw8JcadH2Vfh9SVJMZSw-hFIZVDojyzpCsfsfuecwMWx-HkuneWjrzT44FakKsmNY5NVCohLO8nDZKeS7eqB",
+                "width": 4000
+            }
+        ],
+        "place_id": "ChIJq6E40qPP5zsRHTeyc1N4py8",
+        "rating": 4.8,
+        "reference": "ChIJq6E40qPP5zsRHTeyc1N4py8",
+        "scope": "GOOGLE",
+        "types": [
+            "mosque",
+            "place_of_worship",
+            "point_of_interest",
+            "establishment"
+        ],
+        "user_ratings_total": 26,
+        "vicinity": "2VHF+3G9, Salt Pan Rd, Bharatiya Kamala Nagar, Antop Hill, Mumbai"
+    },
+    {
+        "business_status": "OPERATIONAL",
+        "geometry": {
+            "location": {
+                "lat": 19.2417539,
+                "lng": 73.1205322
+            },
+            "viewport": {
+                "northeast": {
+                    "lat": 19.24311682989272,
+                    "lng": 73.12190487989272
+                },
+                "southwest": {
+                    "lat": 19.24041717010728,
+                    "lng": 73.11920522010728
+                }
+            }
+        },
+        "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/worship_islam-71.png",
+        "icon_background_color": "#7B9EB0",
+        "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/worship_islam_pinlet",
+        "name": "Jama Masjid Ahle Hadees (Ladies Prayer Room available)",
+        "photos": [
+            {
+                "height": 3090,
+                "html_attributions": [
+                    "<a href=\"https://maps.google.com/maps/contrib/118335377830834990037\">imran d</a>"
+                ],
+                "photo_reference": "ATKogpf4mPZ0n7lqSU01niSS8HSohrptVcN2OBNcowCau57KElEaOrgIde3GF256gX6whUWidNC7ht94lL3wWqmKItb9up7VHwGnnIFLz4aZLNi3rao2DZh_31HFjKWO-7yIyR2TA4wUc7EZLv91LFYn1Vt7fOg-TxNhUTxD7f2D7kxl3xOUyuor54ULlxng7veRQ-GZItZ82Q2TXwAi8Of0VgEeWgZvbLZfxzpNdpwtdCjA7hKMwZqzuvruhhAAJd-TG1sJm67J0K8x-xQbedeVaR-6MDf0KoyYe7buBx0jWxy6z9qcPtrHKoMXtVj_22OUrOZGJ83i_AulWcU8rjUYd7kp00Y-DQKorE6V37vxtdCK2F8-XSmvD1t0tNI4R3gIA1cxLzcXfyDtrGpDmg1vBFtYRetGF3tJ3mvnIWBP38a-tf7x0VIfnVmuF_d6wGAKZiz6lcbwQEUetPvZMZ6ZwUawl0ui-acJWwOhZJeUD-u1OAvbdrX3yPGbWPzDxHM9zpy7RVKKxg5VsunPFu-bvIdJ7oHYxCuTXEwk2cZ_PMvT-GCOaWW6my2aIKJlqSF3QOBTLekT4nGjqw",
+                "width": 2776
+            }
+        ],
+        "place_id": "ChIJMUE3n9mV5zsR7QsSPqMaYCE",
+        "rating": 4.7,
+        "reference": "ChIJMUE3n9mV5zsR7QsSPqMaYCE",
+        "scope": "GOOGLE",
+        "types": [
+            "mosque",
+            "place_of_worship",
+            "point_of_interest",
+            "establishment"
+        ],
+        "user_ratings_total": 114,
+        "vicinity": "64RC+P63 Gafoor, Reti Bandar Rd, Don Chowk, Ghaas Baazar, Kalyan West, Kalyan"
+    },
+    {
+        "business_status": "OPERATIONAL",
+        "geometry": {
+            "location": {
+                "lat": 19.147227,
+                "lng": 72.8395422
+            },
+            "viewport": {
+                "northeast": {
+                    "lat": 19.14854537989272,
+                    "lng": 72.84085647989272
+                },
+                "southwest": {
+                    "lat": 19.14584572010728,
+                    "lng": 72.83815682010729
+                }
+            }
+        },
+        "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/worship_islam-71.png",
+        "icon_background_color": "#7B9EB0",
+        "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/worship_islam_pinlet",
+        "name": "Masjid-E-Ahle Hadees (Mohammadiya Masjid)",
+        "photos": [
+            {
+                "height": 3840,
+                "html_attributions": [
+                    "<a href=\"https://maps.google.com/maps/contrib/106468963770350302953\">shaikh waliullah</a>"
+                ],
+                "photo_reference": "ATKogpcypIaftrcbABkdO9VjBbEJi39fxDd7Z8XKUSzkhXl_mSEnGVwjslsCL0pe78NT5q0QUD0ufVUNn5AWUzLXMBumsZcRG2iFY7PDfKUAhBrCZXjbBhBd83_xNc2CD8gdhKVMcKLzwAilGrfgzwclBrw3TfTJrtqcS7ZE9Qj_9UGhrW7vASXEjVbFqqQ2YteWMm2GtutN-QPJvWTCFmJd3TYNjs6mlffRkyiYzC7LTDJ818-oQskUq0ekNR8lw2BmI5yFEXF0SzXE4DeSeFoHKdlUGop7UOx9TPzEvDjrfJgXmTsgyIIH6QCKISYrHO8oZd7fD9BFkHd61qAD7Cfa00nPv6YFnlCI5biPgt537fEWV23-yq0K8ZIwT3y1nLM4FMUydBhNKcUcH68S5LE26Eei0XuPXsNIECRaUihnlbr0eab8pZzQ3jMypBvrEXjtKiF37_6J7EjFWvNezfxJX52YiePT_0fwYvULT1zgfl_8UJoGs0WZLJqOCYUxF0kS_dd-OAkpnR-azMpKEomjOaSk8QpptdH23sawqNKjCIGDa2G1xAXflCgXKjFsHbLI0_E51P18v7Z8qA",
+                "width": 2160
+            }
+        ],
+        "place_id": "ChIJB4vZbhe35zsRUl5nFpOWHh8",
+        "rating": 4.8,
+        "reference": "ChIJB4vZbhe35zsRUl5nFpOWHh8",
+        "scope": "GOOGLE",
+        "types": [
+            "mosque",
+            "place_of_worship",
+            "point_of_interest",
+            "establishment"
+        ],
+        "user_ratings_total": 10,
+        "vicinity": "4RWQ+VRV, opp Garib Nawaz Hotel, Kadam Estate, Gulshan Nagar, Oshiwara, Jogeshwari West, Mumbai"
+    },
+    {
+        "business_status": "OPERATIONAL",
+        "geometry": {
+            "location": {
+                "lat": 19.1623266,
+                "lng": 72.9352964
+            },
+            "viewport": {
+                "northeast": {
+                    "lat": 19.16368832989272,
+                    "lng": 72.93661072989272
+                },
+                "southwest": {
+                    "lat": 19.16098867010728,
+                    "lng": 72.93391107010727
+                }
+            }
+        },
+        "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/worship_islam-71.png",
+        "icon_background_color": "#7B9EB0",
+        "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/worship_islam_pinlet",
+        "name": "Jama Masjid ahle hadees madarsa talimul islam",
+        "photos": [
+            {
+                "height": 1080,
+                "html_attributions": [
+                    "<a href=\"https://maps.google.com/maps/contrib/115800620275870194395\">Engineer Log</a>"
+                ],
+                "photo_reference": "ATKogpey43iH_jlr7S7ukthErJMS4EEi_H1b_kgMqNrfk5rz91tgpsSrXJgTH81tQpkhTq-ULCMco1N8JapKPQU0V1-AL3ey8wZwFlWn5DmE3kbf8-rPsa-e-iioCry87S0QLynKsODEw-wVzrkKKt1LIsFocaglzXTIphroH0R8A9d5AtNeB-tAXu30bD_zFFCUdZLVoLOjvUyKD5iej_qwI4eOi1QARKU6ZV1jy00rwxjiYcXViBVJ8AF6oCvUYHJzyYneWTUzXYprZhaIFIXOhavZnFRqTNhQ8R4Ebyb4V93sBwSMhXV8P5GYpzNLM0q9P9XEpPFNv4BwvLcLCPQa_YJDV0OHFTlY1lp7fDmbVTscHZpo-JSxRJjD6eAhF_uzzv9vFHD7dcxkppdlqTEqk8hfuYH2h9NyiKjuFhe0kQaeL1J33P1wd4WGbv0EGhb_1eNC6KJiYldLbLBhR9p7PvnuOW4rCTRFr9VUeLQZs6c6gpxSMwPok1yrguPGadPSe3J8rL4gKxVxQEm1IZhV_WZvUS-Zz0v1iWx2XediWobn8usyrzwjAZN5F7aK-y8bNQYnEmlE",
+                "width": 1920
+            }
+        ],
+        "place_id": "ChIJqeyt2Fy45zsR1dh7X1o-UUE",
+        "rating": 4.7,
+        "reference": "ChIJqeyt2Fy45zsR1dh7X1o-UUE",
+        "scope": "GOOGLE",
+        "types": [
+            "mosque",
+            "place_of_worship",
+            "point_of_interest",
+            "establishment"
+        ],
+        "user_ratings_total": 63,
+        "vicinity": "5W6P+W4M, Dargah Rd, Sonapur, Bhandup West, Mumbai"
+    },
+    {
+        "business_status": "OPERATIONAL",
+        "geometry": {
+            "location": {
+                "lat": 19.0399603,
+                "lng": 72.9470489
+            },
+            "viewport": {
+                "northeast": {
+                    "lat": 19.04125367989272,
+                    "lng": 72.94830622989272
+                },
+                "southwest": {
+                    "lat": 19.03855402010728,
+                    "lng": 72.94560657010727
+                }
+            }
+        },
+        "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/worship_islam-71.png",
+        "icon_background_color": "#7B9EB0",
+        "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/worship_islam_pinlet",
+        "name": "Jamiat AhleHadees Masjid-e-Aqsa",
+        "photos": [
+            {
+                "height": 3024,
+                "html_attributions": [
+                    "<a href=\"https://maps.google.com/maps/contrib/113357622444251677223\">mohd ishaque</a>"
+                ],
+                "photo_reference": "ATKogpfc9K272-u9_jYP7V229DzmU9Q7s5T_HMBGF8JIX_OR4HqBF5PZ6vVkcwiTei08FFU3WhhvHYv3M8DTh2bcruiOY7PsZRNuJtDgY-ECDX15pnGfCTTKtqtVnvMfTxt4b9adl1qS7emS7Eo2BZDK-FiZthgKNQM7I0mvfBOEoaXJdNnL0weX7KtHFKvFqMxNyBuAfyPE7OP-NnHeqdH8NL7sXotuUL3I9hIm_EtgDowCCYFwP0mlnO05YdfC7Mc0TqegPPiP4pDMWZGhvGXU0v1ATgQAxb4FhLn52rNC_-GgFUVWuFLXrcJlS6A2A7WwNYMLPispddQy1caHPkhLuGIGgzUx2Vb6sGDfXT11vq1P_22wVMSMcGupO1WUGU55mpF856am0apVidrY_cW_Y2_NfIyuIzhOJwtJ9IaX15ZhpPQncRt9XNBxiWkhAtdk1DDR76zsJ8DjUIqmYNUSgSMei8GVQbZjIm1hB5XXheZaqJTknyCGgg-9pXW8xYbeR9yCyGHsG1qtCWHL1G1KpoP36fBPNvpuA9OD8QLq8FyRmBhIqzsKYUcCLkDPrWr8zd7D1T5W",
+                "width": 4032
+            }
+        ],
+        "place_id": "ChIJ49cjoSzE5zsRQU2ebGmhurw",
+        "plus_code": {
+            "compound_code": "2WQW+XR Mumbai, Maharashtra",
+            "global_code": "7JFJ2WQW+XR"
+        },
+        "rating": 4.5,
+        "reference": "ChIJ49cjoSzE5zsRQU2ebGmhurw",
+        "scope": "GOOGLE",
+        "types": [
+            "mosque",
+            "place_of_worship",
+            "point_of_interest",
+            "establishment"
+        ],
+        "user_ratings_total": 53,
+        "vicinity": "4, MG Ramachandran Marg, Datta Nagar, Trombay, Mumbai"
+    },
+    {
+        "business_status": "OPERATIONAL",
+        "geometry": {
+            "location": {
+                "lat": 19.2289841,
+                "lng": 73.1510231
+            },
+            "viewport": {
+                "northeast": {
+                    "lat": 19.23019882989272,
+                    "lng": 73.15236482989272
+                },
+                "southwest": {
+                    "lat": 19.22749917010728,
+                    "lng": 73.14966517010727
+                }
+            }
+        },
+        "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/worship_islam-71.png",
+        "icon_background_color": "#7B9EB0",
+        "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/worship_islam_pinlet",
+        "name": "Jama Masjid Darul Huda. Ahle Hadees Masjid",
+        "opening_hours": {
+            "open_now": true
+        },
+        "photos": [
+            {
+                "height": 1280,
+                "html_attributions": [
+                    "<a href=\"https://maps.google.com/maps/contrib/115693829311057248692\">A Google User</a>"
+                ],
+                "photo_reference": "ATKogpdxQigAxNUtvuK9atdU_pG_Dnm9BTEtDipO93EtXnvXz-Bce_I6Tqaz4ZGlJf5GFkOzbMeK4Vd7cd9r7Ln8Bi1SBQKcrgEoTMTnhko44OrYnGWjhcmUfLz3dBtuApC6Tb2s7eGPIr1AmdZCZz6ddhtMaSjSp4vAtfGngim5YKy3QzrVOI9FGTLkGAy9-bCC-W-aa_ftyhw_izHjNmKuLqovAL4uVtFo_fyeamHudp8tMG0slPBqYK14whd_M456K2jOiEZNe89nPGZY9emCTfbPMXT7934T1ODkNQdyIshKoLbmf5YcJsB2wWl_OhSGvU-aLBorRX9Dj9NguuhCbmJ1jXdUURxcucUY3ThkEmKQR2fRgplFq52ntYxPknOhOfs-U4SKV68HIbQuYClaroc38S8bMY_HKAKZtv9KobrCrN16tZnIc58Jppd_kOe5savHDMrj94KQQZ8BIqOVzVUT06gWI6qL9DqshHZbLWQWs5---1JIbsObMKVX22SoPs_kJKQl0foVRFsKdKOOZlhgz8Xxs5nOu9utqC5s03t17wHS9rEAJJ9_oqBAfEFezmEvrsbAwc9jqA",
+                "width": 720
+            }
+        ],
+        "place_id": "ChIJa2y6HzmU5zsRIKxxZ4HRYPU",
+        "rating": 4.3,
+        "reference": "ChIJa2y6HzmU5zsRIKxxZ4HRYPU",
+        "scope": "GOOGLE",
+        "types": [
+            "mosque",
+            "place_of_worship",
+            "point_of_interest",
+            "establishment"
+        ],
+        "user_ratings_total": 31,
+        "vicinity": "65H2+HCR, Shanti Nagar, Ulhasnagar"
+    },
+    {
+        "business_status": "OPERATIONAL",
+        "geometry": {
+            "location": {
+                "lat": 19.2978549,
+                "lng": 73.08637089999999
+            },
+            "viewport": {
+                "northeast": {
+                    "lat": 19.29916117989272,
+                    "lng": 73.08761802989271
+                },
+                "southwest": {
+                    "lat": 19.29646152010728,
+                    "lng": 73.08491837010727
+                }
+            }
+        },
+        "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/worship_islam-71.png",
+        "icon_background_color": "#7B9EB0",
+        "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/worship_islam_pinlet",
+        "name": "Sunni Masjid wa Madrasa Hera (Managed by Jamiat Ahle Hadees Trust)",
+        "opening_hours": {
+            "open_now": true
+        },
+        "photos": [
+            {
+                "height": 3264,
+                "html_attributions": [
+                    "<a href=\"https://maps.google.com/maps/contrib/114697655999131011962\">A Google User</a>"
+                ],
+                "photo_reference": "ATKogpcds8aFowegCegOdJ_2FcQn_yT2pRwx1SASf3E5nhJJHiaF-Q_cHgZKW513fTO0QHLlAJzcTK6va8CO5QqscFggv0NC3-Vx92Q7W0KL1aM7GBYO2KYH-_xKpLB9z3CSco3Ix7aKG2f-Kaw_J-4EhVEpJn38xtOKCBjdIJgdnaIyRw9II-m1xGdeMs3sk8OlwfTWzgBNOracN_M1KSD4dc57gNZZbdpJtUPYN_vFQkGEIEvlHSEyeJXD1JqC21MokYczsTHuZ5SBHucksK4Qi8LNJsIRJmHOlr_hh3SHULF2AxLrbjyTIHPbCT394C5jQMEqgJ4NP2C82JTTnapQdMebm-6JjZnjjJt-_YZgjYksuhItl1F7Gzbb70nSaL8TQ9VJMiopefqMm7NQHmJu-TE5vVYHYlM3SoNALGo07CPEGkoPsZ-RfcESJJgJyjag92F0T9ldelnh8DVVfFnKldFTzIx9XWGnInb9h5Ex7NwBHJfsDET6vjfEWHZlfthxwqGWMsl3ua6oqXOU97CbhZGj2NeF_TqeCvgGF-WyR8ie6HaAP4c_9agPFFAerQLP9B1ZFAz5",
+                "width": 1836
+            }
+        ],
+        "place_id": "ChIJsXvjFnW95zsRmnzDPlAciA4",
+        "rating": 5,
+        "reference": "ChIJsXvjFnW95zsRmnzDPlAciA4",
+        "scope": "GOOGLE",
+        "types": [
+            "mosque",
+            "place_of_worship",
+            "point_of_interest",
+            "establishment"
+        ],
+        "user_ratings_total": 8,
+        "vicinity": "73XP+7G2, Dongari Pada, Bhiwandi"
+    },
+    {
+        "business_status": "OPERATIONAL",
+        "geometry": {
+            "location": {
+                "lat": 19.0496677,
+                "lng": 72.92486939999999
+            },
+            "viewport": {
+                "northeast": {
+                    "lat": 19.05112947989273,
+                    "lng": 72.92626807989271
+                },
+                "southwest": {
+                    "lat": 19.04842982010728,
+                    "lng": 72.92356842010726
+                }
+            }
+        },
+        "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/worship_islam-71.png",
+        "icon_background_color": "#7B9EB0",
+        "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/worship_islam_pinlet",
+        "name": "Masjid Ahle Hadees Madrasa Abu Bakr Siddique",
+        "opening_hours": {
+            "open_now": true
+        },
+        "photos": [
+            {
+                "height": 4160,
+                "html_attributions": [
+                    "<a href=\"https://maps.google.com/maps/contrib/104728930395092288028\">Masiha Clinic</a>"
+                ],
+                "photo_reference": "ATKogpeAlanZWZ1gZvMk8DCJ6EG9dKDtvmdmAAIXAX-AQvXYlPBWdtkVqObzmtRSL5XUu2L5vIOOzQ7BW8rZun_5upcZcoUrPu9D3dTOdGMEgEDuI5_AhQfx5kILdnT4G-zeeBVQ7c6ckZhNzXy2761lKS1U5pjKDvrp0aPy3V86PpDMMVffO4gZ0PBv6nENwV0zGxEfkvCXNluQ4qlmMTBcdeSeveuJz_ZU6C1NYS3jkicjnuimBJEhSknVdmOmNd14l2uyynG5E1yoQsU0dZG8Xco5EyD8DwnjdpI87svOWdAXK3axJpL8505pGjtmIprJpswMnZmj9QUKrxHuhKzwS9EyxrLMIP-FRMaIU9QAjtnmg_LUDIg7zJCmw5EU5jwXjXwnXd7uCran4orkcBkiBoD4BpHcEqlO7E9foC-ExPnzO75M8-kez880dzJuL-VDyvtsjpnacgB6rB1bKVwPPeOy6FLyWyrTnmvrcVXySBYknBzbBQ5rw8KQ5pFZRXsRa48j5HgkJQPgqGpPkMYFhAZ-_fUhjnHhyjrevKETFfWg-SX1A5UXFDUBw7oJUYAhqkRqF1iO",
+                "width": 2340
+            }
+        ],
+        "place_id": "ChIJ4XWAe3PG5zsRo660XJ-A718",
+        "plus_code": {
+            "compound_code": "2WXF+VW Mumbai, Maharashtra",
+            "global_code": "7JFJ2WXF+VW"
+        },
+        "rating": 4.1,
+        "reference": "ChIJ4XWAe3PG5zsRo660XJ-A718",
+        "scope": "GOOGLE",
+        "types": [
+            "mosque",
+            "place_of_worship",
+            "point_of_interest",
+            "establishment"
+        ],
+        "user_ratings_total": 27,
+        "vicinity": "24/B, Deonar Rd, Lallubhai Compound, Govandi East, Mumbai"
+    },
+    {
+        "business_status": "OPERATIONAL",
+        "geometry": {
+            "location": {
+                "lat": 19.0386307,
+                "lng": 72.8539188
+            },
+            "viewport": {
+                "northeast": {
+                    "lat": 19.03993142989272,
+                    "lng": 72.85534247989271
+                },
+                "southwest": {
+                    "lat": 19.03723177010727,
+                    "lng": 72.85264282010728
+                }
+            }
+        },
+        "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/worship_islam-71.png",
+        "icon_background_color": "#7B9EB0",
+        "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/worship_islam_pinlet",
+        "name": "Masjid Wa Madarsa Ahle Hadees",
+        "photos": [
+            {
+                "height": 1920,
+                "html_attributions": [
+                    "<a href=\"https://maps.google.com/maps/contrib/102765546044065932003\">Gulraiz Ansari</a>"
+                ],
+                "photo_reference": "ATKogpdUpcbZBtfX0yrX3QYgedpJyLwDBx8Vs1Q5wk7sHIKTYp1ACvzscOxpo4mDi4p4OFr_sKgRTY2MaLaPmiiHGcJlwcQ4HOu8e6zYVszQSF4dqf71H0ACgCvqs4oC-wgj8ZPoPN5NlPFkRHQsTRedP1DCZDUWuTi8X817bSUCQg65S81Xj2F7UoPCVS6ppyobOmq1o4fJeLGz94QK5D1Jo2cHeMnM7uxDtfGW9LEIO4ZuXOdsECJ6GKOjdmslOmmw0f5itfqGEfC7QOCAgw3gCBC1pcuoI-hfp2kxyszGmsxLSLYpXaNACqJ6xtMBEPqqniOTiaTzhAJ_2720_qWlJE7anVvOPWPK7QfHoj9xt5y3u5ENO73JmIbdGNr6cfDjttBL9QvRtcqYlsoEgiv-9vg_CHDJzUUWUo_L6tnAEfSrRFh4j4M2Sm2Nv7WfGD0yrnvtZYLEu2qxKWu8c8zqLTYejgrOr2bC3SfRCHQRw4DRn_bP3o28iRd_Ou4hjrwMxh-u_KnzVW-flIetxMrlzlRcuwNbW05YC6SrSgmOGYwi52NkX_NgN87NKVc4TLzQK9mtWjYs",
+                "width": 1080
+            }
+        ],
+        "place_id": "ChIJITiOGtXI5zsRetbbq59FECo",
+        "rating": 4.8,
+        "reference": "ChIJITiOGtXI5zsRetbbq59FECo",
+        "scope": "GOOGLE",
+        "types": [
+            "mosque",
+            "place_of_worship",
+            "point_of_interest",
+            "establishment"
+        ],
+        "user_ratings_total": 31,
+        "vicinity": "2VQ3+CHW, 90 Feet Rd, Muslim Nagar, RP Nagar, Dharavi, Mumbai"
+    },
+    {
+        "business_status": "OPERATIONAL",
+        "geometry": {
+            "location": {
+                "lat": 19.3088942,
+                "lng": 73.072097
+            },
+            "viewport": {
+                "northeast": {
+                    "lat": 19.31027222989272,
+                    "lng": 73.07341947989272
+                },
+                "southwest": {
+                    "lat": 19.30757257010728,
+                    "lng": 73.07071982010727
+                }
+            }
+        },
+        "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/worship_islam-71.png",
+        "icon_background_color": "#7B9EB0",
+        "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/worship_islam_pinlet",
+        "name": "Khairunnisa Masjid Ahle Hadees",
+        "photos": [
+            {
+                "height": 2322,
+                "html_attributions": [
+                    "<a href=\"https://maps.google.com/maps/contrib/109856438685461530157\">Javid Khan</a>"
+                ],
+                "photo_reference": "ATKogpcUNUBFmB_PEHrTfrX-aahZrUSPQZ0HcXw7ZTM3Kn9QUgTA7mAOEHEzSyhh7-rQUJupkeX1HPqsyAXCzej5E0u5_c-WSWkcN4_NILUpt6FKBwe2m88_SaP6b7othmOwwq9033G5YIdtDdr0P126q-G2YxxyPoG4gnWikVJzlZNgkPzHK6DsruT5Rn6103RAyekHRbHHKCh5VCJzajj72mFK59jiNTZPapLnul35D6xkQbg25PFQg4b_cZFDu0eLvHM0V848Ci5iFfzXlFqNV_StqoT80f2kODUPmfgObsLfFxnR6a87DkZCbOrwQ4yc7h56OCvEaq5Wx4UFdG7pdK9LAW2SNrFkSKTdSCX6JTry7DUwAVULPvNhnRxRY4zxm8nLhuvT5FmEi48uVexDVEzMjy-dMV8Eogr9NKBdwqbxYX5FTuoBUtF0FbhiKEzgJ0dTOjhegl2wN1w7XJPUVhNK9Ommn7NHzJNuMosf7ocZ-XEaVSFDIA11dEwTs900q-xFld5lrFoFO-pmtf1ywFxGrioDVLxkHBLd6btv-VfNGI7X1GNvIKSzehnxHziA9dSbG5Um",
+                "width": 4128
+            }
+        ],
+        "place_id": "ChIJ1URquWm95zsRAbBnwuVlpPw",
+        "rating": 4.7,
+        "reference": "ChIJ1URquWm95zsRAbBnwuVlpPw",
+        "scope": "GOOGLE",
+        "types": [
+            "mosque",
+            "place_of_worship",
+            "point_of_interest",
+            "establishment"
+        ],
+        "user_ratings_total": 43,
+        "vicinity": "835C+HQ9, Avachit Pada, Bhiwandi"
+    },
+    {
+        "business_status": "OPERATIONAL",
+        "geometry": {
+            "location": {
+                "lat": 19.1934064,
+                "lng": 72.9884692
+            },
+            "viewport": {
+                "northeast": {
+                    "lat": 19.19475107989272,
+                    "lng": 72.98985327989273
+                },
+                "southwest": {
+                    "lat": 19.19205142010728,
+                    "lng": 72.98715362010728
+                }
+            }
+        },
+        "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/worship_islam-71.png",
+        "icon_background_color": "#7B9EB0",
+        "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/worship_islam_pinlet",
+        "name": "Madarasa Ahle Hadees Masjid",
+        "photos": [
+            {
+                "height": 3468,
+                "html_attributions": [
+                    "<a href=\"https://maps.google.com/maps/contrib/114694260587978188815\">Zayd Sayyed</a>"
+                ],
+                "photo_reference": "ATKogpdc0kT9z3gjc__MKf5X_J3vMlgaWamo2payHbdGKbpvFDwQFpMbWH1Eg-o1_AXG7JfRFINXWNBxECx3Ju15OjfVoeoGjq7K8V6oo-ZZVWvF6AIqbRJNmCnQBPTLpDWhh5V9zbifrdkOSqOH9pHXRly359yIViAbQDAezGox57AiGmGa1S9A1Q4RHg8Bturr3CqGBRhrcxEbS8B9pmiSMFvGLhXbvI39M6okfFk0kceuT1Tny_cH3Z6ISHuQ8MPRq1UvxK8KeMcpnq7n0GKbyM61VctW3QnOrTQY_7MUlsom0-alfm--D8Qpi1EvFlrpx8LA-Bi688F4ssYRLQ9QX0bHWzW_IlVIpQ9frMFXP3p1dXSkkhtQmCYbyztpU18Tl6K0a2Dn7-HCDoMr979NKwaFxswpc658U3teitNl1LSqyVpbuhadps0Bn-ACOcPPlHI_reaQY92xH6pU_A60AmqoQbGcx7gKGLvfoJFN03FgQqhulk6_N3m_iBT-m_OulXau09oZkzx09HbEfJa7iruFjJFAdaXP44lg5v4e1_dWCVUJ5Kyg0VsJHBKfJR5s0f8VhVpCYABLZg",
+                "width": 4624
+            }
+        ],
+        "place_id": "ChIJJRlEvIe55zsR0HV4oVLhMcQ",
+        "plus_code": {
+            "compound_code": "5XVQ+99 Thane, Maharashtra",
+            "global_code": "7JFJ5XVQ+99"
+        },
+        "rating": 4.8,
+        "reference": "ChIJJRlEvIe55zsR0HV4oVLhMcQ",
+        "scope": "GOOGLE",
+        "types": [
+            "mosque",
+            "place_of_worship",
+            "point_of_interest",
+            "establishment"
+        ],
+        "user_ratings_total": 13,
+        "vicinity": "Abdul Hameed Marg, Kalwa West, Takoli, Budhaji Nagar, Kalwa, Thane"
+    }
+]

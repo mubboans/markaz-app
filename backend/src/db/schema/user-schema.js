@@ -7,5 +7,5 @@ export const users = pgTable('Users', {
     password: text('password').notNull(),
     isActive: text('is_active').default('true'),
     role: text('role').default('user'),
-    ...helper_columns
+    ...helper_columns({})
 });

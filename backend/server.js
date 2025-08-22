@@ -2,9 +2,11 @@ import dotenv from "dotenv";
 dotenv.config();
 import express from "express";
 const app = express();
-import { sendResponse } from "./src/utils/ReqResHelperFn.js";
+import { errorHandler, route_not_found, sendResponse } from "./src/utils/ReqResHelperFn.js";
 import non_auth_routes from './src/routes/non-auth-route.js';
+import auth_route from './src/routes/auth.route.js'
 import { testConnection } from './src/db/test.connection.js'
+import { checkHeaderToken } from "./src/utils/jwtHelper.js";
 app.use(express.json());
 
 
@@ -81,9 +83,11 @@ app.get("/health-check", (req, res) => {
 //     }
 // });
 
-app.use('/auth', non_auth_routes)
-console.log(process.env.PORT,'process.env.PORT');
+app.use('/auth', non_auth_routes);
+app.use('/', checkHeaderToken, auth_route)
 
+app.use(errorHandler)
+app.use(route_not_found)
 app.listen(process.env.PORT,async () => {
     try {
         console.log(`Server is running on http://localhost:${process.env.PORT}`);
@@ -93,11 +97,3 @@ app.listen(process.env.PORT,async () => {
         
     }
 });
-
-// export const findMosqueByArea = TryCatchBlocker(async (req,res,next)=>{
-//     // const getNominatimUrl = (area) => `https://nominatim.openstreetmap.org/search?q=${area}+mumbai&format=json&limit=1`
-//     const NOMINATIM_API_URL = getNominatimUrl(req?.body?.area);
-//     const searchRes = await axios.get(NOMINATIM_API_URL);
-//     // if 
-  
-// })
