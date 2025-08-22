@@ -1,0 +1,105 @@
+<svg id="mosqueSvg" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" width="256" height="256">
+              <!-- Background gradient -->
+              <defs>
+                <radialGradient id="backgroundGrad" cx="50%" cy="30%" r="70%">
+                  <stop offset="0%" style="stop-color:#4ade80;stop-opacity:1"/>
+                  <stop offset="100%" style="stop-color:#166534;stop-opacity:1"/>
+                </radialGradient>
+                
+                <linearGradient id="mosqueGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1"/>
+                  <stop offset="100%" style="stop-color:#d97706;stop-opacity:1"/>
+                </linearGradient>
+                
+                <linearGradient id="domeGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" style="stop-color:#f3f4f6;stop-opacity:1"/>
+                  <stop offset="100%" style="stop-color:#d1d5db;stop-opacity:1"/>
+                </linearGradient>
+                
+                <linearGradient id="minaretGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" style="stop-color:#fef3c7;stop-opacity:1"/>
+                  <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:1"/>
+                </linearGradient>
+
+                <!-- Glow effect -->
+                <filter id="glow">
+                  <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                  <feMerge> 
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+                </filter>
+                
+                <!-- Shadow effect -->
+                <filter id="dropshadow" x="-50%" y="-50%" width="200%" height="200%">
+                  <feDropShadow dx="2" dy="4" stdDeviation="3" flood-opacity="0.3"/>
+                </filter>
+              </defs>
+              
+              <!-- Main background circle -->
+              <circle cx="256" cy="256" r="240" fill="url(#backgroundGrad)" stroke="#065f46" stroke-width="8"/>
+              
+              <!-- Decorative Islamic pattern border -->
+              <circle cx="256" cy="256" r="220" fill="none" stroke="#fbbf24" stroke-width="2" opacity="0.6" stroke-dasharray="8,4"/>
+              
+              <!-- Main mosque structure -->
+              <!-- Central dome -->
+              <ellipse cx="256" cy="200" rx="85" ry="65" fill="url(#domeGrad)" filter="url(#dropshadow)"/>
+              
+              <!-- Dome outline -->
+              <ellipse cx="256" cy="200" rx="85" ry="65" fill="none" stroke="#9ca3af" stroke-width="2"/>
+              
+              <!-- Crescent moon on top of dome -->
+              <g transform="translate(256, 140)">
+                <path d="M -8 0 Q -8 -12 0 -15 Q 8 -12 8 0 Q 0 -8 -8 0" fill="#fbbf24" filter="url(#glow)"/>
+                <circle cx="3" cy="-8" r="2" fill="#fbbf24"/>
+              </g>
+              
+              <!-- Main mosque building -->
+              <rect x="180" y="240" width="152" height="120" fill="url(#mosqueGrad)" filter="url(#dropshadow)" rx="8"/>
+              
+              <!-- Central archway -->
+              <path d="M 220 360 L 220 300 Q 220 280 240 280 L 272 280 Q 292 280 292 300 L 292 360 Z" fill="#065f46" opacity="0.8"/>
+              
+              <!-- Decorative arch details -->
+              <path d="M 225 355 L 225 305 Q 225 290 240 290 L 272 290 Q 287 290 287 305 L 287 355" fill="none" stroke="#fbbf24" stroke-width="2" opacity="0.8"/>
+              
+              <!-- Left minaret -->
+              <rect x="140" y="180" width="25" height="180" fill="url(#minaretGrad)" filter="url(#dropshadow)" rx="12"/>
+              <ellipse cx="152.5" cy="180" rx="15" ry="12" fill="url(#domeGrad)"/>
+              <g transform="translate(152.5, 165)">
+                <path d="M -5 0 Q -5 -8 0 -10 Q 5 -8 5 0 Q 0 -5 -5 0" fill="#fbbf24"/>
+                <circle cx="2" cy="-5" r="1.5" fill="#fbbf24"/>
+              </g>
+              
+              <!-- Right minaret -->
+              <rect x="347" y="180" width="25" height="180" fill="url(#minaretGrad)" filter="url(#dropshadow)" rx="12"/>
+              <ellipse cx="359.5" cy="180" rx="15" ry="12" fill="url(#domeGrad)"/>
+              <g transform="translate(359.5, 165)">
+                <path d="M -5 0 Q -5 -8 0 -10 Q 5 -8 5 0 Q 0 -5 -5 0" fill="#fbbf24"/>
+                <circle cx="2" cy="-5" r="1.5" fill="#fbbf24"/>
+              </g>
+              
+              <!-- Prayer time indicator (clock-like) -->
+              <circle cx="256" cy="400" r="25" fill="#ffffff" stroke="#065f46" stroke-width="3" opacity="0.9"/>
+              <circle cx="256" cy="400" r="20" fill="none" stroke="#166534" stroke-width="1" opacity="0.6"/>
+              
+              <!-- Clock hands pointing to prayer time -->
+              <line x1="256" y1="400" x2="256" y2="385" stroke="#065f46" stroke-width="3" stroke-linecap="round"/>
+              <line x1="256" y1="400" x2="268" y2="400" stroke="#065f46" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="256" cy="400" r="3" fill="#065f46"/>
+              
+              <!-- Small decorative stars -->
+              <g opacity="0.7">
+                <polygon points="100,120 103,127 110,127 105,132 107,139 100,135 93,139 95,132 90,127 97,127" fill="#fbbf24"/>
+                <polygon points="400,140 403,147 410,147 405,152 407,159 400,155 393,159 395,152 390,147 397,147" fill="#fbbf24"/>
+                <polygon points="120,350 123,357 130,357 125,362 127,369 120,365 113,369 115,362 110,357 117,357" fill="#fbbf24"/>
+                <polygon points="390,320 393,327 400,327 395,332 397,339 390,335 383,339 385,332 380,327 387,327" fill="#fbbf24"/>
+              </g>
+              
+              <!-- Subtle text indication -->
+              <text x="256" y="480" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#ffffff" opacity="0.9">MARKAZ</text>
+              
+              <!-- Bottom decorative pattern -->
+              <path d="M 150 460 Q 170 450 190 460 Q 210 450 230 460 Q 250 450 270 460 Q 290 450 310 460 Q 330 450 350 460" fill="none" stroke="#fbbf24" stroke-width="2" opacity="0.5"/>
+            </svg>

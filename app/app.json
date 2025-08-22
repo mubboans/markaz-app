@@ -1,42 +1,40 @@
 {
   "expo": {
-    "name": "app",
-    "slug": "app",
+    "name": "Markaz App",
+    "slug": "markaz-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    "scheme": "app",
+    "icon": "./assets/images/markaz-icon.png",
+    "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "edgeToEdgeEnabled": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.markazapp"
     },
     "web": {
       "bundler": "metro",
-      "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "output": "single",
+      "favicon": "./assets/images/markaz-icon.png",
+      "publicPath": "/app"
     },
     "plugins": [
       "expo-router",
-      [
-        "expo-splash-screen",
-        {
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 200,
-          "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
-        }
-      ]
+      "expo-font",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "android": {
+      "package": "com.anonymous.markazapp"
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "49718800-5134-4baf-8242-2707af98fdc1"
+      }
+    },
+    "owner": "mubashiransari"
   }
 }

@@ -1,75 +1,305 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  TextInput,
+  Alert,
+  ActivityIndicator,
+  Platform,
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { MapPin, Plus, Search, Navigation } from 'lucide-react-native';
+import * as Location from 'expo-location';
+import { Mosque, useMosqueStore } from '@/stores/mosqueStore';
+import { useAuthStore } from '@/stores/authStore';
+import MosqueCard from '@/components/MosqueCard';
+import AddMosqueModal from '@/components/AddMosqueModal';
+import { useToast } from '../providers/ToastProvider';
+import MosqueDetailsModal from '@/components/MosqueDetailsModal';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+export default function MosquesScreen() {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [location, setLocation] = useState<Location.LocationObject>();
+  const { mosques, fetchMosques, fetchMosquesByLocation, fetchMosquesByArea } = useMosqueStore();
+  const { user } = useAuthStore();
+  const toast = useToast();
+  const canAddMosque = user?.role === 'admin' || user?.role === 'mosque_admin';
+  const [selectedMosque, setSelectedMosque] = useState<Mosque | null>(null);
+  useEffect(() => {
+    fetchMosques();
+    requestLocationPermission();
+  }, []);
 
-export default function HomeScreen() {
+  // Request location permission when component mounts
+  const requestLocationPermission = async () => {
+    try {
+      const { status } = await Location.requestForegroundPermissionsAsync();      
+      if (status !== 'granted') {
+        // Automatically fetch mosques based on current location when permission is granted
+        toast.show('Please enable location services to find mosques near you.');
+        return;
+    }
+    getUserLocation();
+    } catch (error) {
+      console.error('Error requesting location permission:', error);
+      toast.show('Failed to request location permission');
+    }
+  };
+
+  // Handle search by area name
+  const handleSearchInput = (text: string) => {
+    setSearchQuery(text);
+  };
+
+  // Handle location-based search
+  const handleLocationPress = async () => {
+    setIsLoading(true);
+    if (searchQuery.trim().length > 2) {
+      setIsLoading(true);
+      try {
+        await fetchMosquesByArea(searchQuery.trim());
+      } catch (error) {
+        console.error("Error searching mosques by area:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    } else if (searchQuery.trim().length === 0) {
+      // Reset to all mosques when search is cleared
+      fetchMosques();
+    }
+  };
+  const getUserLocation = async () => {
+    try {
+      const currentLocation = await Location.getCurrentPositionAsync({
+        // accuracy: Location.Accuracy.High,
+      });
+      if (!currentLocation) {
+        toast.show('Failed to get your current location');
+        setIsLoading(false);
+        return;
+      }
+      const { latitude, longitude } = currentLocation.coords;
+      setLocation(currentLocation);
+      await fetchMosquesByLocation(latitude, longitude);
+      setSearchQuery(''); // Clear search query when using location
+    } catch (error) {
+      console.error('Error getting current location:', error);
+      toast.show('Failed to get your location');
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.title}>Mosques Near You</Text>
+        <Text style={styles.subtitle}>Find prayer times and locations</Text>
+      </View>
+
+      <View style={styles.searchContainer}>
+        <View style={styles.searchBar}>
+          <Navigation size={20} color="#6B7280" />
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Search mosques by area name..."
+            value={searchQuery}
+            onChangeText={handleSearchInput}
+            placeholderTextColor="#9CA3AF"
+          />
+        </View>
+        <TouchableOpacity
+          style={[styles.locationButton, isLoading && styles.disabledButton]}
+          onPress={handleLocationPress}
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <ActivityIndicator size="small" color="#FFFFFF" />
+          ) : (
+            <Search size={20} color="#FFFFFF" />
+          )}
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.content}>
+        <View style={styles.headerRow}>
+          <Text style={styles.sectionTitle}>
+            {isLoading
+              ? "Loading mosques..."
+              : `Found ${mosques.length} Mosques`}
+          </Text>
+          {canAddMosque && (
+            <TouchableOpacity
+              style={styles.addButton}
+              onPress={() => setShowAddModal(true)}
+            >
+              <Plus size={16} color="#FFFFFF" />
+              <Text style={styles.addButtonText}>Add</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+
+        {isLoading ? (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color="#059669" />
+            <Text style={styles.loadingText}>Finding mosques...</Text>
+          </View>
+        ) : (
+          <FlatList
+            data={mosques}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <MosqueCard
+                mosque={item}
+                onPress={() => setSelectedMosque(item)}
+              />
+            )}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.listContainer}
+            ListEmptyComponent={
+              <View style={styles.emptyContainer}>
+                <Text style={styles.emptyText}>No mosques found</Text>
+                <Text style={styles.emptySubtext}>
+                  Try a different search or location
+                </Text>
+              </View>
+            }
+          />
+        )}
+      </View>
+      <MosqueDetailsModal
+        mosque={selectedMosque}
+        visible={!!selectedMosque}
+        onClose={() => setSelectedMosque(null)}
+      />
+      <AddMosqueModal
+        visible={showAddModal}
+        onClose={() => setShowAddModal(false)}
+      />
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  container: {
+    flex: 1,
+    backgroundColor: "#F8FAFC",
   },
-  stepContainer: {
-    gap: 8,
+  header: {
+    padding: 20,
+    backgroundColor: "#059669",
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: "700",
+    color: "#FFFFFF",
+    marginBottom: 4,
+  },
+  subtitle: {
+    fontSize: 16,
+    color: "#A7F3D0",
+  },
+  searchContainer: {
+    flexDirection: "row",
+    padding: 20,
+    gap: 12,
+  },
+  searchBar: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#FFFFFF",
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "#E5E7EB",
+    gap: 12,
+    width: 48,
+    height: 48,
+  },
+  searchInput: {
+    flex: 1,
+    fontSize: 16,
+    color: "#111827",
+    width: 48,
+    height: 48,
+  },
+  locationButton: {
+    backgroundColor: "#059669",
+    width: 48,
+    height: 48,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  disabledButton: {
+    backgroundColor: "#10B981",
+    opacity: 0.7,
+  },
+  content: {
+    flex: 1,
+    padding: 20,
+  },
+  headerRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 16,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: "#111827",
+  },
+  addButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#059669",
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 8,
+    gap: 4,
+  },
+  addButtonText: {
+    color: "#FFFFFF",
+    fontWeight: "600",
+    fontSize: 14,
+  },
+  listContainer: {
+    paddingBottom: 20,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: 40,
+  },
+  loadingText: {
+    marginTop: 12,
+    fontSize: 16,
+    color: "#4B5563",
+    fontWeight: "500",
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: 60,
+  },
+  emptyText: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: "#4B5563",
     marginBottom: 8,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  emptySubtext: {
+    fontSize: 14,
+    color: "#6B7280",
+    textAlign: "center",
   },
 });
