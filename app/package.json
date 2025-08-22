@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "EXPO_NO_TELEMETRY=1 expo start",
+    "dev-win": "expo start --offline",
     "build:web": "npx expo export --platform web",
     "lint": "expo lint",
     "android": "expo run:android",

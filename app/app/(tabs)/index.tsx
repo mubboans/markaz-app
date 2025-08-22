@@ -19,6 +19,7 @@ import MosqueCard from '@/components/MosqueCard';
 import AddMosqueModal from '@/components/AddMosqueModal';
 import { useToast } from '../providers/ToastProvider';
 import MosqueDetailsModal from '@/components/MosqueDetailsModal';
+import {  router } from "expo-router";
 
 export default function MosquesScreen() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -30,7 +31,10 @@ export default function MosquesScreen() {
   const toast = useToast();
   const canAddMosque = user?.role === 'admin' || user?.role === 'mosque_admin';
   const [selectedMosque, setSelectedMosque] = useState<Mosque | null>(null);
+   const { isAuthenticated } = useAuthStore();
   useEffect(() => {
+    console.log(isAuthenticated, 'isAuthenticated from mosque dashboard');
+    if( !isAuthenticated) { router.replace('/(auth)/login'); }
     fetchMosques();
     requestLocationPermission();
   }, []);

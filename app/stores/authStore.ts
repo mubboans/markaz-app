@@ -1,4 +1,5 @@
 import { create } from '@/utils/store';
+import axios from 'axios';
 import { router } from 'expo-router';
 
 export interface User {
@@ -30,6 +31,11 @@ export const useAuthStore = create<AuthState>((set) => ({
     await new Promise(resolve => setTimeout(resolve, 1000));
     
     // Demo credentials for testing
+    try {
+       
+    } catch (error) {
+        
+    }
     if (email === 'admin@markaz.com' && password === 'admin123') {
       const adminUser: User = {
         id: '1',

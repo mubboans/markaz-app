@@ -1,3 +1,4 @@
+import { getPrayerTimes } from '@/services/prayerService';
 import { create } from '@/utils/store';
 
 export interface PrayerTime {
@@ -13,14 +14,28 @@ interface PrayerState {
   updatePrayerTimes: (times: PrayerTime[]) => Promise<void>;
 }
 
-const mockPrayerTimes: PrayerTime[] = [
-  { name: 'Fajr', time: '05:30', arabic: 'الفجر' },
-  { name: 'Sunrise', time: '06:45', arabic: 'الشروق' },
-  { name: 'Dhuhr', time: '12:15', arabic: 'الظهر' },
-  { name: 'Asr', time: '15:30', arabic: 'العصر' },
-  { name: 'Maghrib', time: '18:45', arabic: 'المغرب' },
-  { name: 'Isha', time: '20:00', arabic: 'العشاء' },
-];
+const mockPrayerTimes = (): PrayerTime[] => {
+    const getTIme = getPrayerTimes();
+
+    const arabicNames = {
+        fajr: "الفجر",
+        sunrise: "الشروق",
+        dhuhr: "الظهر",
+        asr: "العصر",
+        maghrib: "المغرب",
+        isha: "العشاء"
+    };
+
+    return Object.entries(getTIme)
+        .filter(([key]) => key !== "midnight")
+        .map(([key, time]) => ({
+            name: key.charAt(0).toUpperCase() + key.slice(1),
+            time: String(time), // 👈 ensure time is a string
+            arabic: arabicNames[key as keyof typeof arabicNames]
+        }));
+};
+
+
 
 const getNextPrayer = (prayerTimes: PrayerTime[]): PrayerTime | null => {
   const now = new Date();
@@ -40,14 +55,16 @@ const getNextPrayer = (prayerTimes: PrayerTime[]): PrayerTime | null => {
 };
 
 export const usePrayerStore = create<PrayerState>((set, get) => ({
-  prayerTimes: mockPrayerTimes,
-  nextPrayer: getNextPrayer(mockPrayerTimes),
+
+  prayerTimes: [...mockPrayerTimes()],
+  nextPrayer: getNextPrayer(mockPrayerTimes()),
 
   fetchPrayerTimes: async () => {
     await new Promise(resolve => setTimeout(resolve, 500));
+      console.log(mockPrayerTimes,'mockPrayerTimes test');
     set({ 
-      prayerTimes: mockPrayerTimes,
-      nextPrayer: getNextPrayer(mockPrayerTimes),
+      prayerTimes: mockPrayerTimes(),
+      nextPrayer: getNextPrayer(mockPrayerTimes()),
     });
   },
 

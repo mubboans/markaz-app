@@ -392,6 +392,6 @@ export default class PrayTime {
 
 //------------------------- Export ------------------------
 
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { PrayTime };
-}
+// if (typeof module !== 'undefined' && module.exports) {
+//     module.exports = { PrayTime };
+// }

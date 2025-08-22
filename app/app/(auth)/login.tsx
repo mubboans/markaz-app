@@ -21,6 +21,7 @@ export default function LoginScreen() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [guestLoading, setGuestLoading] = useState(false);
   const { login } = useAuthStore();
   const toast = useToast();
   const handleLogin = async () => {
@@ -45,10 +46,22 @@ export default function LoginScreen() {
     }
   };
 
+  const loginAsGuest = async () => {
+     setGuestLoading(true);
+     try {
+       await login('test@gmail.com', 'user123');
+    //    router.replace("/(tabs)");
+     } catch (error) {
+       Alert.alert("Error", "Invalid email or password");
+     } finally {
+       setGuestLoading(false);
+     }
+}
+
   return (
     <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView 
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.keyboardView}
       >
         <ScrollView contentContainerStyle={styles.scrollContent}>
@@ -108,12 +121,28 @@ export default function LoginScreen() {
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={[styles.loginButton, isLoading && styles.loginButtonDisabled]}
+              style={[
+                styles.loginButton,
+                isLoading && styles.loginButtonDisabled,
+              ]}
               onPress={handleLogin}
               disabled={isLoading}
             >
               <Text style={styles.loginButtonText}>
-                {isLoading ? 'Signing In...' : 'Sign In'}
+                {isLoading ? "Signing In..." : "Sign In"}
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[
+                styles.loginButton,
+                guestLoading && styles.loginButtonDisabled,
+              ]}
+              onPress={loginAsGuest}
+              disabled={isLoading}
+            >
+              <Text style={styles.loginButtonText}>
+                {guestLoading ? "Signing In..." : "Sign As Guest"}
               </Text>
             </TouchableOpacity>
 
@@ -135,7 +164,8 @@ export default function LoginScreen() {
 
           <View style={styles.footer}>
             <Text style={styles.footerText}>
-              By signing in, you agree to our Terms of Service and Privacy Policy
+              By signing in, you agree to our Terms of Service and Privacy
+              Policy
             </Text>
           </View>
         </ScrollView>

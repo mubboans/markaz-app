@@ -12,7 +12,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Bell, Volume2, MapPin, Play } from 'lucide-react-native';
 import { usePrayerStore } from '@/stores/prayerStore';
 import { useAuthStore } from '@/stores/authStore';
-import PrayTimes from "../../utils/praytime.js";
 // If praytime.js uses module.exports = PrayTimes, keep as default import.
 // If praytime.js uses export = PrayTimes or export default PrayTimes, this is correct.
 // If praytime.js uses export { PrayTimes }, use:
@@ -20,14 +19,15 @@ import PrayTimes from "../../utils/praytime.js";
 import PrayerTimeCard from '@/components/PrayerTimeCard';
 import CountdownTimer from '@/components/CountdownTimer';
 import { Audio } from 'expo-av';
+import { getPrayerTimes } from '@/services/prayerService';
 
 export default function PrayersScreen() {
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [azaanEnabled, setAzaanEnabled] = useState(true);
   const { prayerTimes, fetchPrayerTimes, nextPrayer } = usePrayerStore();
-  const { user } = useAuthStore();
 //   const { playAzaan } = useAzaan();
-  const prayTimesCalc = new PrayTimes("MWL").format('12H');
+//   console.log(prayTimesCalc.format());
+  
   const sound = useRef<Audio.Sound | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   useEffect(() => {
@@ -58,8 +58,6 @@ export default function PrayersScreen() {
   }, []);
 
   const playAzaan = async () => {
-    console.log('azaan playing');
-    
     if (!sound.current) return;
     try {
       await sound.current.replayAsync(); // replay from beginning every time
@@ -78,8 +76,13 @@ export default function PrayersScreen() {
 
   const handleTestAzaan = () => {
     playAzaan();
-
   };
+  
+ const handlePrayerTimeReached = (prayer:string) => {
+   console.log("Prayer time reached!.................", prayer);
+   // You can trigger any logic here, like updating state or showing a modal
+ };
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -89,7 +92,7 @@ export default function PrayersScreen() {
           <Text style={styles.date}>{todayDate}</Text>
           <View style={styles.locationContainer}>
             <MapPin size={16} color="#A7F3D0" />
-            <Text style={styles.location}>New York, USA</Text>
+            <Text style={styles.location}>Asia, Kolkata</Text>
           </View>
         </View>
 
@@ -97,7 +100,12 @@ export default function PrayersScreen() {
           <View style={styles.nextPrayerContainer}>
             <Text style={styles.nextPrayerTitle}>Next Prayer</Text>
             <Text style={styles.nextPrayerName}>{nextPrayer.name}</Text>
-            <CountdownTimer targetTime={nextPrayer.time} />
+            <CountdownTimer
+              //   targetTime={nextPrayer.time}
+              timeTable={prayerTimes}
+              targetTime={'18:44'}
+              onTimeReached={(prayer)=>handlePrayerTimeReached(prayer)}
+            />
           </View>
         )}
 
@@ -111,8 +119,8 @@ export default function PrayersScreen() {
               <Switch
                 value={notificationsEnabled}
                 onValueChange={setNotificationsEnabled}
-                trackColor={{ false: '#D1D5DB', true: '#A7F3D0' }}
-                thumbColor={notificationsEnabled ? '#059669' : '#6B7280'}
+                trackColor={{ false: "#D1D5DB", true: "#A7F3D0" }}
+                thumbColor={notificationsEnabled ? "#059669" : "#6B7280"}
               />
             </View>
 
@@ -124,8 +132,8 @@ export default function PrayersScreen() {
               <Switch
                 value={azaanEnabled}
                 onValueChange={setAzaanEnabled}
-                trackColor={{ false: '#D1D5DB', true: '#A7F3D0' }}
-                thumbColor={azaanEnabled ? '#059669' : '#6B7280'}
+                trackColor={{ false: "#D1D5DB", true: "#A7F3D0" }}
+                thumbColor={azaanEnabled ? "#059669" : "#6B7280"}
               />
             </View>
 
@@ -140,8 +148,14 @@ export default function PrayersScreen() {
               {isPlaying ? (
                 <ActivityIndicator size="small" color="#fff" />
               ) : (
-                <View style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
-                  <Play size={16} color="#FFFFFF" style={{marginRight:4}}/>
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                >
+                  <Play size={16} color="#FFFFFF" style={{ marginRight: 4 }} />
                   <Text style={styles.testButtonText}>Play Azaan</Text>
                 </View>
               )}
