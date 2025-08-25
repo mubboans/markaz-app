@@ -1,98 +1,80 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useState, useEffect, useRef } from "react";
+import { View, Text, StyleSheet } from "react-native";
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withSpring,
   withRepeat,
   withSequence,
-} from 'react-native-reanimated';
+} from "react-native-reanimated";
 
 interface CountdownTimerProps {
-  targetTime: string;   // kept for backward compatibility (ignored when timeTable is passed)
-  onTimeReached: (name: string) => void;
-  timeTable: {          // ← new: full list
+  timeTable: {
     name: string;
-    time: string;       // 12-hour or 24-hour
+    time: string; // e.g. "05:12" or "18:45"
     arabic?: string;
   }[];
 }
 
-export default function CountdownTimer({
-  timeTable,
-  onTimeReached,
-}: CountdownTimerProps) {
+export default function CountdownTimer({ timeTable }: CountdownTimerProps) {
   const [timeLeft, setTimeLeft] = useState({
     hours: 0,
     minutes: 0,
     seconds: 0,
   });
-  const pulseScale = useSharedValue(1);
+  const [nextPrayer, setNextPrayer] = useState<{
+    name: string;
+    arabic?: string;
+    time: string;
+  } | null>(null);
 
-  const firedRef = useRef<Set<string>>(new Set());
+  const pulseScale = useSharedValue(1);
 
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ scale: pulseScale.value }],
   }));
 
-  /* ---------- helpers ---------- */
-  const to24 = (t: string): string => {
-    const parts = t.trim().split(/\s+/);
-    if (parts.length === 1) return t; // already 24h
-    const [time, period] = parts;
-    let [h, m] = time.split(':').map(Number);
-    if (period.toUpperCase() === 'PM' && h !== 12) h += 12;
-    if (period.toUpperCase() === 'AM' && h === 12) h = 0;
-    return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
+  // Convert HH:MM → Date for today/tomorrow
+  const toDate = (time: string, addDay = 0) => {
+    const [h, m] = time.split(":").map(Number);
+    const d = new Date();
+    d.setHours(h, m, 0, 0);
+    if (addDay) d.setDate(d.getDate() + addDay);
+    return d;
   };
 
-  /* ---------- effect ---------- */
+  const getNextPrayer = () => {
+    const now = new Date();
+
+    // Find next prayer for today
+    let next = timeTable.find((p) => toDate(p.time) > now);
+
+    // If none left (after Isha), roll to tomorrow Fajr
+    if (!next) {
+      next = { ...timeTable[0], time: timeTable[0].time }; // Fajr
+      return { ...next, date: toDate(next.time, 1) }; // add +1 day
+    }
+    return { ...next, date: toDate(next.time) };
+  };
+
   useEffect(() => {
     if (!timeTable?.length) return;
 
     const tick = () => {
+      const { name, arabic, time, date } = getNextPrayer();
+      setNextPrayer({ name, arabic, time });
+
+      // countdown
       const now = new Date();
-      const nowHHMM = `${now.getHours().toString().padStart(2, '0')}:${now
-        .getMinutes()
-        .toString()
-        .padStart(2, '0')}`;
+      const diff = date.getTime() - now.getTime();
 
-      // find next prayer (in order of the array)
-      let nextPrayer = null;
-      for (const p of timeTable) {
-        const targetHHMM = to24(p.time);
-        if (targetHHMM > nowHHMM && !firedRef.current.has(p.name)) {
-          nextPrayer = p;
-          break;
-        }
-      }
-      // all passed today → first tomorrow
-      if (!nextPrayer) {
-        nextPrayer = timeTable[0];
-      }
-
-      const targetHHMM = to24(nextPrayer.time);
-
-      // exact match & not fired yet
-      if (nowHHMM === targetHHMM && !firedRef.current.has(nextPrayer.name)) {
-        firedRef.current.add(nextPrayer.name);
-        onTimeReached(nextPrayer.name);
-      }
-
-      /* ---- countdown ---- */
-      const [h, m] = targetHHMM.split(':').map(Number);
-      const target = new Date();
-      target.setHours(h, m, 0, 0);
-      if (target <= now) target.setDate(target.getDate() + 1);
-
-      const diff = target.getTime() - now.getTime();
       setTimeLeft({
         hours: Math.floor(diff / 3_600_000),
         minutes: Math.floor((diff % 3_600_000) / 60_000),
         seconds: Math.floor((diff % 60_000) / 1_000),
       });
 
-      /* ---- pulse animation ---- */
+      // pulse in last 5 mins
       const minsLeft = diff / 60_000;
       if (minsLeft <= 5 && minsLeft > 0) {
         pulseScale.value = withRepeat(
@@ -109,61 +91,58 @@ export default function CountdownTimer({
     };
 
     tick();
-    const id = setInterval(tick, 1_000);
+    const id = setInterval(tick, 1000);
     return () => clearInterval(id);
-  }, [timeTable, onTimeReached]);
+  }, [timeTable]);
 
-  const formatTime = (value: number) => value.toString().padStart(2, '0');
+  const formatTime = (v: number) => v.toString().padStart(2, "0");
 
   return (
     <Animated.View style={[styles.container, animatedStyle]}>
-      <View style={styles.timeBlock}>
-        <Text style={styles.timeValue}>{formatTime(timeLeft.hours)}</Text>
-        <Text style={styles.timeLabel}>Hours</Text>
+      <View style={styles.infoBlock}>
+        {/* <Text style={styles.nextPrayerLabel}>Next Prayer</Text> */}
+        {nextPrayer && (
+          <Text style={styles.nextPrayerName}>
+            {nextPrayer.arabic
+              ? `${nextPrayer.arabic} (${nextPrayer.name})`
+              : nextPrayer.name}
+          </Text>
+        )}
       </View>
 
-      <Text style={styles.separator}>:</Text>
-
-      <View style={styles.timeBlock}>
-        <Text style={styles.timeValue}>{formatTime(timeLeft.minutes)}</Text>
-        <Text style={styles.timeLabel}>Minutes</Text>
-      </View>
-
-      <Text style={styles.separator}>:</Text>
-
-      <View style={styles.timeBlock}>
-        <Text style={styles.timeValue}>{formatTime(timeLeft.seconds)}</Text>
-        <Text style={styles.timeLabel}>Seconds</Text>
+      <View style={styles.countdownRow}>
+        <View style={styles.timeBlock}>
+          <Text style={styles.timeValue}>{formatTime(timeLeft.hours)}</Text>
+          <Text style={styles.timeLabel}>Hours</Text>
+        </View>
+        <Text style={styles.separator}>:</Text>
+        <View style={styles.timeBlock}>
+          <Text style={styles.timeValue}>{formatTime(timeLeft.minutes)}</Text>
+          <Text style={styles.timeLabel}>Minutes</Text>
+        </View>
+        <Text style={styles.separator}>:</Text>
+        <View style={styles.timeBlock}>
+          <Text style={styles.timeValue}>{formatTime(timeLeft.seconds)}</Text>
+          <Text style={styles.timeLabel}>Seconds</Text>
+        </View>
       </View>
     </Animated.View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-  },
-  timeBlock: {
-    alignItems: 'center',
-    minWidth: 60,
-  },
-  timeValue: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#059669',
-  },
-  timeLabel: {
-    fontSize: 10,
-    color: '#6B7280',
-    marginTop: 2,
-  },
+  container: { alignItems: "center", gap: 12 },
+  infoBlock: { alignItems: "center" },
+  nextPrayerLabel: { fontSize: 12, color: "#6B7280" },
+  nextPrayerName: { fontSize: 18, fontWeight: "700", color: "#059669" },
+  countdownRow: { flexDirection: "row", alignItems: "center", gap: 8 },
+  timeBlock: { alignItems: "center", minWidth: 60 },
+  timeValue: { fontSize: 24, fontWeight: "700", color: "#059669" },
+  timeLabel: { fontSize: 10, color: "#6B7280", marginTop: 2 },
   separator: {
     fontSize: 24,
-    fontWeight: '700',
-    color: '#059669',
+    fontWeight: "700",
+    color: "#059669",
     marginHorizontal: 4,
   },
 });

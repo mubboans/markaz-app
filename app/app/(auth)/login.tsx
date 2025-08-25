@@ -50,7 +50,7 @@ export default function LoginScreen() {
      setGuestLoading(true);
      try {
        await login('test@gmail.com', 'user123');
-    //    router.replace("/(tabs)");
+       router.replace("/(tabs)");
      } catch (error) {
        Alert.alert("Error", "Invalid email or password");
      } finally {

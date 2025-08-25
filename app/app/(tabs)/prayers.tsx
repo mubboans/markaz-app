@@ -11,7 +11,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Bell, Volume2, MapPin, Play } from 'lucide-react-native';
 import { usePrayerStore } from '@/stores/prayerStore';
-import { useAuthStore } from '@/stores/authStore';
+import * as Notifications from "expo-notifications";
 // If praytime.js uses module.exports = PrayTimes, keep as default import.
 // If praytime.js uses export = PrayTimes or export default PrayTimes, this is correct.
 // If praytime.js uses export { PrayTimes }, use:
@@ -19,18 +19,21 @@ import { useAuthStore } from '@/stores/authStore';
 import PrayerTimeCard from '@/components/PrayerTimeCard';
 import CountdownTimer from '@/components/CountdownTimer';
 import { Audio } from 'expo-av';
-import { getPrayerTimes } from '@/services/prayerService';
+import { useToast } from '../providers/ToastProvider';
 
 export default function PrayersScreen() {
+    
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [azaanEnabled, setAzaanEnabled] = useState(true);
   const { prayerTimes, fetchPrayerTimes, nextPrayer } = usePrayerStore();
 //   const { playAzaan } = useAzaan();
 //   console.log(prayTimesCalc.format());
-  
+  const toast = useToast();
   const sound = useRef<Audio.Sound | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   useEffect(() => {
+    console.log(prayerTimes, "prayerTimes");
+    
     fetchPrayerTimes();
   }, []);
   useEffect(() => {
@@ -41,7 +44,7 @@ export default function PrayersScreen() {
         playsInSilentModeIOS: true,
       });
       const { sound: s } = await Audio.Sound.createAsync(
-        require('../../assets/audio/azaan.mp3') // <-- path to your mp3
+        require('../../assets/audio/azaan-android.mp3') // <-- path to your mp3
       );
       sound.current = s;
       // Re-enable button when the track finishes
@@ -78,10 +81,17 @@ export default function PrayersScreen() {
     playAzaan();
   };
   
- const handlePrayerTimeReached = (prayer:string) => {
-   console.log("Prayer time reached!.................", prayer);
-   // You can trigger any logic here, like updating state or showing a modal
- };
+//  const handlePrayerTimeReached = (name: string) => {
+//    if (name === "REFRESH_TIMETABLE") {
+//      toast.show("Refreshing timetable...");
+//      //  Alert.alert("Timetable Refresh", "Fetching next day prayer times...");
+//      //  setTimetable(mockTimetable); // replace with real API refresh
+//    } else {
+//     toast.show(`It's time for ${name}!`);
+//      //  Alert.alert("Prayer Time", `It's time for ${name}!`);
+//       playAzaan();
+//    }
+//  };
 
 
   return (
@@ -99,12 +109,20 @@ export default function PrayersScreen() {
         {nextPrayer && (
           <View style={styles.nextPrayerContainer}>
             <Text style={styles.nextPrayerTitle}>Next Prayer</Text>
-            <Text style={styles.nextPrayerName}>{nextPrayer.name}</Text>
+            {/* <Text style={styles.nextPrayerName}>{nextPrayer.name}</Text> */}
             <CountdownTimer
               //   targetTime={nextPrayer.time}
-              timeTable={prayerTimes}
-              targetTime={'18:44'}
-              onTimeReached={(prayer)=>handlePrayerTimeReached(prayer)}
+              timeTable={
+                prayerTimes
+                //     [
+                //     // ...prayerTimes,
+                //     { arabic: "العصر", name: "Asr", time: "16:24" },
+
+                //     { arabic: "Asd", name: "magrib", time: "16:25" },
+                //     { arabic: "asdasd", name: "Isha", time: "16:26" },
+                //   ]
+              }
+            //   onTimeReached={handlePrayerTimeReached}
             />
           </View>
         )}

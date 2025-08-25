@@ -21,7 +21,7 @@ export function getPrayerTimes(date = new Date()) {
     const calc = new PrayTime(PRESET.method);
     calc.location([PRESET.lat, PRESET.lng]);
     calc.timezone(PRESET.tz);           // Asia/Kolkata → UTC+5:30
-    calc.format('12H')
+    calc.format('24h');               // 12h, 24h, 12hNS
     // 2. Compute times for the given date
     const raw = calc.getTimes(date);    // returns full object
 

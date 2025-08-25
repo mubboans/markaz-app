@@ -16,7 +16,8 @@ interface PrayerState {
 
 const mockPrayerTimes = (): PrayerTime[] => {
     const getTIme = getPrayerTimes();
-
+    console.log(getTIme, 'getTIme');
+    
     const arabicNames = {
         fajr: "الفجر",
         sunrise: "الشروق",
@@ -61,7 +62,7 @@ export const usePrayerStore = create<PrayerState>((set, get) => ({
 
   fetchPrayerTimes: async () => {
     await new Promise(resolve => setTimeout(resolve, 500));
-      console.log(mockPrayerTimes,'mockPrayerTimes test');
+      console.log(mockPrayerTimes(),'mockPrayerTimes test');
     set({ 
       prayerTimes: mockPrayerTimes(),
       nextPrayer: getNextPrayer(mockPrayerTimes()),
