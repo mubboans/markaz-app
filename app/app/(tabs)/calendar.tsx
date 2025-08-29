@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Modal,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Calendar, ChevronLeft, ChevronRight, Edit3 } from 'lucide-react-native';
 import { useHijriStore } from '@/stores/hijriStore';
 import { useAuthStore } from '@/stores/authStore';
@@ -15,9 +15,9 @@ import HijriDatePicker from '@/components/HijriDatePicker';
 
 export default function CalendarScreen() {
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const { hijriDate, gregorianDate, fetchHijriDate, updateHijriDate } = useHijriStore();
+  const { hijriDate, gregorianDate, fetchHijriDate } = useHijriStore();
   const { user } = useAuthStore();
-
+  const insets = useSafeAreaInsets();
   const canEditDate = user?.role === 'admin' || user?.role === 'mosque_admin';
 
   useEffect(() => {
@@ -31,7 +31,9 @@ export default function CalendarScreen() {
   ];
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={[styles.container, , { paddingBottom: insets.bottom + 55 }]}
+    >
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <Text style={styles.title}>Islamic Calendar</Text>
@@ -42,15 +44,12 @@ export default function CalendarScreen() {
           <View style={styles.dateCard}>
             <View style={styles.dateHeader}>
               <Calendar size={24} color="#059669" />
-              <Text style={styles.dateTitle}>Current Date</Text>
-              {canEditDate && (
-                <TouchableOpacity
-                  style={styles.editButton}
-                  onPress={() => setShowDatePicker(true)}
-                >
-                  <Edit3 size={16} color="#059669" />
-                </TouchableOpacity>
-              )}
+              <Text style={styles.dateTitle}>Current Date </Text>
+            </View>
+            <View style={styles.gregorianDate}>
+              <Text style={styles.gregorianText}>
+                Please Note this date migth not be correct
+              </Text>
             </View>
 
             <View style={styles.dateContainer}>
@@ -129,7 +128,7 @@ export default function CalendarScreen() {
         <HijriDatePicker
           currentDate={hijriDate}
           onDateChange={(newDate) => {
-            updateHijriDate(newDate);
+            // updateHijriDate(newDate);
             setShowDatePicker(false);
           }}
           onClose={() => setShowDatePicker(false)}
@@ -177,6 +176,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 20,
     gap: 8,
+    alignSelf:'center'
   },
   dateTitle: {
     fontSize: 18,

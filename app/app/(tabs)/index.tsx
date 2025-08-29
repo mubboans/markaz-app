@@ -33,10 +33,8 @@ export default function MosquesScreen() {
   const [selectedMosque, setSelectedMosque] = useState<Mosque | null>(null);
    const { isAuthenticated } = useAuthStore();
   useEffect(() => {
-    console.log(isAuthenticated, 'isAuthenticated from mosque dashboard');
-    if( !isAuthenticated) { router.replace('/(auth)/login'); }
-    fetchMosques();
-    requestLocationPermission();
+      requestLocationPermission();
+    // fetchMosques();
   }, []);
 
   // Request location permission when component mounts

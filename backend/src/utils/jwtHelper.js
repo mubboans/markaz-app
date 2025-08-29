@@ -1,6 +1,6 @@
-import { sendResponse } from './ReqResHelperFn';
+import { sendResponse } from './ReqResHelperFn.js';
 
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 
 export const createToken = (payload) => jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: '1h' });
 
@@ -28,7 +28,7 @@ export const checkHeaderToken = async (req,res,next)=>{
             const error = new Error("Token is not valid");
             error.code = 401;
             error.status = "Invalid token";
-            throw error;
+            // throw error;
         }
         req.user = checkToken;
         next(); 

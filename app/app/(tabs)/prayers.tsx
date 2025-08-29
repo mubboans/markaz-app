@@ -8,7 +8,7 @@ import {
   Switch,
   ActivityIndicator,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Bell, Volume2, MapPin, Play } from 'lucide-react-native';
 import { usePrayerStore } from '@/stores/prayerStore';
 import * as Notifications from "expo-notifications";
@@ -26,8 +26,7 @@ export default function PrayersScreen() {
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [azaanEnabled, setAzaanEnabled] = useState(true);
   const { prayerTimes, fetchPrayerTimes, nextPrayer } = usePrayerStore();
-//   const { playAzaan } = useAzaan();
-//   console.log(prayTimesCalc.format());
+  const insets = useSafeAreaInsets();
   const toast = useToast();
   const sound = useRef<Audio.Sound | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -81,21 +80,10 @@ export default function PrayersScreen() {
     playAzaan();
   };
   
-//  const handlePrayerTimeReached = (name: string) => {
-//    if (name === "REFRESH_TIMETABLE") {
-//      toast.show("Refreshing timetable...");
-//      //  Alert.alert("Timetable Refresh", "Fetching next day prayer times...");
-//      //  setTimetable(mockTimetable); // replace with real API refresh
-//    } else {
-//     toast.show(`It's time for ${name}!`);
-//      //  Alert.alert("Prayer Time", `It's time for ${name}!`);
-//       playAzaan();
-//    }
-//  };
 
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { paddingBottom: insets.bottom + 55 }]}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <Text style={styles.title}>Prayer Times</Text>
@@ -205,7 +193,8 @@ export default function PrayersScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: "#F8FAFC",
+    paddingTop: 16,
   },
   header: {
     backgroundColor: '#059669',
