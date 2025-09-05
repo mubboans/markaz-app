@@ -30,9 +30,9 @@ export function getPrayerTimes(date = new Date()) {
         fajr: raw.fajr,
         sunrise: raw.sunrise,
         dhuhr: raw.dhuhr,
-        asr: "18:38",
-        maghrib: "18:39",
-        isha: "18:40",
+        asr: raw.asr,
+        maghrib: raw.maghrib,
+        isha: raw.isha,
         midnight: raw.midnight,
     };
 }
