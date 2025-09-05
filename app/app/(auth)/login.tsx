@@ -49,7 +49,7 @@ export default function LoginScreen() {
   const loginAsGuest = async () => {
      setGuestLoading(true);
      try {
-       await login('test@gmail.com', 'user123');
+    //    await login('test@gmail.com', 'user123');
        router.replace("/(tabs)");
      } catch (error) {
        Alert.alert("Error", "Invalid email or password");
@@ -142,7 +142,7 @@ export default function LoginScreen() {
               disabled={isLoading}
             >
               <Text style={styles.loginButtonText}>
-                {guestLoading ? "Signing In..." : "Sign As Guest"}
+                {guestLoading ? "Signing In..." : "Continue without login"}
               </Text>
             </TouchableOpacity>
 

@@ -8,24 +8,27 @@ import {
   Users,
   Settings,
 } from 'lucide-react-native';
+import { useAuthStore } from '@/stores/authStore';
 
 export default function TabLayout() {
   const insets = useSafeAreaInsets(); // <- navigation-bar height on Android
-
+  const { isAuthenticated } = useAuthStore(); 
+  console.log(isAuthenticated, "isAuthenticated from layout");
+  
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#059669',
-        tabBarInactiveTintColor: '#6B7280',
+        tabBarActiveTintColor: "#059669",
+        tabBarInactiveTintColor: "#6B7280",
         tabBarStyle: {
-          backgroundColor: '#FFFFFF',
+          backgroundColor: "#FFFFFF",
           borderTopWidth: 1,
-          borderTopColor: '#E5E7EB',
+          borderTopColor: "#E5E7EB",
           height: 55,
           paddingBottom: 5,
           paddingTop: 5,
-          position: 'absolute',
+          position: "absolute",
           bottom: 0,
           left: 0,
           right: 0,
@@ -35,7 +38,7 @@ export default function TabLayout() {
         },
         tabBarLabelStyle: {
           fontSize: 11,
-          fontWeight: '600',
+          fontWeight: "600",
           marginBottom: 5,
         },
       }}
@@ -43,7 +46,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Mosques',
+          title: "Mosques",
           tabBarIcon: ({ color, size }) => (
             <MapPinHouse size={size - 2} color={color} />
           ),
@@ -52,7 +55,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="prayers"
         options={{
-          title: 'Prayers',
+          title: "Prayers",
           tabBarIcon: ({ color, size }) => (
             <Clock size={size - 2} color={color} />
           ),
@@ -61,25 +64,28 @@ export default function TabLayout() {
       <Tabs.Screen
         name="calendar"
         options={{
-          title: 'Calendar',
+          title: "Calendar",
           tabBarIcon: ({ color, size }) => (
             <Calendar size={size - 2} color={color} />
           ),
         }}
       />
-      <Tabs.Screen
-        name="admin"
-        options={{
-          title: 'Admin',
-          tabBarIcon: ({ color, size }) => (
-            <Users size={size - 2} color={color} />
-          ),
-        }}
-      />
+
+        {/* <Tabs.Screen
+          name="admin"
+          options={{
+            title: "Admin",
+            tabBarIcon: ({ color, size }) => (
+              <Users size={size - 2} color={color} />
+            ),
+            // tabBarStyle : { display: !isAuthenticated ? "none" : 'contents' },
+          }}
+        /> */}
+
       <Tabs.Screen
         name="profile"
         options={{
-          title: 'Profile',
+          title: "Profile",
           tabBarIcon: ({ color, size }) => (
             <Settings size={size - 2} color={color} />
           ),

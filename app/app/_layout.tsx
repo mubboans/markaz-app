@@ -2,27 +2,16 @@
 import { useEffect } from "react";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import * as TaskManager from "expo-task-manager";
-import * as BackgroundFetch from "expo-background-fetch";
-import * as Notifications from "expo-notifications";
 import { useFrameworkReady } from "@/hooks/useFrameworkReady";
 import { useAuthStore } from "@/stores/authStore";
 import { ToastProvider } from "./providers/ToastProvider";
 import { Text, View } from "react-native";
 import { getPrayerTimes } from "@/services/prayerService";
-
-// const ADHAAN_TASK = "adhaan-task";
-
-// /* 1️⃣  Background task definition (top-level) */
-// TaskManager.defineTask(ADHAAN_TASK, async () => {
-//     console.log("🔔 Adhaan task running");
-    
-//   const now = new Date();
-//   const nowHHMM = `${now.getHours().toString().padStart(2, "0")}:${now
-//     .getMinutes()
-//     .toString()
-//     .padStart(2, "0")}`;
-
+import { bootstrapPrayers } from "@/services/dailyScheduler";
+import { setSelfReschedulingAlarm } from "@/services/reshedulerService";
+import { installRescheduleListener } from "@/services/rescheduleListener";
+import { allowAlarms, setPrayerAlarms } from "@/services/prayerAlarms";
+import { installPrayerListener } from "@/services/prayerBackground";
 //   const todayTimes = {
 //     fajr: "05:06",
 //     dhuhr: "12:41",
@@ -30,39 +19,23 @@ import { getPrayerTimes } from "@/services/prayerService";
 //     maghrib: "20:28",
 //     isha: "20:29",
 //   };
-
-//   const prayer = Object.entries(todayTimes).find(([, t]) => t === nowHHMM);
-//     console.log(prayer, "prayer from background task");
-//   if (prayer) {
-//     await Notifications.scheduleNotificationAsync({
-//       content: { title: "Prayer Time", body: prayer[0], sound: "adhaan.mp3" },
-//       trigger: null,
-//     });
-//   }
-//   return BackgroundFetch.BackgroundFetchResult.NewData;
-// });
-
 const scheduleAlarms = async () => {
-    const prayerTimes = getPrayerTimes();
-  await Notifications.requestPermissionsAsync();
-  await Notifications.cancelAllScheduledNotificationsAsync();
-  const list = [
-    { name: "Fajr", time: prayerTimes?.fajr.toString() },
-    { name: "Sunrise", time: prayerTimes?.sunrise.toString() },
-    { name: "Dhuhr", time: prayerTimes?.dhuhr.toString() },
-    { name: "Asr", time: prayerTimes?.asr.toString() },
-    { name: "Maghrib", time: prayerTimes?.maghrib.toString() },
-    { name: "Isha", time: prayerTimes?.isha.toString() },
-    { name: "Midnight", time: prayerTimes?.midnight.toString() },
-  ];
-
-  for (const p of list) {
-    const [h, m] = p.time.split(":").map(Number);
-    // await Notifications.scheduleNotificationAsync({
-    //   content: { title: "Prayer", body: p.name, sound: "adhaan-android.mp3" },
-    //   trigger: : "daily", hour: h, minute: m, repeats: true },
-    // });
-  }
+    (async () => {
+        try {
+        //   await bootstrapPrayers(); // today immediately
+        //   setSelfReschedulingAlarm(); // 00:05 tomorrow
+        //   installRescheduleListener(); // listener for self-reschedule
+         (async () => {
+           const ok = await allowAlarms();
+           if (!ok) return;
+           const today = getPrayerTimes(new Date());
+           await setPrayerAlarms(today); // today + 00:05 tomorrow
+           installPrayerListener(); // listener for 00:05
+         })();
+        } catch (error) {
+            console.log("Error scheduling alarms:", error);
+        }
+    })();
 };
 
 export default function RootLayout() {
@@ -72,7 +45,7 @@ export default function RootLayout() {
   /* register background task once */
   useEffect(() => {
     console.log("Registering background task...");  
-     scheduleAlarms();
+    scheduleAlarms();
     }, []);
 
   /* show loader until auth status is resolved */
@@ -88,11 +61,11 @@ export default function RootLayout() {
     <>
       <ToastProvider>
         <Stack screenOptions={{ headerShown: false }}>
-          {isAuthenticated ? (
+          {/* {isAuthenticated ? ( */}
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          ) : (
+          {/* ) : (
             <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-          )}
+          )} */}
           <Stack.Screen name="+not-found" />
         </Stack>
       </ToastProvider>

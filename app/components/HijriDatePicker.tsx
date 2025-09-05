@@ -8,11 +8,9 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { X, Check, ChevronLeft, ChevronRight } from 'lucide-react-native';
-import { HijriDate } from '@/stores/hijriStore';
-
 interface HijriDatePickerProps {
-  currentDate: HijriDate;
-  onDateChange: (date: HijriDate) => void;
+  currentDate: any;
+  onDateChange: (date: any) => void;
   onClose: () => void;
 }
 
@@ -21,7 +19,7 @@ export default function HijriDatePicker({
   onDateChange, 
   onClose 
 }: HijriDatePickerProps) {
-  const [selectedDate, setSelectedDate] = useState<HijriDate>(currentDate);
+  const [selectedDate, setSelectedDate] = useState<any>(currentDate);
 
   const islamicMonths = [
     'Muharram', 'Safar', 'Rabi\' al-awwal', 'Rabi\' al-thani',

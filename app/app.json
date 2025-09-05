@@ -22,7 +22,16 @@
       "expo-router",
       "expo-font",
       "expo-web-browser",
-      "expo-notifications"
+     [ "expo-notifications",
+      {
+        "icon":"./assets/images/markaz-icon.png",
+        "color":"#059669",
+        "adaptiveIcon": {
+          "foregroundImage": "./assets/images/markaz-icon.png",
+          "backgroundColor": "#059669"
+        },
+        "sounds": ["./assets/audio/azaan-android.mp3"]
+      }]
     ],
     "experiments": {
       "typedRoutes": true

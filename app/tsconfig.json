@@ -12,5 +12,5 @@
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
     "nativewind-env.d.ts"
-, "utils/praytime.js"  ]
+, "utils/praytime.js", "app/(tabs)/.admin.tsx"  ]
 }

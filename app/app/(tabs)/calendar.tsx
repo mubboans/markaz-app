@@ -51,7 +51,6 @@ export default function CalendarScreen() {
                 Please Note this date migth not be correct
               </Text>
             </View>
-
             <View style={styles.dateContainer}>
               <View style={styles.hijriDate}>
                 <Text style={styles.hijriDay}>{hijriDate.day}</Text>
@@ -65,11 +64,11 @@ export default function CalendarScreen() {
 
               <View style={styles.gregorianDate}>
                 <Text style={styles.gregorianText}>
-                  {gregorianDate.toLocaleDateString('en-US', {
-                    weekday: 'long',
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
+                  {gregorianDate.toLocaleDateString("en-US", {
+                    weekday: "long",
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
                   })}
                 </Text>
               </View>
