@@ -12,7 +12,7 @@ export async function allowAlarms() {
         await Notifications.setNotificationChannelAsync('prayer', {
             name: 'Prayer Alerts',
             importance: Notifications.AndroidImportance.HIGH,
-            sound: 'azaan-android.mp3', // file inside assets → app.json
+            sound: 'azaan.mp3', // file inside assets → app.json
             vibrationPattern: [0, 500, 200, 500],
             bypassDnd: true, // even in DND
             lockscreenVisibility: Notifications.AndroidNotificationVisibility.PUBLIC,

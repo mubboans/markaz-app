@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   TextInput,
   ActivityIndicator,
+  Platform,
+  Linking,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MapPin, Plus, Search, Navigation } from "lucide-react-native";
@@ -68,6 +70,21 @@ export default function MosquesScreen() {
     return () => clearTimeout(t);
   }, [searchQuery]);
 
+  const openMaps = () => {
+        // Apple Maps on iOS, Google Maps on Android – both open turn-by-turn
+    const url = Platform.select({
+      ios: `maps://d?daddr=${searchQuery}`,
+      android: `https://www.google.com/maps/dir/?api=1&destination=${searchQuery}`,
+    });
+    console.log(url, "check url");
+
+    Linking.openURL(
+      url ?? `https://www.google.com/maps/dir/?api=1&destination=${searchQuery}`
+    ).catch(() => {
+      // fallback to generic geo: link
+      Linking.openURL(`geo:${searchQuery}`);
+    });
+  };
   /* -------------- UI ------------------------------------------- */
   return (
     <SafeAreaView style={styles.container}>
@@ -142,9 +159,15 @@ export default function MosquesScreen() {
             contentContainerStyle={styles.listContainer}
             ListEmptyComponent={
               <View style={styles.emptyBox}>
-                <Text style={styles.emptyText}>No mosques found</Text>
-                <Text style={styles.emptySub}>Try a different search</Text>
-              </View>
+               
+                  <TouchableOpacity
+                    style={styles.directionsBtn}
+                    onPress={openMaps}
+                  >
+                    <Navigation size={16} color="#FFF" />
+                    <Text style={styles.btnTxt}>No mosques try searching google</Text>
+                  </TouchableOpacity>
+                </View>
             }
           />
         )}
@@ -225,4 +248,14 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   emptySub: { fontSize: 14, color: "#6B7280", textAlign: "center" },
+  directionsBtn: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    backgroundColor: "#059669",
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 8,
+  },
+  btnTxt: { color: "#FFF", fontSize: 13, fontWeight: "600" },
 });

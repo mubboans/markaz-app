@@ -31,8 +31,9 @@ export default function PrayerTimeCard({ prayer, isNext, style }: PrayerTimeCard
   });
 
   React.useEffect(() => {
+    // Animate the scale when isNext changes
     scale.value = withSpring(isNext ? 1.02 : 1, { damping: 15 });
-  }, [isNext]);
+  }, [isNext, prayer.name]);
 
   return (
     <Animated.View style={[styles.container, animatedStyle, style]}>

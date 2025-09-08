@@ -12,6 +12,7 @@ interface PrayerState {
   nextPrayer: PrayerTime | null;
   fetchPrayerTimes: () => Promise<void>;
   updatePrayerTimes: (times: PrayerTime[]) => Promise<void>;
+  updateNextPrayer: () => void;
 }
 
 const mockPrayerTimes = (): PrayerTime[] => {
@@ -39,6 +40,8 @@ const mockPrayerTimes = (): PrayerTime[] => {
 
 
 const getNextPrayer = (prayerTimes: PrayerTime[]): PrayerTime | null => {
+  if (!prayerTimes || prayerTimes.length === 0) return null;
+  
   const now = new Date();
   const currentTime = now.getHours() * 60 + now.getMinutes();
 
@@ -62,10 +65,11 @@ export const usePrayerStore = create<PrayerState>((set, get) => ({
 
   fetchPrayerTimes: async () => {
     await new Promise(resolve => setTimeout(resolve, 500));
-      console.log(mockPrayerTimes(),'mockPrayerTimes test');
+    const times = mockPrayerTimes();
+    console.log(times, 'mockPrayerTimes test');
     set({ 
-      prayerTimes: mockPrayerTimes(),
-      nextPrayer: getNextPrayer(mockPrayerTimes()),
+      prayerTimes: times,
+      nextPrayer: getNextPrayer(times),
     });
   },
 
@@ -75,5 +79,11 @@ export const usePrayerStore = create<PrayerState>((set, get) => ({
       prayerTimes: times,
       nextPrayer: getNextPrayer(times),
     });
+  },
+  
+  // Add a method to update the next prayer based on current time
+  updateNextPrayer: () => {
+    const { prayerTimes } = get();
+    set({ nextPrayer: getNextPrayer(prayerTimes) });
   },
 }));

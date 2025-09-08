@@ -1,16 +1,59 @@
 import { Audio } from 'expo-av';
 import * as Notifications from 'expo-notifications';
+import * as TaskManager from 'expo-task-manager';
+import * as BackgroundFetch from 'expo-background-fetch';
 import { Platform } from 'react-native';
 
-// Configure notifications
+// Configure notifications to handle background and foreground notifications
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
         shouldPlaySound: true,
         shouldSetBadge: true,
         shouldShowBanner: true,
         shouldShowList: true,
+        shouldShowAlert: true,
     }),
 });
+
+// Define a constant for our background task name
+const BACKGROUND_NOTIFICATION_TASK = 'BACKGROUND-NOTIFICATION-TASK';
+
+// Set up background notification handler
+TaskManager.defineTask(BACKGROUND_NOTIFICATION_TASK, async ({ data, error, executionInfo }) => {
+  console.log('Received a notification in the background!');
+  // You can do something with the notification data here
+  // This ensures the app can respond to notifications even when closed
+  if (data && typeof data === 'object' && 'prayer' in data) {
+    // We can't directly play sound here, but we can schedule a task
+    // The notification sound will play automatically based on the notification config
+    console.log('Background prayer notification received:', data.prayer);
+  }
+  
+  // Must return one of the BackgroundFetch results
+  return BackgroundFetch.BackgroundFetchResult.NewData;
+});
+
+// Register the background notification task
+try {
+  // Register the task for background execution
+  TaskManager.isTaskRegisteredAsync(BACKGROUND_NOTIFICATION_TASK).then(isRegistered => {
+    if (!isRegistered) {
+      BackgroundFetch.registerTaskAsync(BACKGROUND_NOTIFICATION_TASK, {
+        minimumInterval: 60 * 15, // 15 minutes
+        stopOnTerminate: false,
+        startOnBoot: true,
+      }).then(() => {
+        console.log('Background notification task registered successfully');
+      }).catch(error => {
+        console.error('Failed to register background notification task:', error);
+      });
+    } else {
+      console.log('Background notification task already registered');
+    }
+  });
+} catch (error) {
+  console.error('Error checking task registration:', error);
+}
 
 class AzaanService {
   private sound: Audio.Sound | null = null;
@@ -25,17 +68,20 @@ class AzaanService {
       }
     }
 
-    // Load Azaan sound (you would replace this with actual Azaan audio file)
+    // Load Azaan sound from assets
     try {
-      // For demo purposes, we'll use a web audio approach or system sound
-      // In production, you would load an actual Azaan MP3 file here
       if (Platform.OS !== 'web') {
-        // Use a system sound as fallback for mobile platforms
+        // Load the appropriate Azaan sound file based on platform
+        const soundSource = Platform.OS === 'android' 
+          ? require('../assets/audio/azaan_android.mp3')
+          : require('../assets/audio/azaan.mp3');
+          
         const { sound } = await Audio.Sound.createAsync(
-          { uri: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav' },
+          soundSource,
           { shouldPlay: false }
         );
         this.sound = sound;
+        console.log('Azaan sound loaded successfully');
       }
     } catch (error) {
       console.warn('Could not load Azaan sound:', error);
@@ -60,20 +106,36 @@ class AzaanService {
     }
 
     try {
+      // For Android, we need to specify the sound file in the notification channel
+      // For iOS, we can specify it directly in the notification content
+      const soundName = Platform.OS === 'android' ? 'azaan.mp3' : 'azaan.mp3';
+      
       const notificationId = await Notifications.scheduleNotificationAsync({
         content: {
           title: `${prayerName} Prayer Time`,
           body: `It's time for ${prayerName} prayer`,
-          sound: true,
+          sound: soundName,
           priority: Notifications.AndroidNotificationPriority.HIGH,
+          // Add additional properties to ensure notification works in all states
+          autoDismiss: false, // Prevent auto-dismissal on iOS
+          sticky: true, // Make notification persistent on Android
+          vibrate: [0, 250, 250, 250], // Custom vibration pattern
+          // Include data for background handling
+          data: { 
+            prayer: prayerName.toLowerCase(),
+            timestamp: new Date().getTime(),
+            requiresPlayback: true,
+            _displayInForeground: true // Force display even in foreground
+          },
         },
         trigger: {
+          type: Notifications.SchedulableTriggerInputTypes.DATE,
           date: scheduledTime,
         },
       });
 
       this.notificationId = notificationId;
-      console.log(`Azaan scheduled for ${prayerName} at ${time}`);
+      console.log(`Azaan scheduled for ${prayerName} at ${time} (ID: ${notificationId})`);
     } catch (error) {
       console.error('Error scheduling Azaan:', error);
     }

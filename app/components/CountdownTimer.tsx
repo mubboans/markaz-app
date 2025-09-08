@@ -14,9 +14,10 @@ interface CountdownTimerProps {
     time: string; // e.g. "05:12" or "18:45"
     arabic?: string;
   }[];
+  onTimeReached?: () => void;
 }
 
-export default function CountdownTimer({ timeTable }: CountdownTimerProps) {
+export default function CountdownTimer({ timeTable, onTimeReached }: CountdownTimerProps) {
   const [timeLeft, setTimeLeft] = useState({
     hours: 0,
     minutes: 0,
@@ -60,13 +61,27 @@ export default function CountdownTimer({ timeTable }: CountdownTimerProps) {
   useEffect(() => {
     if (!timeTable?.length) return;
 
+    let lastNextPrayerName = '';
+
     const tick = () => {
       const { name, arabic, time, date } = getNextPrayer();
+      
+      // Check if the next prayer has changed, which means a prayer time was reached
+      if (lastNextPrayerName && lastNextPrayerName !== name && onTimeReached) {
+        onTimeReached();
+      }
+      
+      lastNextPrayerName = name;
       setNextPrayer({ name, arabic, time });
 
       // countdown
       const now = new Date();
       const diff = date.getTime() - now.getTime();
+
+      // If diff is very small (less than 1 second), we've reached the prayer time
+      if (diff < 1000 && diff >= 0 && onTimeReached) {
+        onTimeReached();
+      }
 
       setTimeLeft({
         hours: Math.floor(diff / 3_600_000),
@@ -93,7 +108,7 @@ export default function CountdownTimer({ timeTable }: CountdownTimerProps) {
     tick();
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
-  }, [timeTable]);
+  }, [timeTable, onTimeReached]);
 
   const formatTime = (v: number) => v.toString().padStart(2, "0");
 

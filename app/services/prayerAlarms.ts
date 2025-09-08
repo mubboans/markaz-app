@@ -1,12 +1,14 @@
 import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
 
+// Configure notifications to handle background and foreground notifications
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
         shouldPlaySound: true,
         shouldSetBadge: true,
         shouldShowBanner: true,
         shouldShowList: true,
+        shouldShowAlert: true, // Ensure alerts show in all states
     }),
 });
 
@@ -19,9 +21,13 @@ export async function allowAlarms() {
     if (Platform.OS === 'android') {
         await Notifications.setNotificationChannelAsync('prayer', {
             name: 'Prayer Alerts',
-            importance: Notifications.AndroidImportance.HIGH,
-            sound: 'azaan-android.mp3',
+            importance: Notifications.AndroidImportance.MAX, // Use MAX importance for critical notifications
+            sound: 'azaan.mp3', // This should match the filename in android/app/src/main/res/raw/
             vibrationPattern: [0, 500, 200, 500],
+            enableVibrate: true,
+            lockscreenVisibility: Notifications.AndroidNotificationVisibility.PUBLIC, // Show on lock screen
+            bypassDnd: true, // Bypass Do Not Disturb mode
+            showBadge: true, // Show badge on app icon
         });
     }
     return true;
@@ -60,40 +66,26 @@ export async function setPrayerAlarms(times: Record<string, string | number>) {
         await Notifications.scheduleNotificationAsync({
             identifier: name,
             content: {
-                title: `⏰ ${name.charAt(0).toUpperCase() + name.slice(1)}`,
-                body: 'Time to pray!',
-                sound: 'azaan-android.mp3',
+                title: `⏰ ${name.charAt(0).toUpperCase() + name.slice(1)} Time`,
+                body: "Haiya Al Salah!",
+                sound: Platform.OS === 'android' ? 'azaan.mp3' : 'azaan.mp3',
                 vibrate: [0, 500, 200, 500],
-                data: { prayer: name },
+                priority: Notifications.AndroidNotificationPriority.HIGH,
+                autoDismiss: false, // Prevent auto-dismissal on iOS
+                sticky: true, // Make notification persistent on Android
+                data: { 
+                    prayer: name,
+                    timestamp: new Date().getTime(),
+                    requiresPlayback: true,
+                    _displayInForeground: true // Force display even in foreground
+                },
             },
-            trigger: 
-            // null
-            {
+            trigger: {
                 type: Notifications.SchedulableTriggerInputTypes.DATE,
                 date: customDate,
-                // seconds: 5,
             },
         });
+        
+        console.log(`Prayer alarm scheduled for ${name} at ${time} with sound`);
     }
-
-    /* silent 00:05 alarm that re-runs this function tomorrow */
-    // const next = new Date(now);
-    // next.setDate(next.getDate() + 1);
-    // next.setHours(0, 5, 0, 0);
-
-    // await Notifications.scheduleNotificationAsync({
-    //     identifier: RESCHEDULE,
-    //     content: {
-    //         title: '',
-    //         body: '',
-    //         data: { _type: 'reschedule' },
-    //         sound: '',
-    //         vibrate: [],
-    //         priority: Notifications.AndroidNotificationPriority.MIN,
-    //     },
-    //     trigger: {
-    //         type: Notifications.SchedulableTriggerInputTypes.DATE,
-    //         date: next,
-    //     },
-    // });
 }

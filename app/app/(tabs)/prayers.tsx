@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   Switch,
   ActivityIndicator,
+  AppState,
+  AppStateStatus,
 } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Bell, Volume2, MapPin, Play } from 'lucide-react-native';
@@ -25,16 +27,50 @@ export default function PrayersScreen() {
     
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [azaanEnabled, setAzaanEnabled] = useState(true);
-  const { prayerTimes, fetchPrayerTimes, nextPrayer } = usePrayerStore();
+ const { prayerTimes, fetchPrayerTimes, nextPrayer, updateNextPrayer } = usePrayerStore();
   const insets = useSafeAreaInsets();
   const toast = useToast();
   const sound = useRef<Audio.Sound | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const appStateRef = useRef(AppState.currentState);
+  const timerRef = useRef<number | null>(null);
+  
+  // Function to check and update next prayer
+  const checkAndUpdateNextPrayer = useCallback(() => {
+    // Call the store's updateNextPrayer method to refresh the next prayer
+    updateNextPrayer();
+  }, [updateNextPrayer]);
+  
   useEffect(() => {
     console.log(prayerTimes, "prayerTimes");
-    
     fetchPrayerTimes();
-  }, []);
+    
+    // Set up a timer to check and update next prayer every minute
+    timerRef.current = setInterval(checkAndUpdateNextPrayer, 60000); // Check every minute
+    
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
+  }, [fetchPrayerTimes, checkAndUpdateNextPrayer]);
+  // Handle app state changes to update next prayer when app comes to foreground
+  useEffect(() => {
+    const handleAppStateChange = (nextAppState: AppStateStatus) => {
+      if (appStateRef.current.match(/inactive|background/) && nextAppState === 'active') {
+        // App has come to the foreground
+        checkAndUpdateNextPrayer();
+      }
+      appStateRef.current = nextAppState;
+    };
+    
+    const subscription = AppState.addEventListener('change', handleAppStateChange);
+    
+    return () => {
+      subscription.remove();
+    };
+  }, [checkAndUpdateNextPrayer]);
+  
   useEffect(() => {
     (async () => {
       // Optional: allow audio even when the phone is on silent
@@ -43,7 +79,7 @@ export default function PrayersScreen() {
         playsInSilentModeIOS: true,
       });
       const { sound: s } = await Audio.Sound.createAsync(
-        require('../../assets/audio/azaan-android.mp3') // <-- path to your mp3
+        require("../../assets/audio/azaan_android.mp3") // <-- path to your mp3
       );
       sound.current = s;
       // Re-enable button when the track finishes
@@ -97,20 +133,10 @@ export default function PrayersScreen() {
         {nextPrayer && (
           <View style={styles.nextPrayerContainer}>
             <Text style={styles.nextPrayerTitle}>Next Prayer</Text>
-            {/* <Text style={styles.nextPrayerName}>{nextPrayer.name}</Text> */}
+            <Text style={styles.nextPrayerName}>{nextPrayer.name}</Text>
             <CountdownTimer
-              //   targetTime={nextPrayer.time}
-              timeTable={
-                prayerTimes
-                //     [
-                //     // ...prayerTimes,
-                //     { arabic: "العصر", name: "Asr", time: "16:24" },
-
-                //     { arabic: "Asd", name: "magrib", time: "16:25" },
-                //     { arabic: "asdasd", name: "Isha", time: "16:26" },
-                //   ]
-              }
-            //   onTimeReached={handlePrayerTimeReached}
+              timeTable={prayerTimes}
+              onTimeReached={checkAndUpdateNextPrayer}
             />
           </View>
         )}

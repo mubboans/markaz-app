@@ -24,10 +24,17 @@ export async function schedulePrayerAlarms(times: Record<string, string | number
             content: {
                 title: `⏰ ${name.charAt(0).toUpperCase() + name.slice(1)}`,
                 body: 'Time to pray!',
-                sound: 'azaan-android.mp3',
+                sound: Platform.OS === 'android' ? 'azaan.mp3' : 'azaan.mp3',
                 vibrate: [0, 500, 200, 500],
                 priority: Notifications.AndroidNotificationPriority.HIGH,
-                data: { prayer: name },
+                autoDismiss: false, // Prevent auto-dismissal on iOS
+                sticky: true, // Make notification persistent on Android
+                data: { 
+                    prayer: name,
+                    timestamp: new Date().getTime(),
+                    requiresPlayback: true,
+                    _displayInForeground: true // Force display even in foreground
+                },
             },
             trigger: {
                 type: Notifications.SchedulableTriggerInputTypes.DATE,
