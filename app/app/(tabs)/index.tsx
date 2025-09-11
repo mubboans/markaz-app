@@ -28,20 +28,17 @@ export default function MosquesScreen() {
   const [isLoading, setIsLoading] = useState(true); // start loading
   const [selectedMosque, setSelectedMosque] =
     useState<GooglePlaceMosque | null>(null);
-
+  const [mosques, setMosques] = useState<GooglePlaceMosque[]>([]);
   const { user } = useAuthStore();
   const toast = useToast();
   const canAddMosque = user?.role === "admin" || user?.role === "mosque_admin";
 
   /* -------------- search index (built once) ----------------------- */
   const fuse = useMemo(
-    () =>
-      new Fuse(Mosque_Json, {
-        keys: ["vicinity", "name"],
-        threshold: 0.4,
-      }),
-    []
+    () => new Fuse(mosques, { keys: ["vicinity", "name"], threshold: 0.4 }),
+    [mosques]
   );
+
 
   /* -------------- filtered list ---------------------------------- */
   const displayedMosques = useMemo(() => {
@@ -76,15 +73,30 @@ export default function MosquesScreen() {
       ios: `maps://d?daddr=${searchQuery}`,
       android: `https://www.google.com/maps/dir/?api=1&destination=${searchQuery}`,
     });
-    console.log(url, "check url");
-
-    Linking.openURL(
+     Linking.openURL(
       url ?? `https://www.google.com/maps/dir/?api=1&destination=${searchQuery}`
     ).catch(() => {
       // fallback to generic geo: link
       Linking.openURL(`geo:${searchQuery}`);
     });
   };
+
+  
+useEffect(() => {
+  const loadMosques = async () => {
+    try {
+      const data = require("@/assets/json/output-1.json");
+      setMosques(data);
+    } catch (error) {
+      console.error("Failed to load mosque data", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  loadMosques();
+}, []);
+
   /* -------------- UI ------------------------------------------- */
   return (
     <SafeAreaView style={styles.container}>
@@ -121,11 +133,14 @@ export default function MosquesScreen() {
 
       {/* list header */}
       <View style={styles.content}>
+        <Text style={styles.noteText}>
+          Please note this data wont change untill new released
+        </Text>
         <View style={styles.headerRow}>
           <Text style={styles.sectionTitle}>
             {isLoading
               ? "Loading…"
-              : `Found ${displayedMosques.length} Mosques`}
+              : `Total ${displayedMosques.length} Mosques from local DB.`}
           </Text>
           {canAddMosque && (
             <TouchableOpacity
@@ -147,7 +162,7 @@ export default function MosquesScreen() {
           />
         ) : (
           <FlatList
-            data={displayedMosques}
+            data={mosques}
             keyExtractor={(item) => item.reference}
             renderItem={({ item }) => (
               <MosqueCard
@@ -159,15 +174,16 @@ export default function MosquesScreen() {
             contentContainerStyle={styles.listContainer}
             ListEmptyComponent={
               <View style={styles.emptyBox}>
-               
-                  <TouchableOpacity
-                    style={styles.directionsBtn}
-                    onPress={openMaps}
-                  >
-                    <Navigation size={16} color="#FFF" />
-                    <Text style={styles.btnTxt}>No mosques try searching google</Text>
-                  </TouchableOpacity>
-                </View>
+                <TouchableOpacity
+                  style={styles.directionsBtn}
+                  onPress={openMaps}
+                >
+                  <Navigation size={16} color="#FFF" />
+                  <Text style={styles.btnTxt}>
+                    No mosques try searching google
+                  </Text>
+                </TouchableOpacity>
+              </View>
             }
           />
         )}
@@ -193,7 +209,7 @@ const styles = StyleSheet.create({
   header: { padding: 20, backgroundColor: "#059669" },
   title: { fontSize: 28, fontWeight: "700", color: "#FFF", marginBottom: 4 },
   subtitle: { fontSize: 16, color: "#A7F3D0" },
-  searchContainer: { flexDirection: "row", padding: 20, gap: 12 },
+  searchContainer: { display: 'flex', alignItems: 'center', flexDirection: "row", padding: 20, gap: 12 },
   searchBar: {
     flex: 1,
     flexDirection: "row",
@@ -214,6 +230,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     justifyContent: "center",
     alignItems: "center",
+    
   },
   disabledButton: { opacity: 0.7 },
   content: { flex: 1, padding: 20 },
@@ -224,6 +241,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   sectionTitle: { fontSize: 18, fontWeight: "600", color: "#111827" },
+  noteText: { fontSize: 14, color: "#6B7280", margin: 4 },
   addButton: {
     flexDirection: "row",
     alignItems: "center",

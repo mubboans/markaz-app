@@ -21,6 +21,7 @@ import * as Notifications from "expo-notifications";
 import PrayerTimeCard from '@/components/PrayerTimeCard';
 import CountdownTimer from '@/components/CountdownTimer';
 import { Audio } from 'expo-av';
+
 import { useToast } from '../providers/ToastProvider';
 
 export default function PrayersScreen() {
@@ -77,9 +78,11 @@ export default function PrayersScreen() {
       await Audio.setAudioModeAsync({
         allowsRecordingIOS: false,
         playsInSilentModeIOS: true,
+        staysActiveInBackground:true,
       });
       const { sound: s } = await Audio.Sound.createAsync(
-        require("../../assets/audio/azaan_android.mp3") // <-- path to your mp3
+        require("../../assets/audio/azaan.wav"),
+        { shouldPlay: false } // <-- path to your mp3
       );
       sound.current = s;
       // Re-enable button when the track finishes
@@ -119,7 +122,9 @@ export default function PrayersScreen() {
 
 
   return (
-    <SafeAreaView style={[styles.container, { paddingBottom: insets.bottom + 55 }]}>
+    <SafeAreaView
+      style={[styles.container, { paddingBottom: insets.bottom + 55 }]}
+    >
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <Text style={styles.title}>Prayer Times</Text>
@@ -153,6 +158,7 @@ export default function PrayersScreen() {
                 onValueChange={setNotificationsEnabled}
                 trackColor={{ false: "#D1D5DB", true: "#A7F3D0" }}
                 thumbColor={notificationsEnabled ? "#059669" : "#6B7280"}
+                disabled={true}
               />
             </View>
 
@@ -166,6 +172,7 @@ export default function PrayersScreen() {
                 onValueChange={setAzaanEnabled}
                 trackColor={{ false: "#D1D5DB", true: "#A7F3D0" }}
                 thumbColor={azaanEnabled ? "#059669" : "#6B7280"}
+                disabled={true}
               />
             </View>
 

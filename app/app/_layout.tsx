@@ -1,5 +1,5 @@
 // _layout.tsx
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useFrameworkReady } from "@/hooks/useFrameworkReady";
@@ -7,22 +7,31 @@ import { useAuthStore } from "@/stores/authStore";
 import { ToastProvider } from "./providers/ToastProvider";
 import { Text, View, AppState, Platform } from "react-native";
 import * as Notifications from 'expo-notifications';
-import * as TaskManager from 'expo-task-manager';
 import { getPrayerTimes } from "@/services/prayerService";
-import { bootstrapPrayers } from "@/services/dailyScheduler";
-import { setSelfReschedulingAlarm } from "@/services/reshedulerService";
-import { installRescheduleListener } from "@/services/rescheduleListener";
-import { allowAlarms, setPrayerAlarms } from "@/services/prayerAlarms";
-import { installPrayerListener, registerBackgroundAlarmUpdate } from "@/services/prayerBackground";
 import { azaanService } from "@/services/azaanService";
-import { useAzaan } from "@/hooks/useAzaan";
-//   const todayTimes = {
-//     fajr: "05:06",
-//     dhuhr: "12:41",
-//     asr: "16:25",
-//     maghrib: "20:28",
-//     isha: "20:29",
-//   };
+import * as TaskManager from "expo-task-manager";
+import { now } from "moment";
+import { registerNewDayTask, scheduleBgAzaan } from "@/services/backgroundTask";
+import AnimatedSplashScreen from "@/components/AnimatedSplashScreen";
+import * as SplashScreen from "expo-splash-screen";
+
+const BACKGROUND_NOTIFICATION_TASK = 'BACKGROUND-NOTIFICATION-TASK';
+TaskManager.defineTask(BACKGROUND_NOTIFICATION_TASK, async ({ data, error, executionInfo }) => {
+    console.log(data, error, executionInfo, " executionInfo");
+    
+    if (error) {
+        console.error('Background notification task error:', error);
+        return;
+    }
+    if (data) {
+        // Process the notification data here
+        console.log('Background notification received:', data);
+        azaanService.playAzaan();
+        // You can also schedule local notifications or perform other actions
+    }
+});
+Notifications.registerTaskAsync(BACKGROUND_NOTIFICATION_TASK);
+
 const scheduleAlarms = async () => {
     try {
         // Request notification permissions
@@ -32,97 +41,91 @@ const scheduleAlarms = async () => {
             return;
         }
         
-        // Set up alarms
-        const ok = await allowAlarms();
+        
+        const ok = await azaanService.allowAlarms();
         if (!ok) return;
-        
-        // Get prayer times and schedule alarms
         const today = getPrayerTimes(new Date());
-        await setPrayerAlarms(today); // today + 00:05 tomorrow
-        
-        // Install prayer listener for rescheduling
-        installPrayerListener(); // listener for 00:05
-        
-        // Register background tasks for daily updates
-        await registerBackgroundAlarmUpdate();
-        
-        // Initialize Azaan service
         await azaanService.initialize();
-        
-        // Schedule Azaan for each prayer time
+        await scheduleBgAzaan();
+        await registerNewDayTask();
         Object.entries(today).forEach(([name, time]) => {
             if (!['sunrise', 'midnight'].includes(name)) {
-                // Format the prayer name for display
                 const formattedName = name.charAt(0).toUpperCase() + name.slice(1);
                 azaanService.scheduleAzaan(formattedName, time.toString());
             }
         });
-        
-        console.log('Prayer alarms and Azaan scheduled successfully');
     } catch (error) {
-        console.log("Error scheduling alarms:", error);
+        console.error('Error scheduling alarms:', error);
     }
 };
 
 export default function RootLayout() {
+     const [appIsReady, setAppIsReady] = useState(false);
+     const [splashAnimationFinished, setSplashAnimationFinished] = useState(false);
   useFrameworkReady();
-  const { isAuthenticated, isLoading } = useAuthStore(); // <- expose `isLoading`
+  const { isLoading } = useAuthStore(); // <- expose `isLoading`
+   useEffect(() => {
+     scheduleAlarms();
+     const foregroundSubscription =
+       Notifications.addNotificationReceivedListener((notification) => {
+         if (notification.request.content.data?.prayer) {
+           azaanService.playAzaan();
+         }
+       });
+    const responseSubscription =
+       Notifications.addNotificationResponseReceivedListener((response) => {
+         if (response.notification.request.content.data?.prayer) {
+           azaanService.playAzaan();
+         }
+       });
 
-  /* register background task once and handle app state changes */
-  useEffect(() => {
-    console.log("Registering background task and notification handlers...");  
-    scheduleAlarms();
-    
-    // Setup notification listeners for different scenarios
-    
-    // 1. Foreground notification listener - plays Azaan when app is open
-    const foregroundSubscription = Notifications.addNotificationReceivedListener((notification) => {
-      console.log('Foreground notification received:', notification.request.identifier);
-      // Check if this is a prayer notification
-      if (notification.request.content.data?.prayer) {
-        // Play Azaan sound when prayer notification is received
-        azaanService.playAzaan();
-      }
-    });
-    
-    // 2. Response listener - handles when user taps on notification
-    const responseSubscription = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log('Notification response received:', response.notification.request.identifier);
-      if (response.notification.request.content.data?.prayer) {
-        // User tapped on prayer notification
-        azaanService.playAzaan();
-      }
-    });
-    
-    // 3. App state change listener - reschedules notifications when app comes to foreground
-     const appStateSubscription = AppState.addEventListener('change', nextAppState => {
-       if (nextAppState === 'active') {
-         console.log('App has come to the foreground!');
-         // Refresh prayer times and reschedule if needed
-         const today = getPrayerTimes(new Date());
-         setPrayerAlarms(today);
-         
-         // Re-initialize Azaan service if needed
-         azaanService.initialize();
-         
-         // Ensure background tasks are registered
-         registerBackgroundAlarmUpdate().catch(error => {
-           console.warn('Failed to register background alarm update:', error);
-         });
+     // App opened from notification (cold start)
+     const checkInitialNotification = async () => {
+       const response = await Notifications.getLastNotificationResponseAsync();
+       if (response?.notification?.request?.content?.data?.prayer) {
+         azaanService.playAzaan();
        }
-     });
-    
-    return () => {
-      // Clean up all listeners
-      foregroundSubscription.remove();
-      responseSubscription.remove();
-      appStateSubscription.remove();
-      
-      // Clean up Azaan service
-      azaanService.cleanup();
-    };
-  }, []);
+     };
+     checkInitialNotification();
 
+    //  Notifications.registerTaskAsync(BACKGROUND_NOTIFICATION_TASK);
+
+     return () => {
+       foregroundSubscription.remove();
+       responseSubscription.remove();
+       azaanService.cleanup();
+    //    Notifications.unregisterTaskAsync(BACKGROUND_NOTIFICATION_TASK);
+     };
+   }, []);
+   //splash Screen UseEffect
+   useEffect(() => {
+     async function prepare() {
+       try {
+         // Perform any app loading tasks here
+         await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulate loading
+       } catch (e) {
+         console.warn(e);
+       } finally {
+         setAppIsReady(true);
+       }
+     }
+     prepare();
+   }, []);
+    const onLottieAnimationFinish = useCallback(() => {
+      setSplashAnimationFinished(true);
+    }, []);
+
+      useEffect(() => {
+        if (appIsReady && splashAnimationFinished) {
+          SplashScreen.hideAsync(); // Hide native splash screen once app and animation are ready
+        }
+      }, [appIsReady, splashAnimationFinished]);
+
+      if (!appIsReady || !splashAnimationFinished) {
+        return (
+          <AnimatedSplashScreen onAnimationFinish={onLottieAnimationFinish} />
+        );
+      }
   /* show loader until auth status is resolved */
   if (isLoading) {
     return (
@@ -137,7 +140,7 @@ export default function RootLayout() {
       <ToastProvider>
         <Stack screenOptions={{ headerShown: false }}>
           {/* {isAuthenticated ? ( */}
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           {/* ) : (
             <Stack.Screen name="(auth)" options={{ headerShown: false }} />
           )} */}

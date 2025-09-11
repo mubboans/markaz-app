@@ -10,7 +10,13 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.markazapp"
+      "bundleIdentifier": "com.anonymous.markazapp",
+      "infoPlist": {
+        "UIBackgroundModes": [
+          "audio",
+            "fetch"
+        ]
+      }
     },
     "web": {
       "bundler": "metro",
@@ -22,22 +28,31 @@
       "expo-router",
       "expo-font",
       "expo-web-browser",
-     [ "expo-notifications",
-      {
-        "icon":"./assets/images/markaz-icon.png",
-        "color":"#059669",
-        "adaptiveIcon": {
-          "foregroundImage": "./assets/images/markaz-icon.png",
-          "backgroundColor": "#059669"
-        },
-        "sounds": ["./assets/audio/azaan-android.mp3"]
-      }]
+      "expo-audio",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/noti-icon.png",
+          "color": "#ffffff",
+          "sounds": [
+            "./assets/audio/azaan.wav"
+          ]
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
     },
     "android": {
-      "package": "com.anonymous.markazapp"
+      "package": "com.anonymous.markazapp",
+      "permissions": [
+        "POST_NOTIFICATIONS",
+        "SCHEDULE_EXACT_ALARM"
+      ],
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/markaz-icon.png",
+        "backgroundColor": "#059669"
+      }
     },
     "extra": {
       "router": {},

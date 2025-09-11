@@ -13,9 +13,7 @@ import { useAuthStore } from '@/stores/authStore';
 export default function TabLayout() {
   const insets = useSafeAreaInsets(); // <- navigation-bar height on Android
   const { isAuthenticated } = useAuthStore(); 
-  console.log(isAuthenticated, "isAuthenticated from layout");
-  
-  return (
+   return (
     <Tabs
       screenOptions={{
         headerShown: false,

@@ -24,7 +24,7 @@ export async function schedulePrayerAlarms(times: Record<string, string | number
             content: {
                 title: `⏰ ${name.charAt(0).toUpperCase() + name.slice(1)}`,
                 body: 'Time to pray!',
-                sound: Platform.OS === 'android' ? 'azaan.mp3' : 'azaan.mp3',
+                sound: 'azaan.wav',
                 vibrate: [0, 500, 200, 500],
                 priority: Notifications.AndroidNotificationPriority.HIGH,
                 autoDismiss: false, // Prevent auto-dismissal on iOS
