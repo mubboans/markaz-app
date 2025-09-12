@@ -14,6 +14,8 @@ import { now } from "moment";
 import { registerNewDayTask, scheduleBgAzaan } from "@/services/backgroundTask";
 import AnimatedSplashScreen from "@/components/AnimatedSplashScreen";
 import * as SplashScreen from "expo-splash-screen";
+import Constants from "expo-constants";
+import * as Device from "expo-device";
 
 const BACKGROUND_NOTIFICATION_TASK = 'BACKGROUND-NOTIFICATION-TASK';
 TaskManager.defineTask(BACKGROUND_NOTIFICATION_TASK, async ({ data, error, executionInfo }) => {
@@ -25,7 +27,7 @@ TaskManager.defineTask(BACKGROUND_NOTIFICATION_TASK, async ({ data, error, execu
     }
     if (data) {
         // Process the notification data here
-        console.log('Background notification received:', data);
+        // console.log('Background notification received:', data);
         azaanService.playAzaan();
         // You can also schedule local notifications or perform other actions
     }
@@ -40,7 +42,7 @@ const scheduleAlarms = async () => {
             console.warn('Notification permission not granted');
             return;
         }
-        
+        await registerForPushNotificationsAsync(); // Send this token to your server
         
         const ok = await azaanService.allowAlarms();
         if (!ok) return;
@@ -58,6 +60,40 @@ const scheduleAlarms = async () => {
         console.error('Error scheduling alarms:', error);
     }
 };
+
+async function registerForPushNotificationsAsync() {
+  let token;
+
+  if (Device.isDevice) {
+    const { status: existingStatus } =
+      await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+
+    if (existingStatus !== "granted") {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+
+    if (finalStatus !== "granted") {
+      alert("Failed to get push token for push notification!");
+      return;
+    }
+
+    // Safely access projectId with optional chaining
+    const projectId = Constants?.expoConfig?.extra?.eas?.projectId;
+    if (!projectId) {
+      alert("Project ID not found in app config");
+      return;
+    }
+
+    token = (await Notifications.getExpoPushTokenAsync({ projectId })).data;
+    console.log(token,'-------tokennn');
+  } else {
+    alert("Must use a physical device for Push Notifications");
+  }
+
+  return token;
+}
 
 export default function RootLayout() {
      const [appIsReady, setAppIsReady] = useState(false);

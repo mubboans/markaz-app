@@ -39,6 +39,26 @@ class AzaanService {
         }
     }
 
+
+
+    async registerForPushTokens() {
+        let expoPushToken: string | null = null;
+        let deviceToken: string | null = null;
+
+        // Expo Push Token (for Expo Push Service)
+        expoPushToken = (await Notifications.getExpoPushTokenAsync({
+            // projectId is recommended on SDK 53+
+            projectId: Constants.expoConfig?.extra?.eas?.projectId,
+        })).data;
+
+        // Native device token (for direct FCM/APNs)
+        const devicePush = await Notifications.getDevicePushTokenAsync();
+        deviceToken = devicePush?.data as string | null;
+
+        return { expoPushToken, deviceToken };
+    }
+
+
     async scheduleAzaan(prayerName: string, time: string) {
         if (Platform.OS === 'web') {
             // Web fallback - use browser notification
@@ -114,7 +134,8 @@ class AzaanService {
 
     async playAzaan() {
         try {
-            this.player.currentStatus
+            console.log('playing azaan now');
+            
             await this.player.seekTo(0);
             await this.player.play();
         } catch (error) {
