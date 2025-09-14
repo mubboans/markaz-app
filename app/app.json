@@ -14,7 +14,7 @@
       "infoPlist": {
         "UIBackgroundModes": [
           "audio",
-            "fetch"
+          "fetch"
         ]
       }
     },
@@ -38,7 +38,8 @@
             "./assets/audio/azaan.wav"
           ]
         }
-      ]
+      ],
+      "expo-background-task"
     ],
     "experiments": {
       "typedRoutes": true
