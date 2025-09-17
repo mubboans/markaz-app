@@ -2,10 +2,17 @@ const audioSource = require('../assets/audio/azaan.wav');
 import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
 import { createAudioPlayer, setAudioModeAsync } from 'expo-audio';
+import { Audio } from 'expo-av';
+import Constants from "expo-constants";
+
+
 class AzaanService {
     private notificationId: string | null | any = null;
     private player = createAudioPlayer(audioSource);
+    private sound: Audio.Sound | null = null;
+    private apiUrl = 'api/expotoken';
     async allowAlarms() {
+        console.log(this.apiUrl,'apiUrl check')
         const { status } = await Notifications.requestPermissionsAsync();
         if (status !== 'granted') return false;
 
@@ -17,8 +24,7 @@ class AzaanService {
                 vibrationPattern: [0, 500, 200, 500],
                 enableVibrate: true,
                 lockscreenVisibility: Notifications.AndroidNotificationVisibility.PUBLIC, // Show on lock screen
-                bypassDnd: true, // Bypass Do Not Disturb mode
-                showBadge: true, // Show badge on app icon
+                bypassDnd: true, 
             });
         }
         return true;
@@ -27,35 +33,24 @@ class AzaanService {
     async initialize() {
 
         try {
-            await setAudioModeAsync({
-                shouldPlayInBackground: true,   // iOS bg playback (requires UIBackgroundModes)
-                playsInSilentMode: true,        // iOS mute switch
-                interruptionMode: 'duckOthers', // 'duckOthers' | 'mixWithOthers' | 'doNotMix'
-                shouldRouteThroughEarpiece: false, // Android -> speaker, not earpiece
-            }).catch((e) => console.warn('Audio mode error', e));
-
+            // await setAudioModeAsync({
+            //     shouldPlayInBackground: true,   // iOS bg playback (requires UIBackgroundModes)
+            //     playsInSilentMode: true,        // iOS mute switch
+            //     interruptionMode: 'duckOthers', // 'duckOthers' | 'mixWithOthers' | 'doNotMix'
+            //     shouldRouteThroughEarpiece: false, // Android -> speaker, not earpiece
+            // }).catch((e) => console.warn('Audio mode error', e));
+                if (Platform.OS !== 'web') {
+                    // Load the appropriate Azaan sound file based on platform
+                    const { sound } = await Audio.Sound.createAsync(
+                        audioSource,
+                        { shouldPlay: false }
+                    );
+                    this.sound = sound;
+                    console.log('Azaan sound loaded successfully');
+                }
         } catch (error) {
             console.warn('Could not load Azaan sound:', error);
         }
-    }
-
-
-
-    async registerForPushTokens() {
-        let expoPushToken: string | null = null;
-        let deviceToken: string | null = null;
-
-        // Expo Push Token (for Expo Push Service)
-        expoPushToken = (await Notifications.getExpoPushTokenAsync({
-            // projectId is recommended on SDK 53+
-            projectId: Constants.expoConfig?.extra?.eas?.projectId,
-        })).data;
-
-        // Native device token (for direct FCM/APNs)
-        const devicePush = await Notifications.getDevicePushTokenAsync();
-        deviceToken = devicePush?.data as string | null;
-
-        return { expoPushToken, deviceToken };
     }
 
 
@@ -136,8 +131,9 @@ class AzaanService {
         try {
             console.log('playing azaan now');
             
-            await this.player.seekTo(0);
-            await this.player.play();
+            // await this.player.seekTo(0);
+            // await this.player.play();
+            this.sound?.replayAsync();
         } catch (error) {
             console.error('Error playing Azaan:', error);
         }

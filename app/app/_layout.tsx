@@ -16,7 +16,7 @@ import AnimatedSplashScreen from "@/components/AnimatedSplashScreen";
 import * as SplashScreen from "expo-splash-screen";
 import Constants from "expo-constants";
 import * as Device from "expo-device";
-
+import { postRequest } from "@/services/api";
 const BACKGROUND_NOTIFICATION_TASK = 'BACKGROUND-NOTIFICATION-TASK';
 TaskManager.defineTask(BACKGROUND_NOTIFICATION_TASK, async ({ data, error, executionInfo }) => {
     console.log(data, error, executionInfo, " executionInfo");
@@ -32,7 +32,12 @@ TaskManager.defineTask(BACKGROUND_NOTIFICATION_TASK, async ({ data, error, execu
         // You can also schedule local notifications or perform other actions
     }
 });
-Notifications.registerTaskAsync(BACKGROUND_NOTIFICATION_TASK);
+Notifications.registerTaskAsync(BACKGROUND_NOTIFICATION_TASK)
+// .then((x)=>{
+//     console.log(x,'-------task registered',x);
+// },(e)=>{
+//     console.log(e,'-------task error',e);
+// });
 
 const scheduleAlarms = async () => {
     try {
@@ -80,14 +85,18 @@ async function registerForPushNotificationsAsync() {
     }
 
     // Safely access projectId with optional chaining
-    const projectId = Constants?.expoConfig?.extra?.eas?.projectId;
+    const projectId =
+      Constants?.expoConfig?.extra?.eas?.projectId ??
+      "49718800-5134-4baf-8242-2707af98fdc1";
     if (!projectId) {
       alert("Project ID not found in app config");
       return;
     }
 
     token = (await Notifications.getExpoPushTokenAsync({ projectId })).data;
-    console.log(token,'-------tokennn');
+    const username = Device.deviceName;
+    await postRequest("api/expotoken", { token, username });
+    console.log(token, "-------tokennn", username, "device id");
   } else {
     alert("Must use a physical device for Push Notifications");
   }
