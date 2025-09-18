@@ -108,7 +108,6 @@ async function sendHeadlessNotification() {
                 console.error(`Invalid push token: ${pushToken}`);
                 continue;
             }
-
             messages.push({
                 to: pushToken,
                 // no title/body → silent notification

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const Base_Url = "http://localhost:4000/";
+const Base_Url = "https://serverexpoapicron.netlify.app/.netlify/functions/";
 
 export async function getRequest(endpoint: string) {
   try {

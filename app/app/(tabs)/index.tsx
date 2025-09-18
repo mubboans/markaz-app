@@ -20,7 +20,7 @@ import { useToast } from "../providers/ToastProvider";
 import MosqueDetailsModal from "@/components/MosqueDetailsModal";
 import Mosque_Json from "@/assets/json/output-1.json";
 import Fuse from "fuse.js";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 /* ------------------------------------------------------------------ */
 export default function MosquesScreen() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -32,7 +32,7 @@ export default function MosquesScreen() {
   const { user } = useAuthStore();
   const toast = useToast();
   const canAddMosque = user?.role === "admin" || user?.role === "mosque_admin";
-
+  const [deviceDetail, setDeviceDetail] = useState({ modelName: '', manufacturer: '' , deviceName: ''});
   /* -------------- search index (built once) ----------------------- */
   const fuse = useMemo(
     () => new Fuse(mosques, { keys: ["vicinity", "name"], threshold: 0.4 }),
@@ -48,7 +48,15 @@ export default function MosquesScreen() {
 
   /* -------------- location permission / fetch -------------------- */
   useEffect(() => {
+    
     (async () => {
+        console.log('Fetching device name from storage');
+        const name = await AsyncStorage.getItem("deviceName");
+        const modelName = await AsyncStorage.getItem("modelName");
+        const manufacturer = await AsyncStorage.getItem("manufacturer");
+        setDeviceDetail({ modelName: modelName || '', manufacturer: manufacturer || '', deviceName: name || '' });
+        console.log(deviceDetail,'check device detail');
+        
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
         toast.show("Please enable location to find nearby mosques.");
@@ -63,6 +71,7 @@ export default function MosquesScreen() {
 
   /* -------------- debounced search ------------------------------- */
   useEffect(() => {
+    
     const t = setTimeout(() => setSearchQuery((q) => q), 300); // cheap debounce
     return () => clearTimeout(t);
   }, [searchQuery]);
@@ -103,7 +112,7 @@ useEffect(() => {
       {/* header */}
       <View style={styles.header}>
         <Text style={styles.title}>Mosques Near You</Text>
-        <Text style={styles.subtitle}>Find prayer times and locations</Text>
+        <Text style={styles.subtitle}>{deviceDetail.deviceName}-{deviceDetail.manufacturer}-{deviceDetail.modelName}</Text>
       </View>
 
       {/* search bar */}

@@ -3,7 +3,6 @@ import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
 import { createAudioPlayer, setAudioModeAsync } from 'expo-audio';
 import { Audio } from 'expo-av';
-import Constants from "expo-constants";
 
 
 class AzaanService {
@@ -20,7 +19,7 @@ class AzaanService {
             await Notifications.setNotificationChannelAsync('prayer', {
                 name: 'Prayer Alerts',
                 importance: Notifications.AndroidImportance.MAX, // Use MAX importance for critical notifications
-                sound: 'azaan.mp3', // This should match the filename in android/app/src/main/res/raw/
+                sound: 'azaan.wav', // This should match the filename in android/app/src/main/res/raw/
                 vibrationPattern: [0, 500, 200, 500],
                 enableVibrate: true,
                 lockscreenVisibility: Notifications.AndroidNotificationVisibility.PUBLIC, // Show on lock screen

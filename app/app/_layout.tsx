@@ -17,6 +17,7 @@ import * as SplashScreen from "expo-splash-screen";
 import Constants from "expo-constants";
 import * as Device from "expo-device";
 import { postRequest } from "@/services/api";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const BACKGROUND_NOTIFICATION_TASK = 'BACKGROUND-NOTIFICATION-TASK';
 TaskManager.defineTask(BACKGROUND_NOTIFICATION_TASK, async ({ data, error, executionInfo }) => {
     console.log(data, error, executionInfo, " executionInfo");
@@ -94,9 +95,16 @@ async function registerForPushNotificationsAsync() {
     }
 
     token = (await Notifications.getExpoPushTokenAsync({ projectId })).data;
-    const username = Device.deviceName;
+    const username = ((Device?.deviceName || '') + (Device?.modelName) + (Device.manufacturer)) ||   "user-device";
+    await AsyncStorage.setItem("modelName", Device?.modelName || '');
+    await AsyncStorage.setItem("manufacturer", Device?.manufacturer || "");
+    await AsyncStorage.setItem("deviceName", Device?.deviceName || "").then(() => {
+        console.log("Device name saved successfully");
+    }).catch((error) => {
+        console.error("Error saving device name:", error);
+    });
     await postRequest("api/expotoken", { token, username });
-    console.log(token, "-------tokennn", username, "device id");
+    
   } else {
     alert("Must use a physical device for Push Notifications");
   }
