@@ -52,7 +52,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/markaz-icon.png",
         "backgroundColor": "#059669"
-      }
+      },
+      "googleServicesFile": "./google-services.json",
     },
     "extra": {
       "router": {},

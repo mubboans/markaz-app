@@ -32,7 +32,7 @@ export default function MosquesScreen() {
   const { user } = useAuthStore();
   const toast = useToast();
   const canAddMosque = user?.role === "admin" || user?.role === "mosque_admin";
-  const [deviceDetail, setDeviceDetail] = useState({ modelName: '', manufacturer: '' , deviceName: ''});
+  const [deviceDetail, setDeviceDetail] = useState({ modelName: 'User', manufacturer: '' , deviceName: ''});
   /* -------------- search index (built once) ----------------------- */
   const fuse = useMemo(
     () => new Fuse(mosques, { keys: ["vicinity", "name"], threshold: 0.4 }),

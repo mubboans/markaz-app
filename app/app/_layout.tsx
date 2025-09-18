@@ -18,22 +18,19 @@ import Constants from "expo-constants";
 import * as Device from "expo-device";
 import { postRequest } from "@/services/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-const BACKGROUND_NOTIFICATION_TASK = 'BACKGROUND-NOTIFICATION-TASK';
+const BACKGROUND_NOTIFICATION_TASK = 'BG-TASK';
 TaskManager.defineTask(BACKGROUND_NOTIFICATION_TASK, async ({ data, error, executionInfo }) => {
     console.log(data, error, executionInfo, " executionInfo");
-    
     if (error) {
         console.error('Background notification task error:', error);
         return;
     }
     if (data) {
-        // Process the notification data here
-        // console.log('Background notification received:', data);
+        console.log(data,'enter in data');
         azaanService.playAzaan();
-        // You can also schedule local notifications or perform other actions
     }
 });
-Notifications.registerTaskAsync(BACKGROUND_NOTIFICATION_TASK)
+Notifications.registerTaskAsync(BACKGROUND_NOTIFICATION_TASK);
 // .then((x)=>{
 //     console.log(x,'-------task registered',x);
 // },(e)=>{
@@ -52,16 +49,16 @@ const scheduleAlarms = async () => {
         
         const ok = await azaanService.allowAlarms();
         if (!ok) return;
-        const today = getPrayerTimes(new Date());
+        // const today = getPrayerTimes(new Date());
         await azaanService.initialize();
-        await scheduleBgAzaan();
-        await registerNewDayTask();
-        Object.entries(today).forEach(([name, time]) => {
-            if (!['sunrise', 'midnight'].includes(name)) {
-                const formattedName = name.charAt(0).toUpperCase() + name.slice(1);
-                azaanService.scheduleAzaan(formattedName, time.toString());
-            }
-        });
+        // await scheduleBgAzaan();
+        // await registerNewDayTask();
+        // Object.entries(today).forEach(([name, time]) => {
+        //     if (!['sunrise', 'midnight'].includes(name)) {
+        //         const formattedName = name.charAt(0).toUpperCase() + name.slice(1);
+        //         azaanService.scheduleAzaan(formattedName, time.toString());
+        //     }
+        // });
     } catch (error) {
         console.error('Error scheduling alarms:', error);
     }
