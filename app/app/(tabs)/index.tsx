@@ -21,6 +21,10 @@ import MosqueDetailsModal from "@/components/MosqueDetailsModal";
 import Mosque_Json from "@/assets/json/output-1.json";
 import Fuse from "fuse.js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Notifications from "expo-notifications";
+import * as TaskManager from "expo-task-manager";
+import { azaanService } from "@/services/azaanService";
+
 /* ------------------------------------------------------------------ */
 export default function MosquesScreen() {
   const [searchQuery, setSearchQuery] = useState("");

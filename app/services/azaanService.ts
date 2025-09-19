@@ -2,19 +2,18 @@ const audioSource = require('../assets/audio/azaan.wav');
 import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
 import { createAudioPlayer, setAudioModeAsync } from 'expo-audio';
-import { Audio } from 'expo-av';
-
+// import { Audio } from 'expo-av';
+import * as Audio from 'expo-audio';
 
 class AzaanService {
     private notificationId: string | null | any = null;
+    // private player = createAudioPlayer(audioSource);
+    // private sound: Audio.Sound | null = null;
     private player = createAudioPlayer(audioSource);
-    private sound: Audio.Sound | null = null;
     private apiUrl = 'api/expotoken';
     async allowAlarms() {
-        console.log(this.apiUrl,'apiUrl check')
         const { status } = await Notifications.requestPermissionsAsync();
         if (status !== 'granted') return false;
-
         if (Platform.OS === 'android') {
             await Notifications.setNotificationChannelAsync('prayer', {
                 name: 'Prayer Alerts',
@@ -26,6 +25,7 @@ class AzaanService {
                 bypassDnd: true, 
             });
         }
+       
         return true;
     }
 
@@ -39,11 +39,18 @@ class AzaanService {
             // }).catch((e) => console.warn('Audio mode error', e));
                 if (Platform.OS !== 'web') {
                     // Load the appropriate Azaan sound file based on platform
-                    const { sound } = await Audio.Sound.createAsync(
-                        audioSource,
-                        { shouldPlay: false }
-                    );
-                    this.sound = sound;
+                    // const { sound } = await Audio.Sound.createAsync(
+                    //     audioSource,
+                    //     { shouldPlay: false }
+                    // );
+                    // this.sound = sound;
+                    await setAudioModeAsync({
+                        shouldPlayInBackground: true,   // iOS bg playback (requires UIBackgroundModes)
+                        playsInSilentMode: true,        // iOS mute switch
+                        interruptionMode: 'duckOthers',
+                        interruptionModeAndroid: 'duckOthers', // 'duckOthers' | 'mixWithOthers' | 'doNotMix'
+                    })
+                    // this.player?.play();
                 }
         } catch (error) {
             console.warn('Could not load Azaan sound:', error);
@@ -130,7 +137,7 @@ class AzaanService {
             
             // await this.player.seekTo(0);
             // await this.player.play();
-            this.sound?.replayAsync();
+            this.player?.play();
         } catch (error) {
             console.error('Error playing Azaan:', error);
         }

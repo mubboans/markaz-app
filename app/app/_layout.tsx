@@ -16,7 +16,7 @@ import { postRequest } from "@/services/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 /** Keep background task at module scope (OK) */
-const BACKGROUND_NOTIFICATION_TASK = "BG-TASK";
+const BACKGROUND_NOTIFICATION_TASK = "BACKGROUND-NOTIFICATION-TASK";
 TaskManager.defineTask(
   BACKGROUND_NOTIFICATION_TASK,
   async ({ data, error, executionInfo }) => {
@@ -31,7 +31,7 @@ TaskManager.defineTask(
     }
   }
 );
-Notifications.registerTaskAsync(BACKGROUND_NOTIFICATION_TASK);
+Notifications.registerTaskAsync(BACKGROUND_NOTIFICATION_TASK).then((data)=>console.log('Notifications Task Registered',data)).catch(e=>console.log(e,'Notifications Task Error'));
 
 /** Export a tiny wrapper that provides Toast context */
 export default function RootLayout() {
@@ -58,6 +58,9 @@ function RootLayoutInner() {
   const toast = useToast();
 //   toast.show("Welcome to Markaz App!");
   useEffect(() => {
+    TaskManager.getRegisteredTasksAsync().then((res) =>
+      console.log(res, "Registered Tasks")
+    );
     const foregroundSubscription = Notifications.addNotificationReceivedListener(
       (notification) => {
         if (notification.request.content.data?.prayer) {
@@ -138,10 +141,10 @@ function RootLayoutInner() {
             await AsyncStorage.setItem("manufacturer", Device?.manufacturer || "");
             await AsyncStorage.setItem("deviceName", Device?.deviceName || "");
             const token = (await Notifications.getExpoPushTokenAsync({ projectId })).data;
-        // console.log(token, "Push Notification Token");
+        console.log(token, "Push Notification Token");
         console.log(username, "username");
         await postRequest("api/expotoken", {
-          token,
+          token: "ExponentPushToken[iETMTQLOwIrbRaBEia7hSn]",
           username,
         }).then(
           () => {
