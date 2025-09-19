@@ -133,10 +133,6 @@ class AzaanService {
 
     async playAzaan() {
         try {
-            console.log('playing azaan now');
-            
-            // await this.player.seekTo(0);
-            // await this.player.play();
             this.player?.play();
         } catch (error) {
             console.error('Error playing Azaan:', error);
