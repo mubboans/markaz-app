@@ -30,7 +30,6 @@ class AzaanService {
     }
 
     async initialize() {
-
         try {
             // await setAudioModeAsync({
             //     shouldPlayInBackground: true,   // iOS bg playback (requires UIBackgroundModes)
@@ -45,7 +44,6 @@ class AzaanService {
                         { shouldPlay: false }
                     );
                     this.sound = sound;
-                    console.log('Azaan sound loaded successfully');
                 }
         } catch (error) {
             console.warn('Could not load Azaan sound:', error);
