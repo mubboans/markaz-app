@@ -4,34 +4,21 @@ import { StatusBar } from "expo-status-bar";
 import { useFrameworkReady } from "@/hooks/useFrameworkReady";
 import { useAuthStore } from "@/stores/authStore";
 import { ToastProvider, useToast } from "./providers/ToastProvider";
-import { Text, View } from "react-native";
+import { Platform, Text, View } from "react-native";
 import * as Notifications from "expo-notifications";
+import { notificationHandler } from "@/services/notificationHandler";
 import { azaanService } from "@/services/azaanService";
-import * as TaskManager from "expo-task-manager";
 import AnimatedSplashScreen from "@/components/AnimatedSplashScreen";
 import * as SplashScreen from "expo-splash-screen";
 import Constants from "expo-constants";
 import * as Device from "expo-device";
-import { postRequest } from "@/services/api";
+import { Base_Url, postRequest } from "@/services/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import messaging from "@react-native-firebase/messaging";
+import { notifeeService } from "@/services/notifeeService";
 
-/** Keep background task at module scope (OK) */
-const BACKGROUND_NOTIFICATION_TASK = "BACKGROUND-NOTIFICATION-TASK";
-TaskManager.defineTask(
-  BACKGROUND_NOTIFICATION_TASK,
-  async ({ data, error, executionInfo }) => {
-    console.log(data, error, executionInfo, " executionInfo");
-    if (error) {
-      console.error("Background notification task error:", error);
-      return;
-    }
-    if (data) {
-      console.log(data, "enter in data");
-      azaanService.playAzaan();
-    }
-  }
-);
-Notifications.registerTaskAsync(BACKGROUND_NOTIFICATION_TASK).then((data)=>console.log('Notifications Task Registered',data)).catch(e=>console.log(e,'Notifications Task Error'));
+
+// Background notification handling is now managed by notificationHandler service
 
 /** Export a tiny wrapper that provides Toast context */
 export default function RootLayout() {
@@ -56,40 +43,38 @@ function RootLayoutInner() {
 
   // ✅ useToast is now inside a component and under <ToastProvider>
   const toast = useToast();
-//   toast.show("Welcome to Markaz App!");
+  //   toast.show("Welcome to Markaz App!");
   useEffect(() => {
-    TaskManager.getRegisteredTasksAsync().then((res) =>
-      console.log(res, "Registered Tasks")
-    );
-    const foregroundSubscription = Notifications.addNotificationReceivedListener(
-      (notification) => {
-        if (notification.request.content.data?.prayer) {
-          azaanService.playAzaan();
+    // Initialize notification handling and register for push notifications
+    const initializeNotifications = async () => {
+      try {
+        // Initialize the notification handler
+        const initialized = await notificationHandler.initialize();
+        if (!initialized) {
+          toast.show('Failed to initialize notifications');
+          return;
         }
-      }
-    );
-    const responseSubscription =
-      Notifications.addNotificationResponseReceivedListener((response) => {
-        if (response.notification.request.content.data?.prayer) {
-          azaanService.playAzaan();
-        }
-      });
 
-    // App opened from notification (cold start)
-    const checkInitialNotification = async () => {
-      const response = await Notifications.getLastNotificationResponseAsync();
-      if (response?.notification?.request?.content?.data?.prayer) {
-        azaanService.playAzaan();
+        // Schedule alarms
+        await scheduleAlarms();
+
+        // Check for any pending notifications (cold start)
+        await notificationHandler.checkLastNotification();
+
+        // Register for push notifications
+        await registerForPushNotificationsAsync();
+
+        console.log('Notification system initialized successfully');
+      } catch (error) {
+        console.error('Failed to initialize notification system:', error);
+        toast.show('Error initializing notifications: ' + (error instanceof Error ? error.message : String(error)));
       }
-      await scheduleAlarms();
-      await registerForPushNotificationsAsync();
     };
-    checkInitialNotification();
+
+    initializeNotifications();
 
     return () => {
-      foregroundSubscription.remove();
-      responseSubscription.remove();
-      azaanService.cleanup();
+      notificationHandler.cleanup();
     };
   }, []);
 
@@ -121,44 +106,85 @@ function RootLayoutInner() {
     return <AnimatedSplashScreen onAnimationFinish={onLottieAnimationFinish} />;
   }
 
+  // ... existing imports
+
+  async function getFCMToken() {
+    try {
+      await messaging().registerDeviceForRemoteMessages();
+      const token = await messaging().getToken();
+      console.log('FCM token:', token);
+      await AsyncStorage.setItem('fcm_token', token);
+
+      // Initialize Notifee
+      await notifeeService.requestPermission();
+      await notifeeService.createChannel();
+
+      // Send token to backend
+      await fetch(Base_Url + 'pushfcmtoken', {
+        method: 'POST',
+        body: JSON.stringify({ token: token, platform: Platform.OS }),
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      // Listen for token refresh
+      messaging().onTokenRefresh(async newToken => {
+        await AsyncStorage.setItem('fcm_token', newToken);
+        await fetch(Base_Url + 'pushfcmtoken', {
+          method: 'POST',
+          body: JSON.stringify({ token: newToken, platform: Platform.OS }),
+          headers: { 'Content-Type': 'application/json' }
+        });
+      });
+
+      // Handle foreground messages
+      const unsubscribe = messaging().onMessage(async remoteMessage => {
+        console.log('A new FCM message arrived!', remoteMessage);
+        await notifeeService.displayNotification(
+          remoteMessage.notification?.title || 'New Notification',
+          remoteMessage.notification?.body || 'You have a new message',
+          remoteMessage.data
+        );
+      });
+
+      return () => unsubscribe();
+    } catch (error) {
+      toast.show("Error getting FCM token: " + error);
+    }
+  }
+
   async function registerForPushNotificationsAsync() {
     try {
-        console.log(Device.isDevice, "check Device.isDevice");
-        
       if (Device.isDevice) {
         const projectId =
           Constants?.expoConfig?.extra?.eas?.projectId ??
           "49718800-5134-4baf-8242-2707af98fdc1";
-        console.log("Registering for Push Notifications...");
-        
-        console.log('token worked');
-        
         const username =
           (Device?.deviceName || "") +
-            Device?.modelName +
-            Device.manufacturer || "user-device";
-            await AsyncStorage.setItem("modelName", Device?.modelName || "").then(()=>console.log('modelName set'));
-            await AsyncStorage.setItem("manufacturer", Device?.manufacturer || "");
-            await AsyncStorage.setItem("deviceName", Device?.deviceName || "");
-            const token = (await Notifications.getExpoPushTokenAsync({ projectId })).data;
-        console.log(token, "Push Notification Token");
-        console.log(username, "username");
-        await postRequest("api/expotoken", {
-          token: "ExponentPushToken[iETMTQLOwIrbRaBEia7hSn]",
-          username,
-        }).then(
-          () => {
-            toast.show("Push Notification Token registered successfully");
-          },
-          (err) => {
-            toast.show(
-              "Error registering for Push Notifications" + err?.message
-            );
+          Device?.modelName +
+          Device.manufacturer || "user-device";
+        await AsyncStorage.setItem("modelName", Device?.modelName || "").then(() => console.log('modelName set'));
+        await AsyncStorage.setItem("manufacturer", Device?.manufacturer || "");
+        await AsyncStorage.setItem("deviceName", Device?.deviceName || "");
+        const token = (await Notifications.getExpoPushTokenAsync({ projectId })).data;
+
+        try {
+          await postRequest("api/expotoken", {
+            token,
+            username,
+          });
+          toast.show("Push Notification Token registered successfully");
+        } catch (err: any) {
+          // Don't show error toast if it's just a network error (server not running)
+          if (err?.code !== 'ERR_NETWORK' && err?.code !== 'ECONNABORTED') {
+            toast.show("Error registering for Push Notifications: " + (err?.message || 'Unknown error'));
           }
-        );
+          console.warn("Push token registration failed - server may not be running");
+        }
       }
+
+      await getFCMToken();
     } catch (error) {
-      toast.show("Error during Push Notification registration"+ error);
+      toast.show("Error during Push Notification registration" + error);
       console.log(error, "Push Notification Error");
     } finally {
       setAppIsReady(true);
@@ -181,20 +207,14 @@ function RootLayoutInner() {
   );
 }
 
-/** Keep your original helper the same */
+/** Schedule alarms helper - simplified since notification handler manages most logic */
 const scheduleAlarms = async () => {
   try {
-    const { status } = await Notifications.requestPermissionsAsync();
-    if (status !== "granted") {
-      console.warn("Notification permission not granted");
-      return;
-    }
-    const ok = await azaanService.allowAlarms();
-    if (!ok) return;
-
+    // Notification permissions are now handled by the notification handler
+    // Just initialize azaan service for direct calls
     await azaanService.initialize();
-    console.log("initialize done ...");
+    console.log("Azaan service initialized for direct calls");
   } catch (error) {
-    console.error("Error scheduling alarms:", error);
+    console.error("Error initializing azaan service:", error);
   }
 };

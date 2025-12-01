@@ -1,4 +1,5 @@
-import * as BackgroundTask from 'expo-background-task';
+// Temporarily disabled for build
+// import * as BackgroundTask from 'expo-background-task';
 import * as TaskManager from 'expo-task-manager';
 import { azaanService } from '@/services/azaanService';
 export const BG_TASK = 'play_azaan';
@@ -6,32 +7,34 @@ export const BG_NOTIFICATION = 'bg_notification';
 import { getPrayerTimes } from './prayerService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-TaskManager.defineTask(BG_TASK, async () => {
-    console.log('------------------------------BG-------------------');
-    try {
-        const prayerTime = getPrayerTimes(new Date());
-        const now = new Date();
-        const currentMinutes = now.getHours() * 60 + now.getMinutes();
-        
-        const nextPrayer = getNextPrayer(prayerTime, now);
-        console.log(nextPrayer,'nextPrayer');
-        console.log(currentMinutes,'currentMinutes');
-        // ✅ check if we are within ±1 min of prayer time
-        if (Math.abs(currentMinutes - nextPrayer.minutes) <= 1) {
-            await azaanService.initialize();
-            await azaanService.playAzaan();
-        } 
-        return BackgroundTask.BackgroundTaskResult.Success;
-    //    return BackgroundTask.BackgroundTaskResult.Success
-    } catch (e) {
-        console.error('[BG] playAzaan failed:', e);
-       return BackgroundTask.BackgroundTaskResult.Failed
-        // return BackgroundTask.TaskExecutor.FAILED;  // ✅  new constant
-    }
-});
+// Temporarily commented out for build
+// TaskManager.defineTask(BG_TASK, async () => {
+//     console.log('------------------------------BG-------------------');
+//     try {
+//         const prayerTime = getPrayerTimes(new Date());
+//         const now = new Date();
+//         const currentMinutes = now.getHours() * 60 + now.getMinutes();
+//         
+//         const nextPrayer = getNextPrayer(prayerTime, now);
+//         console.log(nextPrayer,'nextPrayer');
+//         console.log(currentMinutes,'currentMinutes');
+//         // ✅ check if we are within ±1 min of prayer time
+//         if (Math.abs(currentMinutes - nextPrayer.minutes) <= 1) {
+//             await azaanService.initialize();
+//             await azaanService.playAzaan();
+//         } 
+//         return BackgroundTask.BackgroundTaskResult.Success;
+//     //    return BackgroundTask.BackgroundTaskResult.Success
+//     } catch (e) {
+//         console.error('[BG] playAzaan failed:', e);
+//        return BackgroundTask.BackgroundTaskResult.Failed
+//         // return BackgroundTask.TaskExecutor.FAILED;  // ✅  new constant
+//     }
+// });
 /* 2️⃣  helper: cancel old + schedule new */
 export async function scheduleBgAzaan(when = new Date) {
-     await BackgroundTask.registerTaskAsync(BG_TASK, {minimumInterval: 15});
+     // await BackgroundTask.registerTaskAsync(BG_TASK, {minimumInterval: 15});
+     console.log('scheduleBgAzaan temporarily disabled');
 }
 
 function toMinutes(hhmm: string): number {
@@ -104,10 +107,11 @@ TaskManager.defineTask(NEW_DAY_TASK, async () => {
             await AsyncStorage.setItem(PREV_DAY_KEY, currKey);            // commit success
         }
 
-        return BackgroundTask.BackgroundTaskResult.Success;
+        // return BackgroundTask.BackgroundTaskResult.Success;
+        console.log('Success - BackgroundTask temporarily disabled');
     } catch (e) {
         console.warn('NEW_DAY_TASK exception:', e);
-        return BackgroundTask.BackgroundTaskResult.Failed; // verify enum for your installed version
+        // return BackgroundTask.BackgroundTaskResult.Failed; // verify enum for your installed version
     }
 });
 
@@ -117,12 +121,13 @@ export async function registerNewDayTask() {
     const stored = await AsyncStorage.getItem(PREV_DAY_KEY);
     if (!stored) await AsyncStorage.setItem(PREV_DAY_KEY, currKey);
 
-    await BackgroundTask.registerTaskAsync(NEW_DAY_TASK, {
-        minimumInterval: 60,        // hourly hint
-        // android-only options if supported by your version:
-        // stopOnTerminate: false,
-        // startOnBoot: true,
-    });
+    // await BackgroundTask.registerTaskAsync(NEW_DAY_TASK, {
+    //     minimumInterval: 60,        // hourly hint
+    //     // android-only options if supported by your version:
+    //     // stopOnTerminate: false,
+    //     // startOnBoot: true,
+    // });
+    console.log('registerNewDayTask temporarily disabled');
 }
 
 

@@ -58,3 +58,6 @@ const styles = StyleSheet.create({
   text: { color: '#fff', fontSize: 14 },
   close: { color: '#fff', fontSize: 16, marginLeft: 8 },
 });
+
+// Default export to satisfy Expo Router requirements
+export default ToastProvider;

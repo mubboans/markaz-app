@@ -1,0 +1,77 @@
+{
+  "androidConfig": {
+    "description": "Android-specific configuration for background notifications",
+    "note": "This file contains configuration settings that can be referenced when building for Android",
+    
+    "manifestAdditions": {
+      "permissions": [
+        "android.permission.RECEIVE_BOOT_COMPLETED",
+        "android.permission.WAKE_LOCK",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK",
+        "android.permission.VIBRATE",
+        "android.permission.USE_EXACT_ALARM",
+        "android.permission.SCHEDULE_EXACT_ALARM",
+        "android.permission.POST_NOTIFICATIONS",
+        "android.permission.DISABLE_KEYGUARD",
+        "android.permission.TURN_SCREEN_ON"
+      ],
+      
+      "services": {
+        "backgroundNotificationService": {
+          "name": "BackgroundNotificationService",
+          "exported": false,
+          "foregroundServiceType": "mediaPlayback"
+        }
+      },
+      
+      "receivers": {
+        "bootReceiver": {
+          "name": "BootReceiver", 
+          "enabled": true,
+          "exported": true,
+          "intentFilters": [
+            "android.intent.action.BOOT_COMPLETED",
+            "android.intent.action.QUICKBOOT_POWERON"
+          ]
+        }
+      }
+    },
+    
+    "notificationChannels": [
+      {
+        "id": "prayer",
+        "name": "Prayer Notifications",
+        "description": "Notifications for prayer times",
+        "importance": "HIGH",
+        "sound": "azaan.wav",
+        "vibration": true,
+        "lights": true,
+        "bypassDnd": true
+      },
+      {
+        "id": "prayer-critical", 
+        "name": "Critical Prayer Alerts",
+        "description": "High priority prayer notifications",
+        "importance": "MAX",
+        "sound": "azaan.wav", 
+        "vibration": true,
+        "lights": true,
+        "bypassDnd": true
+      }
+    ],
+    
+    "audioSettings": {
+      "backgroundPlayback": true,
+      "silentModePlayback": true,
+      "duckOtherAudio": true,
+      "maxVolume": true
+    },
+    
+    "batteryOptimization": {
+      "requestWhitelist": true,
+      "showUserDialog": true,
+      "explanation": "To ensure prayer notifications work properly when the app is closed, please disable battery optimization for this app."
+    }
+  }
+}

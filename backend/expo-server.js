@@ -1,53 +1,19 @@
 // server.js
 require('dotenv').config();          // load .env
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const Expo = require('expo-server-sdk');
-const { connectDatabase } = require('./db_config');
-const { default: Device_Token } = require('./token_model');
-const { default: PrayTime } = require('./prayerTime');
+import express from 'express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import Expo from 'expo-server-sdk';
+import { connectDatabase } from './db_config';
+import { Device_Token } from './token_model';
+import { PrayTime } from './prayerTime';
+
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-// Replace this with whatever you use to store tokens // Map<userId, Set<expoPushToken>>
-
-// Create a new Expo SDK client
 let expo = new Expo();
 
-// Create the messages that you want to send to clents
-// let messages = [];
-// for (let pushToken of ['ExponentPushToken[iETMTQLOwIrbRaBEia7hSn]']) {
-//     // Each push token looks like ExponentPushToken[xxxxxxxxxxxxxxxxxxxxxx]
-
-//     // Check that all your push tokens appear to be valid Expo push tokens
-//     if (!Expo.isExpoPushToken(pushToken)) {
-//         console.error(`Push token ${pushToken} is not a valid Expo push token`);
-//         continue;
-//     }
-
-//     // Construct a message (see https://docs.expo.io/versions/latest/guides/push-notifications.html)
-//     messages.push({
-//         to: pushToken,
-//         title: 'Prayer Time',
-//         body: 'Hayyalas salah',
-//         priority: 'high',
-//         sound: 'azaan.mp3',
-//         data: { withSome: 'data' },
-//     })
-// }
-
-// The Expo push notification service accepts batches of notifications so
-// that you don't need to send 1000 requests to send 1000 notifications. We
-// recommend you batch your notifications to reduce the number of requests
-// and to compress them (notifications with similar content will get
-// compressed).
-// let chunks = expo.chunkPushNotifications(messages);
-
-
-// -----------------------------------------------------------
-// 1️⃣  Store a token (called by the client)
 app.post('/api/expotoken', async (req, res) => {
     try {
         const { username = "test", token: expoPushToken } = req.body;
@@ -65,10 +31,6 @@ app.post('/api/expotoken', async (req, res) => {
     }
 
 });
-
-// -----------------------------------------------------------
-// 2️⃣  Send a notification (admin panel / cron job)
-// -----------------------------------------------------------
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, async () => {
@@ -102,7 +64,7 @@ async function sendHeadlessNotification() {
 
         let messages = [];
         const deviceToken = await Device_Token.find({});
-        console.log(deviceToken);
+        // console.log(deviceToken);
         for (let pushToken of deviceToken.map(d => d.expoPushToken)) {
             if (!Expo.isExpoPushToken(pushToken)) {
                 console.error(`Invalid push token: ${pushToken}`);

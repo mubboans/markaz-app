@@ -14,7 +14,8 @@
       "infoPlist": {
         "UIBackgroundModes": [
           "audio",
-            "fetch"
+          "fetch",
+          "remote-notification"
         ]
       }
     },
@@ -29,16 +30,7 @@
       "expo-font",
       "expo-web-browser",
       "expo-audio",
-      [
-        "expo-notifications",
-        {
-          "icon": "./assets/images/noti-icon.png",
-          "color": "#ffffff",
-          "sounds": [
-            "./assets/audio/azaan.wav"
-          ]
-        }
-      ]
+      "expo-notifications"
     ],
     "experiments": {
       "typedRoutes": true
@@ -47,13 +39,20 @@
       "package": "com.anonymous.markazapp",
       "permissions": [
         "POST_NOTIFICATIONS",
-        "SCHEDULE_EXACT_ALARM"
+        "RECEIVE_BOOT_COMPLETED",
+        "WAKE_LOCK",
+        "FOREGROUND_SERVICE",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "VIBRATE"
       ],
+      "allowBackup": false,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/markaz-icon.png",
         "backgroundColor": "#059669"
       },
-      "googleServicesFile": "./google-services.json"
+      "googleServicesFile": "./google-services.json",
+      "image": "ubuntu-18.04-jdk-11-ndk-r19c"
     },
     "extra": {
       "router": {},
