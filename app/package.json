@@ -60,6 +60,7 @@
     "@babel/core": "^7.25.2",
     "@types/moment": "^2.11.29",
     "@types/react": "~19.1.0",
+    "knip": "^5.71.0",
     "typescript": "~5.9.2"
   }
 }

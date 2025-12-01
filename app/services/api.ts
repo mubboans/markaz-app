@@ -1,8 +1,10 @@
 import axios from "axios";
 
-// const Base_Url = "https://serverexpoapicron.netlify.app/.netlify/functions/";
-export const Base_Url = "http://localhost:4000/";
-
+// export const Base_Url = "https://serverexpoapicron.netlify.app/.netlify/functions/";
+// REPLACE WITH YOUR COMPUTER'S LOCAL IP ADDRESS (e.g., 192.168.1.5)
+// localhost will NOT work on physical Android/iOS devices
+// export const Base_Url = "http://192.168.1.X:4000/";
+export const Base_Url = "http://10.92.126.55:4000/";
 // Configure axios with timeout and better error handling
 const axiosInstance = axios.create({
   baseURL: Base_Url,
@@ -11,24 +13,6 @@ const axiosInstance = axios.create({
     'Content-Type': 'application/json',
   },
 });
-
-export async function getRequest(endpoint: string) {
-  try {
-    const response = await axiosInstance.get(endpoint);
-    return response.data;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      if (error.code === 'ECONNABORTED' || error.code === 'ERR_NETWORK') {
-        console.warn(`Network error for GET ${endpoint}: Server may not be running`);
-      } else {
-        console.error("Error making GET request:", error.message);
-      }
-    } else {
-      console.error("Error making GET request:", error);
-    }
-    throw error;
-  }
-}
 
 export async function postRequest(endpoint: string, data: any) {
   try {

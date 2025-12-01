@@ -43,6 +43,15 @@ function RootLayoutInner() {
 
   // ✅ useToast is now inside a component and under <ToastProvider>
   const toast = useToast();
+  const scheduleAlarms = async () => {
+    try {
+      await azaanService.initialize();
+      console.log("Azaan service initialized for direct calls");
+    } catch (error) {
+      console.error("Error initializing azaan service:", error);
+    }
+  };
+
   //   toast.show("Welcome to Markaz App!");
   useEffect(() => {
     // Initialize notification handling and register for push notifications
@@ -149,6 +158,7 @@ function RootLayoutInner() {
       return () => unsubscribe();
     } catch (error) {
       toast.show("Error getting FCM token: " + error);
+      console.error("Error getting FCM token:", error);
     }
   }
 
@@ -206,15 +216,3 @@ function RootLayoutInner() {
     </Stack>
   );
 }
-
-/** Schedule alarms helper - simplified since notification handler manages most logic */
-const scheduleAlarms = async () => {
-  try {
-    // Notification permissions are now handled by the notification handler
-    // Just initialize azaan service for direct calls
-    await azaanService.initialize();
-    console.log("Azaan service initialized for direct calls");
-  } catch (error) {
-    console.error("Error initializing azaan service:", error);
-  }
-};
