@@ -43,16 +43,8 @@ function RootLayoutInner() {
 
   // ✅ useToast is now inside a component and under <ToastProvider>
   const toast = useToast();
-  const scheduleAlarms = async () => {
-    try {
-      await azaanService.initialize();
-      console.log("Azaan service initialized for direct calls");
-    } catch (error) {
-      console.error("Error initializing azaan service:", error);
-    }
-  };
 
-  //   toast.show("Welcome to Markaz App!");
+    toast.show("Welcome to Markaz App!");
   useEffect(() => {
     // Initialize notification handling and register for push notifications
     const initializeNotifications = async () => {
@@ -64,16 +56,10 @@ function RootLayoutInner() {
           return;
         }
 
-        // Schedule alarms
-        await scheduleAlarms();
-
         // Check for any pending notifications (cold start)
         await notificationHandler.checkLastNotification();
-
+        await getFCMToken()
         // Register for push notifications
-        await registerForPushNotificationsAsync();
-
-        console.log('Notification system initialized successfully');
       } catch (error) {
         console.error('Failed to initialize notification system:', error);
         toast.show('Error initializing notifications: ' + (error instanceof Error ? error.message : String(error)));
@@ -81,7 +67,6 @@ function RootLayoutInner() {
     };
 
     initializeNotifications();
-
     return () => {
       notificationHandler.cleanup();
     };
@@ -147,7 +132,6 @@ function RootLayoutInner() {
 
       // Handle foreground messages
       const unsubscribe = messaging().onMessage(async remoteMessage => {
-        console.log('A new FCM message arrived!', remoteMessage);
         await notifeeService.displayNotification(
           remoteMessage.notification?.title || 'New Notification',
           remoteMessage.notification?.body || 'You have a new message',
@@ -159,45 +143,6 @@ function RootLayoutInner() {
     } catch (error) {
       toast.show("Error getting FCM token: " + error);
       console.error("Error getting FCM token:", error);
-    }
-  }
-
-  async function registerForPushNotificationsAsync() {
-    try {
-      if (Device.isDevice) {
-        const projectId =
-          Constants?.expoConfig?.extra?.eas?.projectId ??
-          "49718800-5134-4baf-8242-2707af98fdc1";
-        const username =
-          (Device?.deviceName || "") +
-          Device?.modelName +
-          Device.manufacturer || "user-device";
-        await AsyncStorage.setItem("modelName", Device?.modelName || "").then(() => console.log('modelName set'));
-        await AsyncStorage.setItem("manufacturer", Device?.manufacturer || "");
-        await AsyncStorage.setItem("deviceName", Device?.deviceName || "");
-        const token = (await Notifications.getExpoPushTokenAsync({ projectId })).data;
-
-        // try {
-        //   await postRequest("api/expotoken", {
-        //     token,
-        //     username,
-        //   });
-        //   toast.show("Push Notification Token registered successfully");
-        // } catch (err: any) {
-        //   // Don't show error toast if it's just a network error (server not running)
-        //   if (err?.code !== 'ERR_NETWORK' && err?.code !== 'ECONNABORTED') {
-        //     toast.show("Error registering for Push Notifications: " + (err?.message || 'Unknown error'));
-        //   }
-        //   console.warn("Push token registration failed - server may not be running");
-        // }
-      }
-
-      await getFCMToken();
-    } catch (error) {
-      toast.show("Error during Push Notification registration" + error);
-      console.log(error, "Push Notification Error");
-    } finally {
-      setAppIsReady(true);
     }
   }
 
