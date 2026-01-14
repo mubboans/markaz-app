@@ -24,47 +24,47 @@ export interface Mosque {
 }
 
 export interface PlaceDetails {
-    business_status: string;
-    geometry: {
-        location: {
-            lat: number;
-            lng: number;
-        };
-        viewport: {
-            northeast: {
-                lat: number;
-                lng: number;
-            };
-            southwest: {
-                lat: number;
-                lng: number;
-            };
-        };
+  business_status: string;
+  geometry: {
+    location: {
+      lat: number;
+      lng: number;
     };
-    icon: string;
-    icon_background_color: string;
-    icon_mask_base_uri: string;
-    name: string;
-    opening_hours?: {
-        open_now: boolean;
+    viewport: {
+      northeast: {
+        lat: number;
+        lng: number;
+      };
+      southwest: {
+        lat: number;
+        lng: number;
+      };
     };
-    photos?: Array<{
-        height: number;
-        html_attributions: string[];
-        photo_reference: string;
-        width: number;
-    }>;
-    place_id: string;
-    plus_code?: {
-        compound_code: string;
-        global_code: string;
-    };
-    rating?: number;
-    reference: string;
-    scope: string;
-    types: string[];
-    user_ratings_total?: number;
-    vicinity: string;
+  };
+  icon: string;
+  icon_background_color: string;
+  icon_mask_base_uri: string;
+  name: string;
+  opening_hours?: {
+    open_now: boolean;
+  };
+  photos?: Array<{
+    height: number;
+    html_attributions: string[];
+    photo_reference: string;
+    width: number;
+  }>;
+  place_id: string;
+  plus_code?: {
+    compound_code: string;
+    global_code: string;
+  };
+  rating?: number;
+  reference: string;
+  scope: string;
+  types: string[];
+  user_ratings_total?: number;
+  vicinity: string;
 }
 
 
@@ -77,7 +77,7 @@ export interface Announcement {
 }
 
 interface MosqueState {
-  mosquess: Mosque[];
+  mosques: Mosque[];
   selectedMosque: Mosque | null;
   fetchMosques: () => Promise<void>;
   fetchMosquesByLocation: (latitude: number, longitude: number) => Promise<Mosque[]>;
@@ -282,37 +282,37 @@ export const mockMosques: Mosque[] = [
 ];
 
 export const useMosqueStore = create<MosqueState>((set, get) => ({
-  mosquess: mockMosques,
+  mosques: mockMosques,
   selectedMosque: null,
 
   fetchMosques: async () => {
     try {
       // For now, fallback to mock data if API call fails
       // In production, this would be a real API call
-      await new Promise(resolve => setTimeout(()=>resolve(mockMosques), 500));
-      set({ mosquess: mockMosques });
+      await new Promise(resolve => setTimeout(() => resolve(mockMosques), 500));
+      set({ mosques: mockMosques });
     } catch (error) {
-      console.error('Error fetching mosquess:', error);
-      set({ mosquess: mockMosques }); // Fallback to mock data
+      console.error('Error fetching mosques:', error);
+      set({ mosques: mockMosques }); // Fallback to mock data
     }
   },
 
   fetchMosquesByLocation: async (latitude: number, longitude: number) => {
     try {
-     await new Promise(resolve => setTimeout(()=>resolve(mockMosques), 3000));
-     
-    //   const nearbyMosques = mockMosques.filter(mosque => {
-     
-    //     const latDiff = Math.abs(mosque.coordinates.latitude - latitude);
-    //     const lngDiff = Math.abs(mosque.coordinates.longitude - longitude);
-    //     return latDiff < 0.1 && lngDiff < 0.1; // Arbitrary threshold
-    //   });
-    //   set({ mosquess: nearbyMosques });
-        return mockMosques;
+      await new Promise(resolve => setTimeout(() => resolve(mockMosques), 3000));
+
+      //   const nearbyMosques = mockMosques.filter(mosque => {
+
+      //     const latDiff = Math.abs(mosque.coordinates.latitude - latitude);
+      //     const lngDiff = Math.abs(mosque.coordinates.longitude - longitude);
+      //     return latDiff < 0.1 && lngDiff < 0.1; // Arbitrary threshold
+      //   });
+      //   set({ mosques: nearbyMosques });
+      return mockMosques;
     } catch (error) {
-      console.error('Error fetching mosquess by location:', error);
+      console.error('Error fetching mosques by location:', error);
       // Fallback to empty array
-      set({ mosquess: [] });
+      set({ mosques: [] });
       return [];
     }
   },
@@ -322,20 +322,20 @@ export const useMosqueStore = create<MosqueState>((set, get) => ({
       // In production, this would use the API service
       // import { mosqueService } from '@/services/mosqueService';
       // const areaBasedMosques = await mosqueService.fetchMosquesByArea(area);
-      
+
       // For now, simulate API call with mock data
       await new Promise(resolve => setTimeout(resolve, 500));
-      // Filter mosquess by area name
-      const filteredMosques = mockMosques.filter(mosque => 
+      // Filter mosques by area name
+      const filteredMosques = mockMosques.filter(mosque =>
         mosque.location.toLowerCase().includes(area.toLowerCase()) ||
         mosque.address.toLowerCase().includes(area.toLowerCase())
       );
-      set({ mosquess: filteredMosques });
+      set({ mosques: filteredMosques });
       return filteredMosques;
     } catch (error) {
-      console.error('Error fetching mosquess by area:', error);
+      console.error('Error fetching mosques by area:', error);
       // Fallback to empty array
-      set({ mosquess: [] });
+      set({ mosques: [] });
       return [];
     }
   },
@@ -347,13 +347,13 @@ export const useMosqueStore = create<MosqueState>((set, get) => ({
       id: Date.now().toString(),
       announcements: [],
     };
-    set(state => ({ mosquess: [...state.mosquess, newMosque] }));
+    set(state => ({ mosques: [...state.mosques, newMosque] }));
   },
 
   updateMosque: async (id, updates) => {
     await new Promise(resolve => setTimeout(resolve, 500));
     set(state => ({
-      mosquess: state.mosquess.map(mosque =>
+      mosques: state.mosques.map(mosque =>
         mosque.id === id ? { ...mosque, ...updates } : mosque
       ),
     }));
@@ -362,7 +362,7 @@ export const useMosqueStore = create<MosqueState>((set, get) => ({
   deleteMosque: async (id) => {
     await new Promise(resolve => setTimeout(resolve, 500));
     set(state => ({
-      mosquess: state.mosquess.filter(mosque => mosque.id !== id),
+      mosques: state.mosques.filter(mosque => mosque.id !== id),
     }));
   },
 

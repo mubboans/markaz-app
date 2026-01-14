@@ -177,19 +177,19 @@ function RootLayoutInner() {
         await AsyncStorage.setItem("deviceName", Device?.deviceName || "");
         const token = (await Notifications.getExpoPushTokenAsync({ projectId })).data;
 
-        try {
-          await postRequest("api/expotoken", {
-            token,
-            username,
-          });
-          toast.show("Push Notification Token registered successfully");
-        } catch (err: any) {
-          // Don't show error toast if it's just a network error (server not running)
-          if (err?.code !== 'ERR_NETWORK' && err?.code !== 'ECONNABORTED') {
-            toast.show("Error registering for Push Notifications: " + (err?.message || 'Unknown error'));
-          }
-          console.warn("Push token registration failed - server may not be running");
-        }
+        // try {
+        //   await postRequest("api/expotoken", {
+        //     token,
+        //     username,
+        //   });
+        //   toast.show("Push Notification Token registered successfully");
+        // } catch (err: any) {
+        //   // Don't show error toast if it's just a network error (server not running)
+        //   if (err?.code !== 'ERR_NETWORK' && err?.code !== 'ECONNABORTED') {
+        //     toast.show("Error registering for Push Notifications: " + (err?.message || 'Unknown error'));
+        //   }
+        //   console.warn("Push token registration failed - server may not be running");
+        // }
       }
 
       await getFCMToken();

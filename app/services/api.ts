@@ -4,7 +4,8 @@ import axios from "axios";
 // REPLACE WITH YOUR COMPUTER'S LOCAL IP ADDRESS (e.g., 192.168.1.5)
 // localhost will NOT work on physical Android/iOS devices
 // export const Base_Url = "http://192.168.1.X:4000/";
-export const Base_Url = "http://10.92.126.55:4000/";
+// export const Base_Url = "http://10.92.126.55:4000/";
+export const Base_Url = "https://expopushnotificationserver--mubashiransari8.replit.app/";
 // Configure axios with timeout and better error handling
 const axiosInstance = axios.create({
   baseURL: Base_Url,

@@ -10,6 +10,7 @@ export interface User {
   password?: string;
   confirmPassword?: string;
   role: 'user' | 'mosque_admin' | 'admin';
+  mosqueId?: string; // For mosque_admin users
 }
 
 interface AuthState {
@@ -28,14 +29,14 @@ export const useAuthStore = create<AuthState>((set) => ({
   login: async (email: string, password: string) => {
     // Simulate API call
     console.log('Login attempt:', email, password);
-    
+
     await new Promise(resolve => setTimeout(resolve, 1000));
-    
+
     // Demo credentials for testing
     try {
-       
+
     } catch (error) {
-        
+
     }
     if (email === 'admin@markaz.com' && password === 'admin123') {
       const adminUser: User = {
@@ -47,7 +48,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       set({ user: adminUser, isAuthenticated: true });
       return;
     }
-    
+
     if (email === 'imam@masjid.com' && password === 'imam123') {
       const mosqueAdminUser: User = {
         id: '2',
@@ -58,7 +59,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       set({ user: mosqueAdminUser, isAuthenticated: true });
       return;
     }
-    
+
     const mockUser: User = {
       id: Date.now().toString(),
       name: 'Regular User',
@@ -77,7 +78,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   register: async (name: string, email: string, contact: string, password: string) => {
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
-    
+
     const newUser: User = {
       id: Date.now().toString(),
       name,

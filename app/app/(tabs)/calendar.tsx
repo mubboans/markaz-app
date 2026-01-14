@@ -6,132 +6,376 @@ import {
   ScrollView,
   TouchableOpacity,
   Modal,
+  Platform,
 } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Calendar, ChevronLeft, ChevronRight, Edit3 } from 'lucide-react-native';
-import { useHijriStore } from '@/stores/hijriStore';
-import { useAuthStore } from '@/stores/authStore';
-import HijriDatePicker from '@/components/HijriDatePicker';
+import { ChevronLeft, ChevronRight, X, Calendar as CalendarIcon, Moon } from 'lucide-react-native';
+import moment from 'moment-hijri';
+
+interface CalendarDay {
+  gregorianDate: Date;
+  hijriDay: number;
+  hijriMonth: number;
+  hijriYear: number;
+  isCurrentMonth: boolean;
+  isToday: boolean;
+}
 
 export default function CalendarScreen() {
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const { hijriDate, gregorianDate, fetchHijriDate } = useHijriStore();
-  const { user } = useAuthStore();
   const insets = useSafeAreaInsets();
-  const canEditDate = user?.role === 'admin' || user?.role === 'mosque_admin';
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [calendarDays, setCalendarDays] = useState<CalendarDay[]>([]);
+  const [selectedDay, setSelectedDay] = useState<CalendarDay | null>(null);
+  const [modalVisible, setModalVisible] = useState(false);
 
-  useEffect(() => {
-    fetchHijriDate();
-  }, []);
+  const gregorianMonths = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
 
   const islamicMonths = [
-    'Muharram', 'Safar', 'Rabi\' al-awwal', 'Rabi\' al-thani',
-    'Jumada al-awwal', 'Jumada al-thani', 'Rajab', 'Sha\'ban',
+    'Muharram', 'Safar', 'Rabi\' al-Awwal', 'Rabi\' al-Thani',
+    'Jumada al-Awwal', 'Jumada al-Thani', 'Rajab', 'Sha\'ban',
     'Ramadan', 'Shawwal', 'Dhu al-Qi\'dah', 'Dhu al-Hijjah'
   ];
 
+  const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+  useEffect(() => {
+    generateCalendar();
+  }, [currentDate]);
+
+  const generateCalendar = () => {
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+
+    // Get first day of the month
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+
+    // Get the day of week for the first day (0 = Sunday)
+    const startingDayOfWeek = firstDay.getDay();
+
+    // Calculate days from previous month to show
+    const daysInPrevMonth = new Date(year, month, 0).getDate();
+    const prevMonthDays = startingDayOfWeek;
+
+    // Calculate days from next month to show
+    const daysInMonth = lastDay.getDate();
+    const totalCells = Math.ceil((prevMonthDays + daysInMonth) / 7) * 7;
+    const nextMonthDays = totalCells - (prevMonthDays + daysInMonth);
+
+    const days: CalendarDay[] = [];
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    // Previous month days
+    for (let i = prevMonthDays - 1; i >= 0; i--) {
+      const date = new Date(year, month, -i);
+      const hijriMoment = moment(date).subtract(1, 'days'); // Adjust for Mumbai
+      const hijriDate = hijriMoment.format('iD/iM/iYYYY');
+      const [hijriDay, hijriMonth, hijriYear] = hijriDate.split('/').map(Number);
+      days.push({
+        gregorianDate: date,
+        hijriDay,
+        hijriMonth,
+        hijriYear,
+        isCurrentMonth: false,
+        isToday: date.getTime() === today.getTime(),
+      });
+    }
+
+    // Current month days
+    for (let i = 1; i <= daysInMonth; i++) {
+      const date = new Date(year, month, i);
+      const hijriMoment = moment(date).subtract(1, 'days'); // Adjust for Mumbai
+      const hijriDate = hijriMoment.format('iD/iM/iYYYY');
+      const [hijriDay, hijriMonth, hijriYear] = hijriDate.split('/').map(Number);
+      days.push({
+        gregorianDate: date,
+        hijriDay,
+        hijriMonth,
+        hijriYear,
+        isCurrentMonth: true,
+        isToday: date.getTime() === today.getTime(),
+      });
+    }
+
+    // Next month days
+    for (let i = 1; i <= nextMonthDays; i++) {
+      const date = new Date(year, month + 1, i);
+      const hijriMoment = moment(date).subtract(1, 'days'); // Adjust for Mumbai
+      const hijriDate = hijriMoment.format('iD/iM/iYYYY');
+      const [hijriDay, hijriMonth, hijriYear] = hijriDate.split('/').map(Number);
+      days.push({
+        gregorianDate: date,
+        hijriDay,
+        hijriMonth,
+        hijriYear,
+        isCurrentMonth: false,
+        isToday: date.getTime() === today.getTime(),
+      });
+    }
+
+    setCalendarDays(days);
+  };
+
+  const goToPreviousMonth = () => {
+    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
+  };
+
+  const goToNextMonth = () => {
+    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
+  };
+
+  const goToToday = () => {
+    setCurrentDate(new Date());
+  };
+
+  const handleDayPress = (day: CalendarDay) => {
+    setSelectedDay(day);
+    setModalVisible(true);
+  };
+
+  // Get current Hijri month for display
+  const currentHijriMoment = moment(currentDate).subtract(1, 'days');
+  const currentHijriFormatted = currentHijriMoment.format('iM/iYYYY');
+  const [currentHijriMonthNum, currentHijriYear] = currentHijriFormatted.split('/').map(Number);
+  const currentHijriMonth = islamicMonths[currentHijriMonthNum - 1];
+
+  // Helper to determine events/holidays
+  const getEventDetails = (day: CalendarDay) => {
+    const events = [];
+
+    // Jumu'ah check (Friday)
+    if (day.gregorianDate.getDay() === 5) {
+      events.push({ title: "Jumu'ah", type: 'islamic', color: '#059669' });
+    }
+
+    // Example Static Holidays (Indian Context)
+    const d = day.gregorianDate.getDate();
+    const m = day.gregorianDate.getMonth(); // 0-indexed
+
+    // Independence Day
+    if (d === 15 && m === 7) {
+      events.push({ title: "Independence Day", type: 'national', color: '#F59E0B' });
+    }
+    // Republic Day
+    if (d === 26 && m === 0) {
+      events.push({ title: "Republic Day", type: 'national', color: '#F59E0B' });
+    }
+    // Gandhi Jayanti
+    if (d === 2 && m === 9) {
+      events.push({ title: "Gandhi Jayanti", type: 'national', color: '#F59E0B' });
+    }
+
+    // Islamic Holidays (Approximate based on Hijri date)
+    // Ramadan Start
+    if (day.hijriMonth === 9 && day.hijriDay === 1) {
+      events.push({ title: "Start of Ramadan", type: 'islamic', color: '#059669' });
+    }
+    // Eid al-Fitr
+    if (day.hijriMonth === 10 && day.hijriDay === 1) {
+      events.push({ title: "Eid al-Fitr", type: 'islamic', color: '#059669' });
+    }
+    // Eid al-Adha
+    if (day.hijriMonth === 12 && day.hijriDay === 10) {
+      events.push({ title: "Eid al-Adha", type: 'islamic', color: '#059669' });
+    }
+    // Ashura
+    if (day.hijriMonth === 1 && day.hijriDay === 10) {
+      events.push({ title: "Ashura", type: 'islamic', color: '#059669' });
+    }
+
+    return events;
+  };
+
   return (
     <SafeAreaView
-      style={[styles.container, , { paddingBottom: insets.bottom + 55 }]}
+      style={[styles.container, { paddingBottom: insets.bottom + 55 }]}
     >
       <ScrollView showsVerticalScrollIndicator={false}>
+        {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.title}>Islamic Calendar</Text>
-          <Text style={styles.subtitle}>Hijri Calendar System</Text>
+          <Text style={styles.title}>Calendar</Text>
+          <Text style={styles.subtitle}>Gregorian & Islamic Dates</Text>
         </View>
 
         <View style={styles.content}>
-          <View style={styles.dateCard}>
-            <View style={styles.dateHeader}>
-              <Calendar size={24} color="#059669" />
-              <Text style={styles.dateTitle}>Current Date </Text>
-            </View>
-            <View style={styles.gregorianDate}>
-              <Text style={styles.gregorianText}>
-                Please Note this date migth not be correct
-              </Text>
-            </View>
-            <View style={styles.dateContainer}>
-              <View style={styles.hijriDate}>
-                <Text style={styles.hijriDay}>{hijriDate.day}</Text>
-                <Text style={styles.hijriMonth}>
-                  {islamicMonths[hijriDate.month - 1]}
+          {/* Month Navigation */}
+          <View style={styles.navigationCard}>
+            <View style={styles.monthNavigation}>
+              <TouchableOpacity onPress={goToPreviousMonth} style={styles.navButton}>
+                <ChevronLeft size={24} color="#1E3A8A" />
+              </TouchableOpacity>
+
+              <View style={styles.monthInfo}>
+                <Text style={styles.gregorianMonthText}>
+                  {gregorianMonths[currentDate.getMonth()]} {currentDate.getFullYear()}
                 </Text>
-                <Text style={styles.hijriYear}>{hijriDate.year} AH</Text>
-              </View>
-
-              <View style={styles.divider} />
-
-              <View style={styles.gregorianDate}>
-                <Text style={styles.gregorianText}>
-                  {gregorianDate.toLocaleDateString("en-US", {
-                    weekday: "long",
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
+                <Text style={styles.hijriMonthText}>
+                  {currentHijriMonth} {currentHijriYear} AH
                 </Text>
               </View>
+
+              <TouchableOpacity onPress={goToNextMonth} style={styles.navButton}>
+                <ChevronRight size={24} color="#1E3A8A" />
+              </TouchableOpacity>
             </View>
+
+            <TouchableOpacity onPress={goToToday} style={styles.todayButton}>
+              <Text style={styles.todayButtonText}>Today</Text>
+            </TouchableOpacity>
           </View>
 
-          <View style={styles.monthGrid}>
-            <Text style={styles.sectionTitle}>Islamic Months</Text>
-            <View style={styles.monthsContainer}>
-              {islamicMonths.map((month, index) => (
+          {/* Calendar Grid */}
+          <View style={styles.calendarCard}>
+            {/* Week day headers */}
+            <View style={styles.weekDaysRow}>
+              {weekDays.map((day) => (
+                <View key={day} style={styles.weekDayCell}>
+                  <Text style={styles.weekDayText}>{day}</Text>
+                </View>
+              ))}
+            </View>
+
+            {/* Calendar days */}
+            <View style={styles.daysGrid}>
+              {calendarDays.map((day, index) => (
                 <TouchableOpacity
-                  key={month}
+                  key={index}
                   style={[
-                    styles.monthCard,
-                    hijriDate.month === index + 1 && styles.currentMonth,
+                    styles.dayCell,
+                    day.isToday && styles.todayCell,
+                    selectedDay == day && styles.selectedDayCell,
                   ]}
+                  activeOpacity={0.7}
+                  onPress={() => handleDayPress(day)}
                 >
-                  <Text
-                    style={[
-                      styles.monthNumber,
-                      hijriDate.month === index + 1 && styles.currentMonthText,
-                    ]}
-                  >
-                    {index + 1}
-                  </Text>
-                  <Text
-                    style={[
-                      styles.monthName,
-                      hijriDate.month === index + 1 && styles.currentMonthText,
-                    ]}
-                  >
-                    {month}
-                  </Text>
+                  <View style={styles.dayCellContent}>
+                    <Text
+                      style={[
+                        styles.gregorianDayText,
+                        !day.isCurrentMonth && styles.otherMonthText,
+                        day.isToday && styles.todayText,
+                      ]}
+                    >
+                      {day.gregorianDate.getDate()}
+                    </Text>
+                    <Text
+                      style={[
+                        styles.hijriDayText,
+                        !day.isCurrentMonth && styles.otherMonthHijriText,
+                        day.isToday && styles.todayHijriText,
+                      ]}
+                    >
+                      {day.hijriDay}
+                    </Text>
+                  </View>
                 </TouchableOpacity>
               ))}
             </View>
           </View>
 
-          {canEditDate && (
-            <View style={styles.adminNote}>
-              <Text style={styles.adminNoteText}>
-                As an admin, you can adjust the Hijri date to ensure accuracy
-                according to local moon sighting.
+          {/* Legend */}
+          <View style={styles.legendCard}>
+            <Text style={styles.legendTitle}>Date Format</Text>
+            <View style={styles.legendRow}>
+              <View style={styles.legendItem}>
+                <View style={styles.legendColorBox} />
+                <Text style={styles.legendText}>Gregorian Date (Top)</Text>
+              </View>
+              <View style={styles.legendItem}>
+                <View style={[styles.legendColorBox, styles.legendHijriBox]} />
+                <Text style={styles.legendText}>Hijri Date (Bottom)</Text>
+              </View>
+            </View>
+            <View style={styles.noteContainer}>
+              <Text style={styles.noteText}>
+                ℹ️ Hijri dates are calculated for Indian timezone and may vary by ±1 day based on moon sighting. Top on any date for details.
               </Text>
             </View>
-          )}
+          </View>
         </View>
       </ScrollView>
 
+      {/* Date Details Modal */}
       <Modal
-        visible={showDatePicker}
-        animationType="slide"
-        presentationStyle="pageSheet"
-        onRequestClose={() => setShowDatePicker(false)}
+        visible={modalVisible}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setModalVisible(false)}
       >
-        <HijriDatePicker
-          currentDate={hijriDate}
-          onDateChange={(newDate) => {
-            // updateHijriDate(newDate);
-            setShowDatePicker(false);
-          }}
-          onClose={() => setShowDatePicker(false)}
-        />
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContainer}>
+            {selectedDay && (
+              <>
+                <View style={styles.modalHeader}>
+                  <Text style={styles.modalTitle}>Date Details</Text>
+                  <TouchableOpacity
+                    style={styles.closeButton}
+                    onPress={() => setModalVisible(false)}
+                  >
+                    <X size={24} color="#6B7280" />
+                  </TouchableOpacity>
+                </View>
+
+                <View style={styles.modalContent}>
+                  {/* Gregorian Section */}
+                  <View style={styles.dateSection}>
+                    <View style={styles.sectionHeader}>
+                      <CalendarIcon size={20} color="#1E3A8A" />
+                      <Text style={styles.sectionHeaderText}>Gregorian Calendar</Text>
+                    </View>
+                    <Text style={styles.bigDateText}>
+                      {selectedDay.gregorianDate.getDate()}
+                    </Text>
+                    <Text style={styles.fullDateText}>
+                      {selectedDay.gregorianDate.toLocaleDateString('en-IN', {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                      })}
+                    </Text>
+                  </View>
+
+                  <View style={styles.divider} />
+
+                  {/* Hijri Section */}
+                  <View style={styles.dateSection}>
+                    <View style={styles.sectionHeader}>
+                      <Moon size={20} color="#059669" />
+                      <Text style={[styles.sectionHeaderText, { color: '#059669' }]}>
+                        Islamic Calendar
+                      </Text>
+                    </View>
+                    <Text style={[styles.bigDateText, { color: '#059669' }]}>
+                      {selectedDay.hijriDay}
+                    </Text>
+                    <Text style={styles.fullDateText}>
+                      {islamicMonths[selectedDay.hijriMonth - 1]} {selectedDay.hijriYear} AH
+                    </Text>
+                  </View>
+
+                  {/* Events/Holidays */}
+                  <View style={styles.eventsContainer}>
+                    {getEventDetails(selectedDay).length > 0 ? (
+                      getEventDetails(selectedDay).map((event, idx) => (
+                        <View key={idx} style={[styles.eventBadge, { backgroundColor: event.color + '20', borderColor: event.color }]}>
+                          <Text style={[styles.eventText, { color: event.color }]}>
+                            {event.title}
+                          </Text>
+                        </View>
+                      ))
+                    ) : (
+                      <Text style={styles.noEventsText}>No major holidays</Text>
+                    )}
+                  </View>
+                </View>
+              </>
+            )}
+          </View>
+        </View>
       </Modal>
     </SafeAreaView>
   );
@@ -145,6 +389,7 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: '#1E3A8A',
     padding: 20,
+    paddingBottom: 24,
   },
   title: {
     fontSize: 28,
@@ -157,122 +402,274 @@ const styles = StyleSheet.create({
     color: '#93C5FD',
   },
   content: {
-    padding: 20,
+    padding: 16,
   },
-  dateCard: {
+  navigationCard: {
     backgroundColor: '#FFFFFF',
     borderRadius: 16,
-    padding: 24,
-    marginBottom: 24,
-    elevation: 4,
+    padding: 16,
+    marginBottom: 16,
+    elevation: 2,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
-    shadowRadius: 8,
+    shadowRadius: 4,
   },
-  dateHeader: {
+  monthNavigation: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
-    gap: 8,
-    alignSelf:'center'
+    justifyContent: 'space-between',
+    marginBottom: 12,
   },
-  dateTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#111827',
+  navButton: {
+    padding: 8,
+    borderRadius: 8,
+    backgroundColor: '#F1F5F9',
+  },
+  monthInfo: {
+    alignItems: 'center',
     flex: 1,
   },
-  editButton: {
-    padding: 8,
-  },
-  dateContainer: {
-    alignItems: 'center',
-  },
-  hijriDate: {
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  hijriDay: {
-    fontSize: 48,
-    fontWeight: '700',
-    color: '#059669',
-  },
-  hijriMonth: {
+  gregorianMonthText: {
     fontSize: 20,
-    fontWeight: '600',
-    color: '#374151',
+    fontWeight: '700',
+    color: '#111827',
     marginBottom: 4,
   },
-  hijriYear: {
-    fontSize: 16,
-    color: '#6B7280',
+  hijriMonthText: {
+    fontSize: 14,
+    color: '#059669',
+    fontWeight: '600',
   },
-  divider: {
-    width: 60,
-    height: 1,
-    backgroundColor: '#D1D5DB',
-    marginBottom: 20,
+  todayButton: {
+    backgroundColor: '#1E3A8A',
+    paddingVertical: 8,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    alignSelf: 'center',
   },
-  gregorianDate: {
+  todayButtonText: {
+    color: '#FFFFFF',
+    fontWeight: '600',
+    fontSize: 14,
+  },
+  calendarCard: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    padding: 12,
+    marginBottom: 16,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  weekDaysRow: {
+    flexDirection: 'row',
+    marginBottom: 8,
+    paddingBottom: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E5E7EB',
+  },
+  weekDayCell: {
+    flex: 1,
     alignItems: 'center',
   },
-  gregorianText: {
-    fontSize: 16,
+  weekDayText: {
+    fontSize: 12,
+    fontWeight: '700',
     color: '#6B7280',
-    textAlign: 'center',
   },
-  monthGrid: {
-    marginBottom: 24,
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: '600',
-    color: '#111827',
-    marginBottom: 16,
-  },
-  monthsContainer: {
+  daysGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 12,
   },
-  monthCard: {
-    backgroundColor: '#FFFFFF',
-    padding: 12,
-    borderRadius: 12,
-    width: '48%',
+  dayCell: {
+    width: '14.28%', // 100% / 7 days
+    aspectRatio: 1,
+    padding: 4,
+    borderRadius: 8,
+  },
+  todayCell: {
+    backgroundColor: '#DBEAFE',
+  },
+  selectedDayCell: {
+    borderWidth: 2,
+    borderColor: '#1E3A8A',
+  },
+  dayCellContent: {
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#E5E7EB',
   },
-  currentMonth: {
-    backgroundColor: '#059669',
-    borderColor: '#059669',
+  gregorianDayText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#111827',
+    marginBottom: 2,
   },
-  monthNumber: {
+  hijriDayText: {
+    fontSize: 11,
+    color: '#059669',
+    fontWeight: '500',
+  },
+  otherMonthText: {
+    color: '#D1D5DB',
+  },
+  otherMonthHijriText: {
+    color: '#E5E7EB',
+  },
+  todayText: {
+    color: '#1E3A8A',
+    fontWeight: '700',
+  },
+  todayHijriText: {
+    color: '#059669',
+    fontWeight: '700',
+  },
+  legendCard: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    padding: 16,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  legendTitle: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#059669',
-    marginBottom: 4,
+    color: '#111827',
+    marginBottom: 12,
   },
-  monthName: {
-    fontSize: 12,
+  legendRow: {
+    flexDirection: 'row',
+    gap: 16,
+    marginBottom: 12,
+  },
+  legendItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  legendColorBox: {
+    width: 20,
+    height: 20,
+    borderRadius: 4,
+    backgroundColor: '#111827',
+  },
+  legendHijriBox: {
+    backgroundColor: '#059669',
+  },
+  legendText: {
+    fontSize: 13,
     color: '#6B7280',
-    textAlign: 'center',
   },
-  currentMonthText: {
-    color: '#FFFFFF',
-  },
-  adminNote: {
+  noteContainer: {
     backgroundColor: '#FEF3C7',
-    padding: 16,
-    borderRadius: 12,
+    padding: 12,
+    borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#F59E0B',
+    borderColor: '#FCD34D',
   },
-  adminNoteText: {
-    fontSize: 14,
+  noteText: {
+    fontSize: 12,
     color: '#92400E',
-    textAlign: 'center',
+    lineHeight: 18,
+  },
+  // Modal Styles
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  modalContainer: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 20,
+    width: '100%',
+    maxWidth: 340,
+    padding: 24,
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 10,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 24,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#111827',
+  },
+  closeButton: {
+    padding: 4,
+  },
+  modalContent: {
+    alignItems: 'center',
+  },
+  dateSection: {
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 8,
+  },
+  sectionHeaderText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#1E3A8A',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  bigDateText: {
+    fontSize: 48,
+    fontWeight: '800',
+    color: '#111827',
+    lineHeight: 56,
+  },
+  fullDateText: {
+    fontSize: 16,
+    color: '#4B5563',
+    fontWeight: '500',
+  },
+  divider: {
+    width: '100%',
+    height: 1,
+    backgroundColor: '#E5E7EB',
+    marginVertical: 16,
+  },
+  eventsContainer: {
+    width: '100%',
+    marginTop: 8,
+    gap: 8,
+    alignItems: 'center',
+  },
+  eventBadge: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 100,
+    borderWidth: 1,
+    minWidth: '60%',
+    alignItems: 'center',
+  },
+  eventText: {
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  noEventsText: {
+    fontSize: 14,
+    color: '#9CA3AF',
+    fontStyle: 'italic',
   },
 });
